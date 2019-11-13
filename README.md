@@ -1,0 +1,1 @@
+# full-node-service-template
