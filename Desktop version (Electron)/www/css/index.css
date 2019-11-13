@@ -1,0 +1,16 @@
+/*    <--  Portrait layout -->     */
+@media screen{
+    body{
+        padding:0px;
+        margin:0px;
+    }
+}
+
+
+/*    <--  Landscape layout (with min-width) -->     */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    body{
+        padding:0px;
+        margin:0px;
+    }
+}

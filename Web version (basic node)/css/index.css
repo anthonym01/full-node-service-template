@@ -1,0 +1,48 @@
+
+/* Portrait / phone */
+@media screen{
+    body::before{/* Remove upon deployment*/
+        position: absolute;
+        z-index:-1;
+        content:"Phone layout";
+        font-size:5vh;
+        bottom:0vh;
+        height:auto;
+        width:98vw;
+        white-space: nowrap;
+        text-align: center;
+        animation:fade 3000ms infinite;
+    }
+}
+
+/* Tablet / tall aspact ratio */
+@media screen and (min-aspect-ratio: 1/3) and (min-aspect-ratio: 3/4) and (min-width:300px){
+    body::before{/* Remove upon deployment*/
+        position: absolute;
+        z-index:-1;
+        content:"tablet layout";
+        font-size:5vh;
+        bottom:0vh;
+        height:auto;
+        width:98vw;
+        white-space: nowrap;
+        text-align: center;
+        animation:fade 3000ms infinite;
+    }
+}
+
+/*    <--  Landscape layout / Standard (with min-width) -->     */
+@media screen and (min-aspect-ratio: 3/2) and (min-width:400px) {
+    body::before{/* Remove upon deployment*/
+        position: absolute;
+        z-index:-1;
+        content:"Landscape layout";
+        font-size:5vh;
+        bottom:0vh;
+        height:auto;
+        width:98vw;
+        white-space: nowrap;
+        text-align: center;
+        animation:fade 3000ms infinite;
+    }
+}
