@@ -1,4 +1,20 @@
 * {-webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */}
+@font-face{/* Roboto font   */
+    src:url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+    font-family: 'Roboto', sans-serif;
+}
+@font-face{/* Handwriting font   */
+    src:url(../fonts/handwriting-black-draft_DEMO.otf);
+    font-family: handwriting;
+}
+@font-face{/* Minecraft clean font   */
+    src:url(../fonts/Minecrafter.Reg.ttf);
+    font-family: minecraft;
+}
+@font-face{/* Minecraft cracked font   */
+    src:url(../fonts/Minecrafter.Alt.ttf);
+    font-family: minecraft_cracked;
+}
 
 /*    <--  Portrait layout -->     */
 @media screen{
