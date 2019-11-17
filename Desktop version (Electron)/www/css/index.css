@@ -1,8 +1,10 @@
-@font-face{src:url('https://fonts.googleapis.com/css?family=Roboto&display=swap'); font-family: 'Roboto', sans-serif;}/* Roboto font */
+
 @font-face{src:url(../fonts/handwriting-black-draft_DEMO.otf); font-family: handwriting;}/* Handwriting font */
 @font-face{src:url(../fonts/Minecrafter.Reg.ttf); font-family: minecraft;}/* Minecraft clean font */
 @font-face{src:url(../fonts/Minecrafter.Alt.ttf); font-family: minecraft_cracked;}/* Minecraft cracked font */
-
+/*
+font-family: 'Roboto', sans-serif;
+font-family: 'Lexend Deca', sans-serif;*/
 /*    <--  Portrait layout -->     */
 @media screen{
     body{
