@@ -5,6 +5,7 @@
 /*
 font-family: 'Roboto', sans-serif;
 font-family: 'Lexend Deca', sans-serif;*/
+
 /*    <--  Portrait layout -->     */
 @media screen{
     body{
@@ -15,8 +16,5 @@ font-family: 'Lexend Deca', sans-serif;*/
 
 /*    <--  Landscape layout (with min-width) -->     */
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    body{
-        padding:0px;
-        margin:0px;
-    }
+
 }

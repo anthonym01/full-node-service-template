@@ -64,6 +64,7 @@ var config = {//Configuration handler
     validate:function(){//validate configuration file
         console.log('Config is being validated');
         var configisvalid = true;
+        
         if(typeof(this.data.usecount)!='undefined'){
             if(this.data.usecount==undefined || this.data.usecount<0){
                 this.data.usecount=1;
@@ -89,8 +90,9 @@ var config = {//Configuration handler
     }
 }
 
-let utility = {
-    close:function(){//Close the app
+let utility = {//Some usefull things
+    /*  Close the app   */
+    close:function(){
         config.save();
         if (navigator.app) {
             navigator.app.exitApp();
@@ -100,12 +102,14 @@ let utility = {
             window.close();
         }
     },
-    toast:function(text,durration_in_ms,position_top_right_left_bottom,offset_in_px){//Produce toast
+    /*  Produce toast messages    */
+    toast:function(text,durration_in_ms,position_top_right_left_bottom,offset_in_px){
         if(position_top_right_left_bottom==undefined){position_top_right_left_bottom='bottom'}//default the position
         if(durration_in_ms==undefined){durration_in_ms=4000}//default the duration
         if(offset_in_px==undefined){offset_in_px=-160}//default the offset
         window.plugins.toast.showWithOptions({message: text, duration: durration_in_ms, position: position_top_right_left_bottom, addPixelsY: offset_in_px},);
     },
+    /*  Push text to the keyboard   */
     clipboard:function(textpush) {
         copyText.toString(); //Makes it a string so the clipboard will accept it
         var temptxtbox = document.createElement("input"); //creates an 'input' element and assigns it to 'temptxtbox'
@@ -116,6 +120,7 @@ let utility = {
         document.execCommand("copy"); //Commands the document to copy the selected text
         document.body.removeChild(temptxtbox); //Removes the input element from the document
     },
+    /*  Produce Random numbers  */
     rand:{
         HEX:function(){return '#'+Math.floor(Math.random()*16777215).toString(16) /* hex color code */ },
         RGB:function(){return { RED:this.number(255,0), GREEN:this.number(255,0), BLUE:this.number(255,0)} /* object with RGB color code */ },
