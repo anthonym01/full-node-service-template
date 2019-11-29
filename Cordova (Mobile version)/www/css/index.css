@@ -2,10 +2,7 @@
 @font-face{src:url(../fonts/handwriting-black-draft_DEMO.otf); font-family: handwriting;}/* Handwriting font */
 @font-face{src:url(../fonts/Minecrafter.Reg.ttf); font-family: minecraft;}/* Minecraft clean font */
 @font-face{src:url(../fonts/Minecrafter.Alt.ttf); font-family: minecraft_cracked;}/* Minecraft cracked font */
-@import url('https://fonts.googleapis.com/css?family=Lexend+Deca|Roboto&display=swap');
-/*
-font-family: 'Roboto', sans-serif;
-font-family: 'Lexend Deca', sans-serif;*/
+@font-face {src: url(../fonts/LexendDeca-Regular.ttf); font-family: Lexend_Deca;}
 /*    <--  Portrait layout -->     */
 @media screen{
     body {
