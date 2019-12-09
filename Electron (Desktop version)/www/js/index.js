@@ -1,5 +1,4 @@
 
-
 window.addEventListener('load',function(){//window loads
     if(typeof(require) == 'undefined'){//initialize node modules
         console.log('Running in Browser');
@@ -7,22 +6,18 @@ window.addEventListener('load',function(){//window loads
         console.log('Running in Node mode');
     }
 
-    if(localStorage.getItem(config.configlocation))//load up config
-        {
-            config.load();
-            config.data.usecount++;
-        }
-        else
-        {
-            config.validate();
-        }
+    if(localStorage.getItem("APPNAME_cfg")){
+        config.load();
+    }else{
+        config.validate();
+    }
+
 });
 
 var config={
     data:{
         usecount:0,
     },
-    configlocation:"APPNAME_cfg",//not strict, can be anything. Think of it as a file name/path
     save:function(){//Save the config file
         localStorage.setItem("APPNAME_cfg",JSON.stringify(config.data));
         console.log('config saved: ');
