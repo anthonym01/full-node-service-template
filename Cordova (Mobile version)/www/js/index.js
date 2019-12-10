@@ -11,17 +11,18 @@ var app = {// Application Constructor
         console.log('Device is Ready...');
     },
     onBackKeyDown:function() {//Back button pressed event
-        console.log('"Back button" event triggered');
+        console.warn('"Back button" event triggered');
+        utility.exit_strategy();//Pre built back function
     },
     onPause:function(){//application pause event
-        console.log('"pause" event triggered');
+        console.warn('"pause" event triggered');
         config.save();
     },
     onResume:function(){
-        console.log('"Resume" event triggered');
+        console.warn('"Resume" event triggered');
     },
     onMenu:function(){
-        console.log('"Menu button" event triggered');
+        console.warn('"Menu button" event triggered');
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
@@ -35,7 +36,6 @@ var app = {// Application Constructor
         console.log('Received Event: ' + id);
     },
 };app.initialize();
-
 
 window.addEventListener('load',function(){//applictaion needs to be constructed first
     if(localStorage.getItem("APPNAME_cfg")){
@@ -59,6 +59,9 @@ window.addEventListener('load',function(){//applictaion needs to be constructed 
 var config = {//Configuration handler
     data:{
         
+    },
+    properties:{
+        exit:false
     },
     save:function(){//Save the config file
         localStorage.setItem("APPNAME_cfg",JSON.stringify(config.data));
@@ -91,8 +94,21 @@ var config = {//Configuration handler
 }
 
 let utility = {//Some usefull things
+    exit_strategy:function(){//Heres how to string things togther to make something usefull
+        console.warn('Exit strategy triggered');
+        if(config.properties.exit){
+            utility.close();
+        }else{
+            config.properties.exit = true;
+            utility.toast("Press back button again to exit",2000);
+            setTimeout(()=>{
+                config.properties.exit = false;
+            },2000);
+        }
+    },
     /*  Close the app   */
     close:function(){
+        console.trace('App closure triggered via');
         config.save();
         if (navigator.app) {
             navigator.app.exitApp();
