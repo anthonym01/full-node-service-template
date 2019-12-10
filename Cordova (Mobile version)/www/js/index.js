@@ -40,15 +40,25 @@ var app = {// Application Constructor
 window.addEventListener('load',function(){//applictaion needs to be constructed first
     if(localStorage.getItem("APPNAME_cfg")){
         config.load();
-        config.data.usecount++;
     }else{
         config.validate();
     }
+    
+    if(typeof(device)!='undefined'){//check device mode
+        if(device.platform=='Android'||'iOS'){//mobile
+            console.warn('Running on a mobile platform');
+        }else{
+            console.warn('Running on a Desktop platform');
+        }
+    }else{
+        console.error('Device plugin broke');
+    }
+
 });
 
 var config = {//Configuration handler
     data:{
-        usecount:0,
+        
     },
     save:function(){//Save the config file
         localStorage.setItem("APPNAME_cfg",JSON.stringify(config.data));
@@ -65,20 +75,10 @@ var config = {//Configuration handler
         console.log('Config is being validated');
         var configisvalid = true;
         
-        if(typeof(this.data.usecount)!='undefined'){
-            if(this.data.usecount==undefined || this.data.usecount<0){
-                this.data.usecount=1;
-                configisvalid=false;
-                console.log('"usecount" was found to be invalid and was set to default');
-            }
-        }else{
-            this.data.usecount=1;
-            configisvalid=false;
-            console.log('"usecount" did not exist and was set to default');
-        }
-        
+
+
         if(!configisvalid){
-            console.log('config was found to be invalid and will be overwritten');
+            console.warn('config was found to be invalid and will be overwritten');
             this.save();//Save new confog because old config is no longer valid
         }else{console.log('config was found to be valid');}
     },

@@ -13,6 +13,8 @@ font-family: 'Lexend Deca', sans-serif;
         padding:0px;
         margin:0px;
     }
+    .dark_accent{background-color: rgb(43, 255, 0);}
+    .light_accent{background-color: rgb(0, 180, 255);}
 }
 
 /*    <--  Landscape layout (with min-width) -->     */
