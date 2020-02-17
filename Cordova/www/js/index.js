@@ -11,7 +11,7 @@ var app = {// Application Constructor
         console.log('Device is Ready...')
     },
     onBackKeyDown: function () {//Back button pressed event
-        console.warn('"Back button" event triggered');
+        console.warn('"Back button" event triggered')
         backbutton()
     },
     onPause: function () {//application pause event
@@ -94,7 +94,7 @@ var config = {//Configuration handler
 }
 
 //Pre built back function
-function backbutton(){
+function backbutton() {
     utility.exit_strategy()
 }
 

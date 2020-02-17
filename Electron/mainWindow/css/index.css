@@ -43,6 +43,7 @@ font-family: 'Lexend Deca', sans-serif;
     .light_accent {
         background-color: rgb(0, 180, 255);
     }
+    
 }
 
 /* Tablet / tall aspact ratio */
@@ -60,6 +61,7 @@ font-family: 'Lexend Deca', sans-serif;
         text-align: center;
         animation: fade 3000ms infinite;
     }
+
 }
 
 /*    <--  Landscape layout / Standard (with min-width) -->     */
@@ -77,4 +79,5 @@ font-family: 'Lexend Deca', sans-serif;
         text-align: center;
         animation: fade 3000ms infinite;
     }
+
 }
