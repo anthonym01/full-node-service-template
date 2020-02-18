@@ -1,4 +1,7 @@
 
+const { dialog } = require('electron').remote;
+const fs = require('fs');
+
 window.addEventListener('load', function () {//window loads
     if (typeof (require) == 'undefined') {//initialize node modules
         console.error('Running in Browser')
@@ -16,7 +19,11 @@ window.addEventListener('load', function () {//window loads
 
 var config = {
     data: {
+        key:"APPNAME_cfg",
         usecount: 0,
+    },
+    properties:{
+
     },
     save: function () {//Save the config file
         localStorage.setItem("APPNAME_cfg", JSON.stringify(config.data))
@@ -54,6 +61,43 @@ var config = {
         console.log('config deleted: ')
         console.table(config.data)
         this.validate()
+    },
+    backup: function () {//backup configuration to file
+        console.log('Configuration backup initiated')
+        var date = new Date();
+        var filepath = dialog.showSaveDialog({defaultPath:"APPNAME_cfg backup "+Number(date.getMonth()+1)+" - "+date.getDay()+" - "+date.getFullYear()+".json",buttonLabel:null});
+        if (filepath == undefined) {//the file save dialogue was canceled my the user
+            console.warn('The file dialogue was canceled by the user')
+        } else {
+            fs.writeFile(filepath, JSON.stringify(config.data), (error) => {
+                if (error) {
+                    alert("An error occurred creating the file " + err.message)
+                } else {
+                    console.log("The file has been successfully saved");
+                }
+            })
+        }
+    },
+    restore: function () {//restore configuration from file
+        console.log('Configuration backup initiated')
+        var filepath = dialog.showOpenDialog({ buttonLabel: "open" })
+        if (filepath == undefined) {
+            console.log("No file selected");
+        } else {
+            fs.readFile(filepath[0], 'utf-8', (err, data) => {
+                if (err) { alert("An error ocurred reading the file :" + err.message) }
+                console.log("The file content is : " + data);
+                var fileout = JSON.parse(data)
+                if(fileout.key == "APPNAME_cfg"){//check if this file is a timetable backup file
+                    config.data = fileout
+                    config.save();
+                    setTimeout(()=>{location.reload()},2000)
+                }else{
+                    console.warn('This is not a backup file')
+                }
+                
+            })
+        }
     }
 }
 
@@ -61,9 +105,6 @@ let utility = {//Misculanious utilites
     closeapp: function () {//Close the app
         config.save()
         window.close()
-    },
-    toast: function (text, durration_in_ms, position_top_right_left_bottom, offset_in_px) {//Produce notification
-        console.warn('Notifier not set up!')
     },
     clipboard: function (textpush) {
         copyText.toString()
