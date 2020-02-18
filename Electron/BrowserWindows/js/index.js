@@ -93,7 +93,7 @@ var config = {
                     config.save();
                     setTimeout(()=>{location.reload()},2000)
                 }else{
-                    console.warn('This is not a backup file')
+                    console.warn(filepath[0]+'This is not a backup file')
                 }
                 
             })
