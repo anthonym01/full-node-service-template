@@ -24,8 +24,10 @@ app.on('ready', function () {//Aplication starts, so make the main window
 		alwaysOnTop: false,
 		icon:undefined,
 		title:'Blach app',
-		nodeIntegration: true,
 		minWidth:400,
+		webPreferences:{
+			nodeIntegration:true,
+		}
 	})
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, '/BrowserWindows/MainWindow.html'),
