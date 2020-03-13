@@ -7,17 +7,19 @@ const windowStateKeeper = require('electron-window-state');//preserves the windo
 
 var mainWindow;//defines the window as an abject
 
-app.on('ready', function () {//Aplication starts, so make the main window
+app.on('ready',createmainWindow)
+
+function createmainWindow(){
 	const { screenwidth, screenheight } = electron.screen.getPrimaryDisplay().workAreaSize //gets screen size and sets it to height and width
 	let mainWindowState = windowStateKeeper({
 		defaultWidth: screenwidth,
 		defaultHeight: screenheight
 	})
 	mainWindow = new BrowserWindow({
-		'x': mainWindowState.x,
-		'y': mainWindowState.y,
-		'width': mainWindowState.width,
-		'height': mainWindowState.height,
+		x: mainWindowState.x,
+		y: mainWindowState.y,
+		width: mainWindowState.width,
+		height: mainWindowState.height,
 		backgroundColor: '#ffffff',
 		frame: true,
 		center: true,
@@ -35,7 +37,7 @@ app.on('ready', function () {//Aplication starts, so make the main window
 		slashes: true
 	}))
 	mainWindowState.manage(mainWindow);
-});
+}
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -43,8 +45,12 @@ app.on('window-all-closed', () => {
   }
 })
 
-app.on('activate', () => {
+app.on('activate', () => {//for darwin
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createmainWindow();
   }
 });
+
+exports.clossapp = () =>{
+	app.quit();
+}

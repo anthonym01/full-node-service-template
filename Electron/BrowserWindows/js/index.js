@@ -1,5 +1,5 @@
-
-const { dialog, app } = require('electron').remote;//Initalize Electon dependencies
+const main = require('electron').remote.require('./main');//acess export functions in main
+const { dialog } = require('electron').remote;//Initalize Electon dependencies
 const fs = require('fs');//Initalize file system
 const fse = require('fs-extra');//Initalize file system extra
 
@@ -15,18 +15,18 @@ window.addEventListener('load', function () {//window loads
 });
 
 let config = {/* Handles configuration */
-    data:{
+    data: {
         key: "APPname_cfg",
         usecount: 0,
     },
-    baseconfig:{
+    baseconfig: {
         use_alt_storage: false,
         alt_location: "",
     },
-    properties:{/* Properties of loaded app */
+    properties: {/* Properties of loaded app */
 
     },
-    initialize:function(){
+    initialize: function () {
         console.warn('Config handler is initalized')
         if (localStorage.getItem("APPname_cfg")) {
             this.load()
@@ -46,7 +46,7 @@ let config = {/* Handles configuration */
                 }
             })
         }
-            console.log('config saved to application storage')
+        console.log('config saved to application storage')
         localStorage.setItem("APPname_cfg", JSON.stringify(this.data))//save to application storage reguardless incase the file gets removed by the user
         console.table(this.data)
     },
@@ -64,7 +64,7 @@ let config = {/* Handles configuration */
             //load from alternate storage location
             if (fs.existsSync(this.baseconfig.alt_location.toString() + "/APPname_cfgconfig.json")) {//Directory exists
                 var fileout = fs.readFileSync(this.baseconfig.alt_location.toString() + "/APPname_cfgconfig.json", { encoding: 'utf8' })
-                console.warn('config Loaded from: ' ,this.baseconfig.alt_location.toString(),'Data from fs read operation: ', fileout)
+                console.warn('config Loaded from: ', this.baseconfig.alt_location.toString(), 'Data from fs read operation: ', fileout)
                 fileout = JSON.parse(fileout)
                 if (fileout.key == "APPname_cfg") {//check if file has key
                     this.data = fileout;

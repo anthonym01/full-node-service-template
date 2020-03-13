@@ -1,5 +1,5 @@
 @echo off
 echo "Running Electron setup command (npm i electron)"
-npm i electron
-echo "electron setup should now be completed"
+npm i electron && npm i fs-extra && npm i electron-packager
+echo "electron should now be installed"
 pause
