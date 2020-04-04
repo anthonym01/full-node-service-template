@@ -1,22 +1,22 @@
 var app = {// Application Constructor
-    initialize: function () {
+    initialize: function () {// deviceready Event Handler
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false)
         document.addEventListener("backbutton", this.onBackKeyDown, false)
         document.addEventListener("pause", this.onPause, false)
         document.addEventListener("resume", this.onResume, false)
         document.addEventListener("menubutton", this.onMenu, false)
-    },// deviceready Event Handler
-    onDeviceReady: function () {//device ready event
+    },
+    onDeviceReady: function () {
         this.receivedEvent('deviceready')
         console.log('Device is Ready...')
     },
-    onBackKeyDown: function () {//Back button pressed event
+    onBackKeyDown: function () {
         console.warn('"Back button" event triggered')
-        backbutton()
+        utility.exit_strategy()//exit by default
     },
-    onPause: function () {//application pause event
+    onPause: function () {
         console.warn('"pause" event triggered')
-        config.save()
+        config_handler.save()
     },
     onResume: function () {
         console.warn('"Resume" event triggered')
@@ -24,7 +24,6 @@ var app = {// Application Constructor
     onMenu: function () {
         console.warn('"Menu button" event triggered')
     },
-    // Update DOM on a Received Event
     receivedEvent: function (id) {
         var parentElement = document.getElementById(id)
         var listeningElement = parentElement.querySelector('.listening')
@@ -38,81 +37,94 @@ var app = {// Application Constructor
 }; app.initialize()
 
 window.addEventListener('load', function () {//applictaion needs to be constructed first
-    if (localStorage.getItem("APPNAME_cfg")) {
-        config.load()
-    } else {
-        config.validate()
-    }
-
-    if (typeof (device) != 'undefined') {//check device mode
-        if (device.platform == 'Android' || 'iOS') {//mobile
-            console.warn('Running on a mobile platform')
+    setTimeout(() => {
+        if (typeof (device) != 'undefined') {//check device mode
+            if (device.platform == 'Android' || 'iOS') {//mobile
+                console.warn('Running on a mobile platform')
+            } else {
+                console.warn('Running on a Desktop platform')
+            }
         } else {
-            console.warn('Running on a Desktop platform')
+            console.error('Device plugin broke')
         }
-    } else {
-        console.error('Device plugin broke')
-    }
+        utility.toast('app starts', 2000);
+    }, 500);
 
+    config_handler.initialize();
 });
 
-var config = {//Configuration handler
-    data: {
+let config = {
+    key: "APPname_cfg",
+    usecount: 0,
+}
 
+let config_handler = {/* Handles configuration */
+    initialize: function () {
+        console.warn('Config handler is initalized')
+        if (localStorage.getItem("APPname_cfg")) {
+            this.load()
+        } else {
+            this.validate()
+        }
     },
-    properties: {
-        exit: false,
+    save: async function () {//Save the config file
+        console.warn('Configuration is being saved')
+        localStorage.setItem("APPname_cfg", JSON.stringify(config))
+        console.table(config)
     },
-    save: function () {//Save the config file
-        localStorage.setItem("APPNAME_cfg", JSON.stringify(config.data))
-        console.log('config saved: ')
-        console.table(config.data)
-    },
-    load: function () {//Load the config file into memory
-        config.data = JSON.parse(localStorage.getItem("APPNAME_cfg"))
-        console.log('config Loaded: ')
-        console.table(config.data)
+    load: function () {//Load the config file
+        console.warn('Configuration is being loaded')
+        config = JSON.parse(localStorage.getItem("APPname_cfg"))
+        console.table(config)
         this.validate()
     },
     validate: function () {//validate configuration file
-        console.log('Config is being validated')
+        console.warn('Config is being validated')
         var configisvalid = true
-
-
+        if (typeof (config.usecount) != 'undefined') {
+            if (config.usecountt == undefined || config.usecount < 0) {
+                config.usecount = 1
+                configisvalid = false
+                console.log('"usecount" was found to be invalid and was set to default')
+            }
+        } else {
+            config.usecount = 1
+            configisvalid = false
+            console.log('"usecount" did not exist and was set to default')
+        }
 
         if (!configisvalid) {
-            console.warn('config was found to be invalid and will be overwritten')
+            console.log('config was found to be invalid and will be overwritten')
             this.save()//Save new confog because old config is no longer valid
         } else { console.log('config was found to be valid') }
     },
     delete: function () {//Does not delete the file itself. Just sets it to empty
-        localStorage.clear("APPNAME_cfg")
+        localStorage.clear("APPname_cfg")
         console.log('config deleted: ')
-        console.table(config.data)
+        console.table(config)
         this.validate()
     }
 }
 
-//Pre built back function
-function backbutton() {
-    utility.exit_strategy()
+let properties = {
+    exit: false,
 }
 
 let utility = {//Some usefull things
     exit_strategy: function () {//Heres how to string things togther to make something usefull
         console.warn('Exit strategy triggered')
-        if (config.properties.exit) {
+        if (properties.exit) {
             utility.close()
         } else {
-            config.properties.exit = true
+            properties.exit = true;
             utility.toast("Press back button again to exit", 2000)
-            setTimeout(() => { config.properties.exit = false }, 2000)
+            setTimeout(() => { properties.exit = false }, 2000)
         }
     },
     /*  Close the app   */
     close: function () {
         console.trace('App closure triggered via')
-        config.save()
+        config_handler.save()
         if (navigator.app) {
             navigator.app.exitApp()
         } else if (navigator.device) {
