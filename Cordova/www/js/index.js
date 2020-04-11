@@ -7,12 +7,13 @@ var app = {// Application Constructor
         document.addEventListener("menubutton", this.onMenu, false)
     },
     onDeviceReady: function () {
-        this.receivedEvent('deviceready')
+        //this.receivedEvent('deviceready')
         console.log('Device is Ready...')
+        maininitalizer();
     },
     onBackKeyDown: function () {
         console.warn('"Back button" event triggered')
-        utility.exit_strategy()//exit by default
+        back();
     },
     onPause: function () {
         console.warn('"pause" event triggered')
@@ -36,22 +37,26 @@ var app = {// Application Constructor
     },
 }; app.initialize()
 
-window.addEventListener('load', function () {//applictaion needs to be constructed first
-    setTimeout(() => {
-        if (typeof (device) != 'undefined') {//check device mode
-            if (device.platform == 'Android' || 'iOS') {//mobile
-                console.warn('Running on a mobile platform')
-            } else {
-                console.warn('Running on a Desktop platform')
-            }
+function maininitalizer() {
+
+    if (typeof (device) != 'undefined') {//check device mode
+        if (device.platform == 'Android' || 'iOS') {//mobile
+            console.warn('Running on a mobile platform')
         } else {
-            console.error('Device plugin broke')
+            console.warn('Running on a Desktop platform')
         }
-        utility.toast('app starts', 2000);
-    }, 500);
+    } else {
+        console.error('Device plugin broke')
+    }
+
+    utility.toast('app starts', 2000);
 
     config_handler.initialize();
-});
+}
+
+async function back(){
+    utility.exit_strategy();
+}
 
 let config = {
     key: "APPname_cfg",
@@ -113,7 +118,7 @@ let properties = {
 let utility = {//Some usefull things
     exit_strategy: function () {//Heres how to string things togther to make something usefull
         console.warn('Exit strategy triggered')
-        if (properties.exit) {
+        if (properties.exit == true) {
             utility.close()
         } else {
             properties.exit = true;
@@ -124,7 +129,7 @@ let utility = {//Some usefull things
     /*  Close the app   */
     close: function () {
         console.trace('App closure triggered via')
-        config_handler.save()
+        //config_handler.save()
         if (navigator.app) {
             navigator.app.exitApp()
         } else if (navigator.device) {
