@@ -19,9 +19,11 @@
     <platform name="android">
         <allow-intent href="market:*" />
         <icon src="res/icon/icon.png" />
-    </platform>
-    <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
+        <splash src="res/splashscreen/base_landscape.png" density="land"/>
+        <splash src="res/splashscreen/base_partrait.png" density="port"/>
+        <preference name="AutoHideSplashScreen" value="true" />
+        <preference name="SplashScreenDelay" value="5000" />
+        <preference name="ShowSplashScreenSpinner" value="false"/>
+        <preference name="SplashScreenSpinnerColor" value="white" />
     </platform>
 </widget>

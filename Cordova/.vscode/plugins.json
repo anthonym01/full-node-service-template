@@ -1,1 +1,1 @@
-{"plugins":["cordova-plugin-x-toast","cordova-plugin-device"]}
+{"plugins":["cordova-plugin-x-toast","cordova-plugin-device","cordova-plugin-splashscreen","cordova-plugin-screensize"]}

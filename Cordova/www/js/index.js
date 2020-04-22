@@ -49,21 +49,16 @@ function maininitalizer() {
         console.error('Device plugin broke')
     }
 
-    utility.toast('app starts', 2000);
-
-    config_handler.initialize();
-}
-
-async function back(){
-    utility.exit_strategy();
+    config.initialize();//Initalize configuration management
+    UI.initalize()
+    navigator.splashscreen.hide();//hide splashscreen
 }
 
 let config = {
-    key: "APPname_cfg",
-    usecount: 0,
-}
-
-let config_handler = {/* Handles configuration */
+    data: {
+        key: "APPname_cfg",
+        usecount: 0,
+    },
     initialize: function () {
         console.warn('Config handler is initalized')
         if (localStorage.getItem("APPname_cfg")) {
@@ -74,26 +69,26 @@ let config_handler = {/* Handles configuration */
     },
     save: async function () {//Save the config file
         console.warn('Configuration is being saved')
-        localStorage.setItem("APPname_cfg", JSON.stringify(config))
-        console.table(config)
+        localStorage.setItem("APPname_cfg", JSON.stringify(config.data))
+        console.table(config.data)
     },
     load: function () {//Load the config file
         console.warn('Configuration is being loaded')
-        config = JSON.parse(localStorage.getItem("APPname_cfg"))
-        console.table(config)
+        config.data = JSON.parse(localStorage.getItem("APPname_cfg"))
+        console.table(config.data)
         this.validate()
     },
     validate: function () {//validate configuration file
         console.warn('Config is being validated')
         var configisvalid = true
-        if (typeof (config.usecount) != 'undefined') {
-            if (config.usecountt == undefined || config.usecount < 0) {
-                config.usecount = 1
+        if (typeof (config.data.usecount) != 'undefined') {
+            if (config.data.usecountt == undefined || config.data.usecount < 0) {
+                config.data.usecount = 1
                 configisvalid = false
                 console.log('"usecount" was found to be invalid and was set to default')
             }
         } else {
-            config.usecount = 1
+            config.data.usecount = 1
             configisvalid = false
             console.log('"usecount" did not exist and was set to default')
         }
@@ -106,24 +101,52 @@ let config_handler = {/* Handles configuration */
     delete: function () {//Does not delete the file itself. Just sets it to empty
         localStorage.clear("APPname_cfg")
         console.log('config deleted: ')
-        console.table(config)
+        console.table(config.data)
         this.validate()
     }
 }
 
-let properties = {
-    exit: false,
+let UI = {
+    properties: {
+        exit: false,
+    },
+    initalize: function () {
+        window.plugins.screensize.get(function (result) {//Check device screen size
+            console.log(result);
+            if (result.diameter < 3) {
+                //watch size screen
+                document.getElementById('stylesheet').href = "css/watch.css"
+                console.warn('Set watch screen scale with size: ', result.diameter);
+            } else if (result.diameter > 5.9) {
+                //tablet size screen
+                document.getElementById('stylesheet').href = "css/tablet.css"
+                console.warn('Set tablet screen scale with size: ', result.diameter);
+            } else {
+                //phone size screen
+                document.getElementById('stylesheet').href = "css/phone.css"
+                console.warn('Set phone screen scale with size: ', result.diameter);
+            }
+        }, function (err) {
+            console.log(err)
+            //error default to phone size
+            document.getElementById('stylesheet').href = "css/phone.css"
+            console.error('defaulted to phone screen scale');
+        });
+    },
 }
 
 let utility = {//Some usefull things
+    back: async function () {
+        utility.exit_strategy();
+    },
     exit_strategy: function () {//Heres how to string things togther to make something usefull
         console.warn('Exit strategy triggered')
-        if (properties.exit == true) {
+        if (UI.properties.exit == true) {
             utility.close()
         } else {
-            properties.exit = true;
+            UI.properties.exit = true;
             utility.toast("Press back button again to exit", 2000)
-            setTimeout(() => { properties.exit = false }, 2000)
+            setTimeout(() => { UI.properties.exit = false }, 2000)
         }
     },
     /*  Close the app   */
