@@ -1,5 +1,5 @@
 const main = require('electron').remote.require('./main');//acess export functions in main
-const { dialog } = require('electron').remote;//Initalize Electon dependencies
+const { dialog } = require('electron').remote;//Initalize dialogue dependency
 const fs = require('fs');//Initalize file system
 const fse = require('fs-extra');//Initalize file system extra
 
@@ -9,20 +9,18 @@ window.addEventListener('load', function () {//window loads
     } else {
         console.log('Running in Node')
     }
-    config_handler.initialize()
+    config.initialize()
 });
 
 let config = {
-    key: "APPname_cfg",
-    usecount: 0,
-}
-
-let baseconfig = {
-    use_alt_storage: false,
-    alt_location: "",
-}
-
-let config_handler = {/* Handles configuration */
+    baseconfig: {
+        use_alt_storage: false,
+        alt_location: "",
+    },
+    data: {
+        key: "APPnamecfg",
+        usecount: 0,
+    },
     initialize: function () {
         console.warn('Config handler is initalized')
         if (localStorage.getItem("APPname_cfg")) {
@@ -33,66 +31,60 @@ let config_handler = {/* Handles configuration */
     },
     save: async function () {//Save the config file
         console.warn('Configuration is being saved')
-        if (baseconfig.use_alt_storage == true) {//save to alternate storage location
-            fse.ensureDirSync(baseconfig.alt_location.toString())//endure the directory exists
-            fs.writeFile(baseconfig.alt_location.toString() + "/APPname_cfgconfig.json", JSON.stringify(config), (err) => {//write to file
+        if (config.baseconfig.use_alt_storage == true) {//save to alternate storage location
+            fse.ensureDirSync(config.baseconfig.alt_location.toString())//endure the directory exists
+            fs.writeFile(config.baseconfig.alt_location.toString() + "/APPnamecfgconfig.json", JSON.stringify(config.data), (err) => {//write to file
                 if (err) {//error
                     alert("An error occurred creating the file " + err.message)
                 } else {//sucessfull
-                    console.log('config saved to: ' + baseconfig.alt_location.toString())
+                    console.log('config saved to: ' + config.baseconfig.alt_location.toString())
                 }
             })
         }
         console.log('config saved to application storage')
-        localStorage.setItem("APPname_cfg", JSON.stringify(config))//save to application storage reguardless incase the file gets removed by the user
-        console.table(config)
+        localStorage.setItem("APPname_cfg", JSON.stringify(config.data))//save to application storage reguardless incase the file gets removed by the user
+        console.table(config.data)
     },
     load: function () {//Load the config file
         console.warn('Configuration is being loaded')
 
         if (localStorage.getItem("APPname_cfg_baseconfig")) {//load base config firt
-            baseconfig = JSON.parse(localStorage.getItem("APPname_cfg_baseconfig"))
+            config.baseconfig = JSON.parse(localStorage.getItem("APPname_cfg_baseconfig"))
         } else {
             //first startup
-            localStorage.setItem("APPname_cfg_baseconfig", JSON.stringify(baseconfig))
+            localStorage.setItem("APPname_cfg_baseconfig", JSON.stringify(config.baseconfig))
         }
 
-        if (baseconfig.use_alt_storage == true) {
+        if (config.baseconfig.use_alt_storage == true) {
             //load from alternate storage location
-            if (fs.existsSync(baseconfig.alt_location.toString() + "/APPname_cfgconfig.json")) {//Directory exists
-                var fileout = fs.readFileSync(baseconfig.alt_location.toString() + "/APPname_cfgconfig.json", { encoding: 'utf8' })
-                console.warn('config Loaded from: ', baseconfig.alt_location.toString(), 'Data from fs read operation: ', fileout)
+            if (fs.existsSync(config.baseconfig.alt_location.toString() + "/APPname_cfgconfig.json")) {//Directory exists
+                var fileout = fs.readFileSync(config.baseconfig.alt_location.toString() + "/APPnamecfgconfig.json", { encoding: 'utf8' })
+                console.warn('config Loaded from: ', config.baseconfig.alt_location.toString(), 'Data from fs read operation: ', fileout)
                 fileout = JSON.parse(fileout)
-                if (fileout.key == "APPname_cfg") {//check if file has key
-                    config = fileout;
+                if (fileout.key == "APPnamecfg") {//check if file has key
+                    config.data = fileout;
                     console.warn('configuration applied from file')
                 } else {
                     console.warn('The file is not a config file, internal configuration will be used')
-                    config = JSON.parse(localStorage.getItem("APPname_cfg"))
+                    config.data = JSON.parse(localStorage.getItem("APPname_cfg"))
                 }
             } else {//file does not exist, was moved, deleted or is inaccesible
-                config = JSON.parse(localStorage.getItem("APPname_cfg"))
+                config.data = JSON.parse(localStorage.getItem("APPname_cfg"))
                 this.save()//save to recreate the file
             }
         } else {//load from application storage
-            config = JSON.parse(localStorage.getItem("APPname_cfg"))
+            config.data = JSON.parse(localStorage.getItem("APPname_cfg"))
             console.log('config Loaded from application storage')
         }
 
-        console.table(config)
+        console.table(config.data)
         this.validate()
     },
     validate: function () {//validate configuration file
         console.warn('Config is being validated')
         var configisvalid = true
-        if (typeof (config.usecount) != 'undefined') {
-            if (config.usecountt == undefined || config.usecount < 0) {
-                config.usecount = 1
-                configisvalid = false
-                console.log('"usecount" was found to be invalid and was set to default')
-            }
-        } else {
-            config.usecount = 1
+        if (typeof (config.data.usecount) == 'undefined') {
+            config.data.usecount = 1
             configisvalid = false
             console.log('"usecount" did not exist and was set to default')
         }
@@ -104,8 +96,9 @@ let config_handler = {/* Handles configuration */
     },
     delete: function () {//Does not delete the file itself. Just sets it to empty
         localStorage.clear("APPname_cfg")
+        config.usedefault();
         console.log('config deleted: ')
-        console.table(config)
+        console.table(config.data)
         this.validate()
     },
     backup: async function () {//backup configuration to a file
@@ -115,7 +108,7 @@ let config_handler = {/* Handles configuration */
         if (filepath == undefined) {//the file save dialogue was canceled my the user
             console.warn('The file dialogue was canceled by the user')
         } else {
-            fs.writeFile(filepath, JSON.stringify(config), (err) => {
+            fs.writeFile(filepath, JSON.stringify(config.data), (err) => {
                 if (err) {
                     alert("An error occurred creating the file " + err.message)
                 } else {
@@ -135,7 +128,7 @@ let config_handler = {/* Handles configuration */
                 console.log("The file content is : " + data);
                 var fileout = JSON.parse(data)
                 if (fileout.key == "APPname_cfg") {//check if this file is a timetable backup file
-                    config = fileout
+                    config.data = fileout
                     config.save();
                     setTimeout(() => { location.reload() }, 2000)
                 } else {
@@ -146,37 +139,45 @@ let config_handler = {/* Handles configuration */
         }
     },
     selectlocation: function () {//select location for configuration storage
-        var path = dialog.showOpenDialog({ properties: ['createDirectory', 'openDirectory'], defaultPath: baseconfig.alt_location.toString() })
+        if(config.baseconfig.alt_location!=undefined){
+            var path = dialog.showOpenDialogSync({ properties: ['createDirectory', 'openDirectory'], defaultPath: config.baseconfig.alt_location.toString() })
+        }else{
+            var path = dialog.showOpenDialogSync({ properties: ['createDirectory', 'openDirectory'], defaultPath:null })
+        }
         console.warn('Alternate configuration path :', path[0])
-        baseconfig.use_alt_storage = true
-        baseconfig.alt_location = path[0]
-        localStorage.setItem("APPname_cfg_baseconfig", JSON.stringify(baseconfig))//save base config
-        fse.ensureFileSync(baseconfig.alt_location.toString() + "/APPname_cfgconfig.json")//ensure the file exists, if any
-        var fileout = fs.readFileSync(baseconfig.alt_location.toString() + "/APPname_cfgconfig.json", { encoding: 'utf8' });//will cast error if no file, this is fine fs will catch and deal with it automatically
+        config.baseconfig.use_alt_storage = true
+        config.baseconfig.alt_location = path[0]
+        localStorage.setItem("APPname_cfg_baseconfig", JSON.stringify(config.baseconfig))//save base config
+        fse.ensureFileSync(config.baseconfig.alt_location.toString() + "/APPname_cfgconfig.json")//ensure the file exists, if any
+        var fileout = fs.readFileSync(config.baseconfig.alt_location.toString() + "/APPname_cfgconfig.json", { encoding: 'utf8' });//will cast error if no file, this is fine fs will catch and deal with it automatically
         fileout = JSON.parse(fileout)
-        if (fileout != undefined) {
-            if (fileout.key == "APPname_cfg") {
-                //a file exist here, load it
-                console.warn('A file exists here, prompt the user on what to keep, default is currently whats in the file')
-                config = fileout
-                config.save()
+        setTimeout(() => {
+            if (fileout != undefined) {
+                if (fileout.key == "APPname_cfg") {
+                    //a file exist here, load it
+                    console.warn('A file exists here, prompt the user on what to keep, default is currently whats in the file')
+                    config.data = fileout
+                    config.save()
+                } else {
+                    console.warn('No file exists here, config from this app is used')
+                    config.save()//to create the file
+                }
             } else {
                 console.warn('No file exists here, config from this app is used')
                 config.save()//to create the file
             }
-        } else {
-            console.warn('No file exists here, config from this app is used')
-            config.save()//to create the file
-        }
-
+        }, 500);
     },
     usedefault: function () {//use default storage location
-        baseconfig.use_alt_storage = false
-        localStorage.setItem("TT01_baseconfig", JSON.stringify(baseconfig))//save base config
+        config.baseconfig.use_alt_storage = false
+        localStorage.setItem("TT01_baseconfig", JSON.stringify(config.baseconfig))//save base config
     },
 }
 
 let utility = {//Misculanious utilites
+    properties: {
+        //holdover from cordova
+    },
     closeapp: function () {//Close the app
         config.save()
         window.close()

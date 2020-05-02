@@ -13,7 +13,7 @@ var app = {// Application Constructor
     },
     onBackKeyDown: function () {
         console.warn('"Back button" event triggered')
-        back();
+        utility.back();
     },
     onPause: function () {
         console.warn('"pause" event triggered')
@@ -37,7 +37,7 @@ var app = {// Application Constructor
     },
 }; app.initialize()
 
-function maininitalizer() {
+function maininitalizer() {//Runs after 'Device ready'
 
     if (typeof (device) != 'undefined') {//check device mode
         if (device.platform == 'Android' || 'iOS') {//mobile
@@ -49,8 +49,34 @@ function maininitalizer() {
         console.error('Device plugin broke')
     }
 
+    if (typeof (window.plugins) != 'undefined') {
+        window.plugins.screensize.get(function (result) {//Check device screen size
+            console.log(result);
+            if (result.diameter < 3) {
+                //watch size screen
+                document.getElementById('stylesheet').href = "css/watch.css"
+                console.warn('Set watch screen scale with size: ', result.diameter);
+            } else if (result.diameter > 5.9) {
+                //tablet size screen
+                document.getElementById('stylesheet').href = "css/tablet.css"
+                console.warn('Set tablet screen scale with size: ', result.diameter);
+            } else {
+                //phone size screen
+                document.getElementById('stylesheet').href = "css/phone.css"
+                console.warn('Set phone screen scale with size: ', result.diameter);
+            }
+        }, function (err) {
+            console.log(err)
+            //error default to phone size
+            document.getElementById('stylesheet').href = "css/phone.css"
+            console.error('defaulted to phone screen scale');
+        });
+    } else {
+        document.getElementById('stylesheet').href = "css/phone.css"
+        console.error('defaulted to phone screen scale');
+    }
+
     config.initialize();//Initalize configuration management
-    UI.initalize()
     navigator.splashscreen.hide();//hide splashscreen
 }
 
@@ -106,36 +132,10 @@ let config = {
     }
 }
 
-let UI = {
+let utility = {//Some usefull things
     properties: {
         exit: false,
     },
-    initalize: function () {
-        window.plugins.screensize.get(function (result) {//Check device screen size
-            console.log(result);
-            if (result.diameter < 3) {
-                //watch size screen
-                document.getElementById('stylesheet').href = "css/watch.css"
-                console.warn('Set watch screen scale with size: ', result.diameter);
-            } else if (result.diameter > 5.9) {
-                //tablet size screen
-                document.getElementById('stylesheet').href = "css/tablet.css"
-                console.warn('Set tablet screen scale with size: ', result.diameter);
-            } else {
-                //phone size screen
-                document.getElementById('stylesheet').href = "css/phone.css"
-                console.warn('Set phone screen scale with size: ', result.diameter);
-            }
-        }, function (err) {
-            console.log(err)
-            //error default to phone size
-            document.getElementById('stylesheet').href = "css/phone.css"
-            console.error('defaulted to phone screen scale');
-        });
-    },
-}
-
-let utility = {//Some usefull things
     back: async function () {
         utility.exit_strategy();
     },
