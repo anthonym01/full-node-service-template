@@ -1,1 +1,11 @@
 /* Phone specific scaling <3" */
+body::after{
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 0;
+    overflow: visible;
+    width: 100%;
+    content: "watch";
+    text-align: center;
+}

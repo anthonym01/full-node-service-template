@@ -20,15 +20,19 @@
       "cordova-plugin-x-toast": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-screensize": {}
+      "cordova-plugin-screensize": {},
+      "cordova-plugin-theme-detection": {},
+      "cordova-plugin-battery-status": {}
     }
   },
   "dependencies": {
     "cordova": "^9.0.0",
     "cordova-android": "^8.1.0",
+    "cordova-plugin-battery-status": "^2.0.3",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-screensize": "^1.3.1",
     "cordova-plugin-splashscreen": "^5.0.3",
+    "cordova-plugin-theme-detection": "^1.2.1",
     "cordova-plugin-x-toast": "^2.7.2"
   }
 }

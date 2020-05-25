@@ -23,6 +23,10 @@
             {
               "xml": "<feature name=\"ScreenSize\"><param name=\"android-package\" value=\"com.pbakondy.ScreenSize\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"ThemeDetection\"><param name=\"android-package\" value=\"de.mariusbackes.cordova.plugin.ThemeDetection\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -40,6 +44,9 @@
       "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
     },
     "cordova-plugin-screensize": {
+      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
+    },
+    "cordova-plugin-theme-detection": {
       "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
     }
   },
@@ -76,12 +83,21 @@
       "clobbers": [
         "window.plugins.screensize"
       ]
+    },
+    {
+      "id": "cordova-plugin-theme-detection.ThemeDetection",
+      "file": "plugins/cordova-plugin-theme-detection/www/ThemeDetection.js",
+      "pluginId": "cordova-plugin-theme-detection",
+      "clobbers": [
+        "cordova.plugins.ThemeDetection"
+      ]
     }
   ],
   "plugin_metadata": {
     "cordova-plugin-x-toast": "2.7.2",
     "cordova-plugin-device": "2.0.3",
     "cordova-plugin-splashscreen": "5.0.3",
-    "cordova-plugin-screensize": "1.3.1"
+    "cordova-plugin-screensize": "1.3.1",
+    "cordova-plugin-theme-detection": "1.2.1"
   }
 }

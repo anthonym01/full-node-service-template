@@ -18,6 +18,9 @@
     },
     "cordova-plugin-screensize": {
       "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
+    },
+    "cordova-plugin-theme-detection": {
+      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
     }
   },
   "dependent_plugins": {}

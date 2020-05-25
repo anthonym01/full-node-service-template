@@ -30,40 +30,220 @@
 @media screen {
     :root {
         --text-color: rgb(0, 0, 0);
-        /* Variable for text color */
         --background-color: rgb(255, 255, 255);
-        /* Variable for background color */
         --accent-color: hsl(200, 100%, 50%);
-        /* Accent color */
-    }
-
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --text-color: rgb(255, 255, 255);
-            /* Variable for text color */
-            --background-color: rgb(0, 0, 0);
-            /* Variable for background color */
-            --accent-color: hsl(110, 100%, 50%);
-            /* Accent color */
-        }
+        --grey: rgb(212, 212, 212);
     }
 
     .dark {
-        --text-color: rgb(255, 255, 255);
-        /* Variable for text color */
-        --background-color: rgb(0, 0, 0);
-        /* Variable for background color */
-        --accent-color: hsl(110, 100%, 50%);
-        /* Accent color */
+        --text-color: #fff;
+        --background-color: #000;
+        --accent-color: #fff;
+        --grey: #363636;
+        --inversion_factor: invert(0);
+    }
+
+
+    .dark #hue0-selec {
+        background-image: linear-gradient(120deg, hsl(0, 100%, 50%), hsl(0, 100%, 20%));
+    }
+
+    .dark #hue30-selec {
+        background-image: linear-gradient(120deg, hsl(30, 100%, 50%), hsl(30, 100%, 20%))
+    }
+
+    .dark #hue60-selec {
+        background-image: linear-gradient(120deg, hsl(60, 100%, 50%), hsl(60, 100%, 20%))
+    }
+
+    .dark #hue90-selec {
+        background-image: linear-gradient(120deg, hsl(90, 100%, 50%), hsl(90, 100%, 20%))
+    }
+
+    .dark #hue120-selec {
+        background-image: linear-gradient(120deg, hsl(120, 100%, 50%), hsl(120, 100%, 20%));
+    }
+
+    .dark #hue150-selec {
+        background-image: linear-gradient(120deg, hsl(150, 100%, 50%), hsl(150, 100%, 20%))
+    }
+
+    .dark #hue180-selec {
+        background-image: linear-gradient(120deg, hsl(180, 100%, 50%), hsl(180, 100%, 20%))
+    }
+
+    .dark #hue210-selec {
+        background-image: linear-gradient(120deg, hsl(210, 100%, 50%), hsl(210, 100%, 20%))
+    }
+
+    .dark #hue240-selec {
+        background-image: linear-gradient(120deg, hsl(240, 100%, 50%), hsl(240, 100%, 20%))
+    }
+
+    .dark #hue270-selec {
+        background-image: linear-gradient(120deg, hsl(270, 100%, 50%), hsl(270, 100%, 20%))
+    }
+
+    .dark #hue300-selec {
+        background-image: linear-gradient(120deg, hsl(300, 100%, 50%), hsl(300, 100%, 20%))
+    }
+
+    .dark #hue330-selec {
+        background-image: linear-gradient(120deg, hsl(330, 100%, 50%), hsl(330, 100%, 20%))
     }
 
     .light {
         --text-color: rgb(0, 0, 0);
-        /* Variable for text color */
         --background-color: rgb(255, 255, 255);
-        /* Variable for background color */
-        --accent-color: hsl(200, 100%, 50%);
-        /* Accent color */
+        --accent-color: hsl(0, 0%, 0%);
+        --grey: rgb(212, 212, 212);
+        --inversion_factor: invert(100%);
+    }
+
+
+    .light #hue0-selec {
+        background-image: linear-gradient(120deg, hsl(0, 100%, 50%), hsl(0, 100%, 70%));
+    }
+
+    .light #hue30-selec {
+        background-image: linear-gradient(120deg, hsl(30, 100%, 50%), hsl(30, 100%, 70%))
+    }
+
+    .light #hue60-selec {
+        background-image: linear-gradient(120deg, hsl(60, 100%, 50%), hsl(60, 100%, 70%))
+    }
+
+    .light #hue90-selec {
+        background-image: linear-gradient(120deg, hsl(90, 100%, 50%), hsl(90, 100%, 70%))
+    }
+
+    .light #hue120-selec {
+        background-image: linear-gradient(120deg, hsl(120, 100%, 50%), hsl(120, 100%, 70%));
+    }
+
+    .light #hue150-selec {
+        background-image: linear-gradient(120deg, hsl(150, 100%, 50%), hsl(150, 100%, 70%))
+    }
+
+    .light #hue180-selec {
+        background-image: linear-gradient(120deg, hsl(180, 100%, 50%), hsl(180, 100%, 70%))
+    }
+
+    .light #hue210-selec {
+        background-image: linear-gradient(120deg, hsl(210, 100%, 50%), hsl(210, 100%, 70%))
+    }
+
+    .light #hue240-selec {
+        background-image: linear-gradient(120deg, hsl(240, 100%, 50%), hsl(240, 100%, 70%))
+    }
+
+    .light #hue270-selec {
+        background-image: linear-gradient(120deg, hsl(270, 100%, 50%), hsl(270, 100%, 70%))
+    }
+
+    .light #hue300-selec {
+        background-image: linear-gradient(120deg, hsl(300, 100%, 50%), hsl(300, 100%, 70%))
+    }
+
+    .light #hue330-selec {
+        background-image: linear-gradient(120deg, hsl(330, 100%, 50%), hsl(330, 100%, 70%))
+    }
+
+
+    ._0 {
+        --accent-color: hsl(0, 100%, 50%);
+    }
+
+    ._0 #hue0-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._30 {
+        --accent-color: hsl(30, 100%, 50%);
+    }
+
+    ._30 #hue30-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._60 {
+        --accent-color: hsl(60, 100%, 50%);
+    }
+
+    ._60 #hue60-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._90 {
+        --accent-color: hsl(90, 100%, 50%);
+    }
+
+    ._90 #hue90-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._120 {
+        --accent-color: hsl(120, 100%, 50%);
+    }
+
+    ._120 #hue120-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._150 {
+        --accent-color: hsl(150, 100%, 50%);
+    }
+
+    ._150 #hue150-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._180 {
+        --accent-color: hsl(180, 100%, 50%);
+    }
+
+    ._180 #hue180-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._210 {
+        --accent-color: hsl(210, 100%, 50%);
+    }
+
+    ._210 #hue210-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._240 {
+        --accent-color: hsl(240, 100%, 50%);
+    }
+
+    ._240 #hue240-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._270 {
+        --accent-color: hsl(270, 100%, 50%);
+    }
+
+    ._270 #hue270-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._300 {
+        --accent-color: hsl(300, 100%, 50%);
+    }
+
+    ._300 #hue300-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
+    }
+
+    ._330 {
+        --accent-color: hsl(330, 100%, 50%);
+    }
+
+    ._330 #hue330-selec {
+        box-shadow: 0vh 0vh 3vh 0vh var(--accent-color);
     }
 }
 
@@ -76,7 +256,7 @@ body {
     /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;
     /* prevent copy paste, to allow, change 'none' to 'text' */
-    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
+    font-family: Lexend_Deca, system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
     margin: 0px;
     padding: 0px;
     /* Padding to avoid the "unsafe" areas behind notches in the screen */
@@ -85,6 +265,246 @@ body {
     width: 100vw;
     color: var(--text-color);
     background-color: var(--background-color);
+}
+
+/* mainview && navbar*/
+.mainview {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100vh - 11.5vw);
+    width: 100vw;
+    overflow-y: scroll;
+    display: none;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.navbar {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 11.5vw;
+    background-color: var(--grey);
+    float: left;
+    transition: background-color 500ms, color 500ms;
+}
+
+.navbtn,
+.navbtn_ative {
+    /*  Buttons containing icons  */
+    position: relative;
+    height: 11.5vw;
+    width: 33.33vw;
+    border-radius: 4vw;
+    float: left;
+    transition: background-color 300ms;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.navbtn_ative {
+    background-color: var(--accent-color);
+}
+
+.navbtn .navcon,
+.navbtn_ative .navcon {
+    /*  Relitiveistic icon positioning(shifting based on device type)  */
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 11.5vw;
+    width: 11.5vw;
+    position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    transition: transform 300ms;
+    overflow: visible;
+}
+
+#setting_icon {
+    background-image: url('../img/setting.webp');
+    filter: var(--inversion_factor);
+    transition: transform 300ms;
+}
+
+.navbtn_ative #setting_icon {
+    background-image: url('../img/setting.webp');
+    filter: invert(1);
+    transform: rotate(90deg);
+}
+
+#view_1_icon {
+    background-image: url('../img/icon.png');
+}
+
+#view_2_icon {
+    background-image: url('../img/icon.png');
+    filter: invert(100%);
+    /* remove */
+}
+
+/* Setting view */
+#setting_view {
+    transition: background-color 500ms, color 500ms;
+}
+
+.settingtitle {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    font-size: 10vw;
+    text-align: center;
+}
+
+.setting_tabler {
+    position: relative;
+    width: 100vw;
+    height: fit-content;
+    /*margin-top: 3vw;*/
+}
+
+/*
+.setting_tabler tr {
+    width: 100%;
+}*/
+
+.setting_tabler td {
+    height: fit-content;
+    align-items: center;
+    align-content: center;
+    font-size: 6vw;
+    text-align: center;
+}
+
+.theme_bar,
+.theme_bar_2 {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.theme_bar .themebtn_container {
+    position: relative;
+    height: fit-content;
+    width: 33vw;
+}
+
+.theme_bar_2 .themebtn_container {
+    position: relative;
+    height: fit-content;
+    width: 50vw;
+}
+
+.thembtn,
+.themebtn_active {
+    font-size: 5vw;
+    padding: 2vw;
+    height: fit-content;
+    width: 20vw;
+    border-radius: 4vw;
+    text-align: center;
+    box-shadow: 0vw 0vw 3vw 0vw rgba(0, 0, 0, 0);
+    margin-right: auto;
+    margin-left: auto;
+    transition: box-shadow 300ms;
+}
+
+.themebtn_active {
+    box-shadow: 0vw 0vw 3vw 1vw var(--accent-color);
+}
+
+#dark_theme_btn {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+#light_theme_btn {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+}
+.semi_title {
+    height: fit-content;
+    align-items: center;
+    align-content: center;
+    font-size: 6vw;
+    text-align: center;
+    padding-top: 3vw;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.switch_container_active,
+.switch_container_dissabled {
+    /* Setting switch */
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20vw;
+    height: 8vw;
+    border: 0.7vw solid var(--text-color);
+    border-radius: 5vw;
+    cursor: pointer;
+    transition: border 300ms;
+    background-color: var(--background-color);
+
+}
+
+.switch_container_dissabled {
+    border: 0.7vw solid var(--grey);
+}
+
+.switch_container_active .switchbdy,
+.switch_container_dissabled .switchbdy {
+    /*Body of the switch*/
+    position: absolute;
+    width: 20vw;
+    height: 8vw;
+    border-radius: 5vw;
+}
+
+.switch_container_active .switch_knob,
+.switch_container_dissabled .switch_knob {
+    /* Switch knob */
+    top: 0.2vw;
+    right: 0.2vw;
+    position: absolute;
+    height: 7.6vw;
+    width: 7.6vw;
+    border-radius: 50%;
+    z-index: 1;
+    transform: translate(0, 0);
+    transition: background-color 300ms;
+    background-color: var(--accent-color)
+}
+
+.switch_container_dissabled .switch_knob {
+    background-color: var(--grey);
+    transform: translate(-12vw, 0);
+}
+
+.accent-blob {
+    position: relative;
+    height: 13vw;
+    width: 13vw;
+    background-color: var(--text-color);
+    color: var(--background-color);
+    margin: 2vw;
+    border-radius: 3.5vw;
+    cursor: pointer;
+    transition: background-color 300ms, color 300ms;
+}
+
+.accent-color-selector {
+    position: relative;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
 }
 
 /*    <--  Landscape layout (with min-width) -->     */

@@ -10,6 +10,7 @@ var mainWindow;//defines the window as an abject
 app.on('ready',createmainWindow)
 
 function createmainWindow(){
+	app.allowRendererProcessReuse = true;
 	const { screenwidth, screenheight } = electron.screen.getPrimaryDisplay().workAreaSize //gets screen size and sets it to height and width
 	let mainWindowState = windowStateKeeper({
 		defaultWidth: screenwidth,

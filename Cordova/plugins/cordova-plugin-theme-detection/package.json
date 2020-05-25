@@ -1,0 +1,59 @@
+{
+  "_from": "cordova-plugin-theme-detection",
+  "_id": "cordova-plugin-theme-detection@1.2.1",
+  "_inBundle": false,
+  "_integrity": "sha512-UsvXFKbbBqLuFkk6cQ1s+uIvLvXxNN3y4zwgBmTr5JwzCf8HlrHH4f6IWTsLLfRIsbfM6KdO7xvQ5EwDgS1LhQ==",
+  "_location": "/cordova-plugin-theme-detection",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-theme-detection",
+    "name": "cordova-plugin-theme-detection",
+    "escapedName": "cordova-plugin-theme-detection",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-theme-detection/-/cordova-plugin-theme-detection-1.2.1.tgz",
+  "_shasum": "8ff887a27fd25d497e82660c971b26086a3c54f6",
+  "_spec": "cordova-plugin-theme-detection",
+  "_where": "D:\\Git\\full-node-service-template\\Cordova",
+  "author": {
+    "name": "Marius Backes"
+  },
+  "bugs": {
+    "url": "https://github.com/mariusbackes/cordova-plugin-theme-detection.git/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-theme-detection",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "deprecated": false,
+  "description": "Cordova Plugin to detect whether dark mode or light mode is detected on your device",
+  "homepage": "https://github.com/mariusbackes/cordova-plugin-theme-detection",
+  "keywords": [
+    "dark-theme",
+    "dark-mode",
+    "light-theme",
+    "light-mode",
+    "design",
+    "theme",
+    "detection"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-theme-detection",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariusbackes/cordova-plugin-theme-detection.git"
+  },
+  "version": "1.2.1"
+}

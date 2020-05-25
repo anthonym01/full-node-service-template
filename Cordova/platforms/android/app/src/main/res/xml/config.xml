@@ -13,6 +13,9 @@
     <feature name="ScreenSize">
         <param name="android-package" value="com.pbakondy.ScreenSize" />
     </feature>
+    <feature name="ThemeDetection">
+        <param name="android-package" value="de.mariusbackes.cordova.plugin.ThemeDetection" />
+    </feature>
     <name>Appname</name>
     <description>
         description Is Discription
@@ -33,8 +36,5 @@
     <splash density="land" src="res/splashscreen/base_landscape.png" />
     <splash density="port" src="res/splashscreen/base_partrait.png" />
     <preference name="loglevel" value="DEBUG" />
-    <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="SplashScreenDelay" value="5000" />
     <preference name="ShowSplashScreenSpinner" value="false" />
-    <preference name="SplashScreenSpinnerColor" value="white" />
 </widget>

@@ -1,1 +1,11 @@
-/* Phone specific scaling 3" - 5.9" */
+/* Phone specific scaling */
+body::after{
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 0;
+    overflow: visible;
+    width: 100%;
+    content: "phone";
+    text-align: center;
+}
