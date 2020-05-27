@@ -13,7 +13,7 @@ var app = {// Application Constructor
     },
     onBackKeyDown: function () {
         console.warn('"Back button" event triggered')
-        utility.back();
+        Ui.navigate.back();
     },
     onPause: function () {
         console.warn('"pause" event triggered')
@@ -21,6 +21,7 @@ var app = {// Application Constructor
     },
     onResume: function () {
         console.warn('"Resume" event triggered')
+        if (config.data.theme == "devicebased") { Ui.setting.set_theme() }
     },
     onMenu: function () {
         console.warn('"Menu button" event triggered')
@@ -55,19 +56,20 @@ function maininitalizer() {//Runs after 'Device ready'
     setTimeout(() => {
         navigator.splashscreen.hide();//hide splashscreen
         window.addEventListener('resize', function () { utility.size_check() })
+        utility.properties.first_start = false;
     }, 300);
 }
 
 let config = {
-    data: {
+    data: {//Loacal app data
         key: "APPname_cfg",
         usecount: 0,
         last_view: null,
         animation: true,
         theme: "dark",
-        accent_color: 210,
+        accent_color: -1,
     },
-    initialize: function () {
+    initialize: function () {//starts up the config manager
         console.warn('Config handler is initalized')
         if (localStorage.getItem("APPname_cfg")) {
             this.load()
@@ -133,8 +135,8 @@ let config = {
     }
 }
 
-Ui = {
-    initialize: function () {
+let Ui = {
+    initialize: function () {//start ui logic
         console.warn('Ui initalize')
         this.navigate.lastmain_view()
         this.setting.animation.setpostition()
@@ -149,77 +151,113 @@ Ui = {
             config.data.theme = "devicebased"
             config.save();
             Ui.setting.set_theme()
+            utility.toast('following device theme')
         })
         document.getElementById('set_dark').addEventListener('click', function () {
             config.data.theme = "dark"
             config.save();
             Ui.setting.set_theme()
+            utility.toast('Dark theme')
         })
         document.getElementById('set_light').addEventListener('click', function () {
             config.data.theme = "light"
             config.save();
             Ui.setting.set_theme()
+            utility.toast('Light theme')
         })
-        document.getElementById('hueinverse-selec').addEventListener('click', function () {
+        document.getElementById('hue-1-selec').addEventListener('click', function () {
             hue_selec(-1)
+            document.getElementById('hue-1-selec').classList = "accent_blob_active"
             console.log('hue change -1')
         })
         document.getElementById('hue0-selec').addEventListener('click', function () {
             hue_selec(0)
+            document.getElementById('hue0-selec').classList = "accent_blob_active"
             console.log('%chue change 0', "color: hsl(0,100%,50%)")
         })
         document.getElementById('hue30-selec').addEventListener('click', function () {
             hue_selec(30)
+            document.getElementById('hue30-selec').classList = "accent_blob_active"
             console.log('%chue change 30', "color: hsl(30,100%,50%)")
         })
         document.getElementById('hue60-selec').addEventListener('click', function () {
             hue_selec(60)
+            document.getElementById('hue60-selec').classList = "accent_blob_active"
             console.log('%chue change 60', "color: hsl(60,100%,50%)")
         })
         document.getElementById('hue90-selec').addEventListener('click', function () {
             hue_selec(90)
+            document.getElementById('hue90-selec').classList = "accent_blob_active"
             console.log('%chue change 90', "color: hsl(90,100%,50%)")
         })
         document.getElementById('hue120-selec').addEventListener('click', function () {
             hue_selec(120)
+            document.getElementById('hue120-selec').classList = "accent_blob_active"
             console.log('%chue change 120', "color: hsl(120,100%,50%)")
         })
         document.getElementById('hue150-selec').addEventListener('click', function () {
             hue_selec(150)
+            document.getElementById('hue150-selec').classList = "accent_blob_active"
             console.log('%chue change 150', "color: hsl(150,100%,50%)")
         })
         document.getElementById('hue180-selec').addEventListener('click', function () {
             hue_selec(180)
+            document.getElementById('hue180-selec').classList = "accent_blob_active"
             console.log('%chue change 180', "color: hsl(180,100%,50%)")
         })
         document.getElementById('hue210-selec').addEventListener('click', function () {
             hue_selec(210)
+            document.getElementById('hue210-selec').classList = "accent_blob_active"
             console.log('%chue change 210', "color: hsl(210,100%,50%)")
         })
         document.getElementById('hue240-selec').addEventListener('click', function () {
             hue_selec(240)
+            document.getElementById('hue240-selec').classList = "accent_blob_active"
             console.log('%chue change 240', "color: hsl(240,100%,50%)")
         })
         document.getElementById('hue270-selec').addEventListener('click', function () {
             hue_selec(270)
+            document.getElementById('hue270-selec').classList = "accent_blob_active"
             console.log('%chue change 270', "color: hsl(270,100%,50%)")
         })
         document.getElementById('hue300-selec').addEventListener('click', function () {
             hue_selec(300)
+            document.getElementById('hue300-selec').classList = "accent_blob_active"
             console.log('%chue change 300', "color: hsl(300,100%,50%)")
         })
         document.getElementById('hue330-selec').addEventListener('click', function () {
             hue_selec(330)
+            document.getElementById('hue330-selec').classList = "accent_blob_active"
             console.log('%chue change 330', "color: hsl(330,100%,50%)")
         })
 
         function hue_selec(hue) {
+            document.getElementById('hue-1-selec').classList = "accent_blob"
+            document.getElementById('hue0-selec').classList = "accent_blob"
+            document.getElementById('hue30-selec').classList = "accent_blob"
+            document.getElementById('hue60-selec').classList = "accent_blob"
+            document.getElementById('hue90-selec').classList = "accent_blob"
+            document.getElementById('hue120-selec').classList = "accent_blob"
+            document.getElementById('hue150-selec').classList = "accent_blob"
+            document.getElementById('hue180-selec').classList = "accent_blob"
+            document.getElementById('hue210-selec').classList = "accent_blob"
+            document.getElementById('hue240-selec').classList = "accent_blob"
+            document.getElementById('hue270-selec').classList = "accent_blob"
+            document.getElementById('hue300-selec').classList = "accent_blob"
+            document.getElementById('hue330-selec').classList = "accent_blob"
             config.data.accent_color = hue;
-            config.save()
             Ui.setting.set_theme();
+            config.save();
         }
     },
-    navigate: {
+    navigate: {//navigation
+        back: async function () {
+            if (document.getElementById('setting_view').style.display == "block") {
+                Ui.navigate.lastmain_view();
+            } else {
+                utility.exit_strategy();
+            }
+        },
         lastmain_view: function () {
             switch (config.data.last_view) {//Set view to last view the user used, excluding settings
                 case "view_2":
@@ -264,7 +302,7 @@ Ui = {
         }
     },
     setting: {
-        set_theme: function () {
+        set_theme: function () {//determines which theme to use
             console.log('Set theme')
 
             cordova.plugins.ThemeDetection.isAvailable(//detect device theme and adjust accordingly
@@ -278,9 +316,14 @@ Ui = {
                                 if (success.value == true) {
                                     //System darkmode enabled
                                     if (config.data.theme == "devicebased") { set_dark() }
+                                    document.getElementById('device_theme_btn').style.color = "white"
+                                    document.getElementById('device_theme_btn').style.backgroundColor = "black"
+
                                 } else {
                                     //system darkmode dissabled
                                     if (config.data.theme == "devicebased") { set_light() }
+                                    document.getElementById('device_theme_btn').style.color = "black"
+                                    document.getElementById('device_theme_btn').style.backgroundColor = "white"
                                 }
                             },
                             function (error) {//failed to detect a theme
@@ -319,6 +362,7 @@ Ui = {
             }
 
             function set_dark() {
+                if (utility.properties.first_start = true) { document.getElementById('hue' + config.data.accent_color + '-selec').classList = "accent_blob_active" }
                 switch (config.data.accent_color) {
                     case -1:
                         document.getElementById('body').classList = "dark";
@@ -380,6 +424,7 @@ Ui = {
             }
 
             function set_light() {
+                if (utility.properties.first_start = true) { document.getElementById('hue' + config.data.accent_color + '-selec').classList = "accent_blob_active" }
                 switch (config.data.accent_color) {
                     case -1:
                         document.getElementById('body').classList = "light";
@@ -472,13 +517,6 @@ let utility = {//Some usefull things
     properties: {
         exit: false,
         first_start: true,
-    },
-    back: async function () {
-        if (document.getElementById('setting_view').style.display == "block") {
-            Ui.navigate.lastmain_view();
-        } else {
-            utility.exit_strategy();
-        }
     },
     exit_strategy: function () {//Heres how to string things togther to make something usefull
         console.warn('Exit strategy triggered')
