@@ -13,6 +13,9 @@ window.addEventListener('load', function () {//window loads
 });
 
 let config = {
+    properties: {
+        //holdover from cordova
+    },
     baseconfig: {
         use_alt_storage: false,
         alt_location: "",
@@ -139,10 +142,10 @@ let config = {
         }
     },
     selectlocation: function () {//select location for configuration storage
-        if(config.baseconfig.alt_location!=undefined){
+        if (config.baseconfig.alt_location != undefined) {
             var path = dialog.showOpenDialogSync({ properties: ['createDirectory', 'openDirectory'], defaultPath: config.baseconfig.alt_location.toString() })
-        }else{
-            var path = dialog.showOpenDialogSync({ properties: ['createDirectory', 'openDirectory'], defaultPath:null })
+        } else {
+            var path = dialog.showOpenDialogSync({ properties: ['createDirectory', 'openDirectory'], defaultPath: null })
         }
         console.warn('Alternate configuration path :', path[0])
         config.baseconfig.use_alt_storage = true
@@ -175,10 +178,23 @@ let config = {
 }
 
 let utility = {//Misculanious utilites
-    properties: {
-        //holdover from cordova
+    get_url_variables: function (url) {
+        //Yoinked from
+        //https://gomakethings.com/getting-all-query-string-values-from-a-url-with-vanilla-js/
+        var params = {};
+        var parser = document.createElement('a');
+        parser.href = url;
+        var query = parser.search.substring(1);
+        var vars = query.split('&');
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+            params[pair[0]] = decodeURIComponent(pair[1]);
+        }
+        return params;
+        //returns Object { "": "undefined" } if empty
+        //Call with var this_url = getParams(window.location.href);
     },
-    closeapp: function () {//Close the app
+    close: function () {//Close the app
         config.save()
         window.close()
     },

@@ -48,28 +48,28 @@ font-family: 'Lexend Deca', sans-serif;
         --accent-color: hsl(200, 100%, 50%);
         /* Accent color */
     }
-}
 
-/* Base layout */
+    /* Base layout */
+    body {
+        color: var(--text-color);
+        background-color: var(--background-color);
+        text-shadow: 0vh 0vh 0.5vh var(--accent-color);
+    }
 
-body {
-    color: var(--text-color);
-    background-color: var(--background-color);
-    text-shadow: 0vh 0vh 0.5vh var(--accent-color);
-}
+    body::before {
+        /* Remove upon deployment*/
+        position: absolute;
+        z-index: -1;
+        content: "Phone layout";
+        font-size: 5vh;
+        bottom: 0vh;
+        height: auto;
+        width: 98vw;
+        white-space: nowrap;
+        text-align: center;
+        animation: fade 3000ms infinite;
+    }
 
-body::before {
-    /* Remove upon deployment*/
-    position: absolute;
-    z-index: -1;
-    content: "Phone layout";
-    font-size: 5vh;
-    bottom: 0vh;
-    height: auto;
-    width: 98vw;
-    white-space: nowrap;
-    text-align: center;
-    animation: fade 3000ms infinite;
 }
 
 /* Tablet / tall aspact ratio */

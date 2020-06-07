@@ -540,6 +540,22 @@ let utility = {//Some usefull things
             window.close()
         }
     },
+    get_url_variables: function (url) {
+        //Yoinked from
+        //https://gomakethings.com/getting-all-query-string-values-from-a-url-with-vanilla-js/
+        var params = {};
+        var parser = document.createElement('a');
+        parser.href = url;
+        var query = parser.search.substring(1);
+        var vars = query.split('&');
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+            params[pair[0]] = decodeURIComponent(pair[1]);
+        }
+        return params;
+        //returns Object { "": "undefined" } if empty
+        //Call with var this_url = getParams(window.location.href);
+    },
     /* Check screen size (physical/app size) */
     size_check: async function () {
         console.log('Sizecheck fired');
