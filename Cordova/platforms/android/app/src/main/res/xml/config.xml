@@ -16,6 +16,11 @@
     <feature name="ThemeDetection">
         <param name="android-package" value="de.mariusbackes.cordova.plugin.ThemeDetection" />
     </feature>
+    <feature name="File">
+        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+        <param name="onload" value="true" />
+    </feature>
+    <allow-navigation href="cdvfile:*" />
     <name>Appname</name>
     <description>
         description Is Discription

@@ -1,17 +1,65 @@
 const main = require('electron').remote.require('./main');//acess export functions in main
-const { dialog, shell, Menu, MenuItem } = require('electron').remote;//Acess to electron dependencies
-const fs = require('fs');//file system
+const { dialog, shell, Menu, MenuItem, systemPreferences } = require('electron').remote;//Acess to electron dependencies
+var fs = require('fs');//file system
 
 window.addEventListener('load', function () {//window loads
+    console.warn('Running from:', process.resourcesPath)
     window_menu()
     //textboxmenu()
-    config.initialize()
+    maininitalizer()
 })
 
+function maininitalizer() {
+    config.initialize()
+}
+
+function window_menu() {//window menu
+    //build menu
+    const menu_body = new Menu()
+    menu_body.append(new MenuItem({
+        label: 'Restart application', click() {
+            maininitalizer()
+        }
+    }))
+    menu_body.append(new MenuItem({ type: 'separator' }))
+    menu_body.append(new MenuItem({
+        label: 'Contact developer', click() {
+            shell.openExternal('https://anthonym01.github.io/Portfolio/?contact=me')
+        }
+    }))
+    menu_body.append(new MenuItem({ role: 'toggledevtools' }))
+
+    //attach menu to window
+    window.addEventListener('contextmenu', (event) => {//opens menu on auxilery click
+        event.preventDefault()
+        menu_body.popup({ window: require('electron').remote.getCurrentWindow() })//popup menu
+    }, false)
+}
+
+function textboxmenu() {//text box menus
+    //construct meno
+    const text_box_menu = new Menu.buildFromTemplate([
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'selectAll' },
+        { role: 'seperator' },
+        { role: 'undo' },
+        { role: 'redo' },
+    ])
+
+    //add events to text boxes
+    textbox.addEventListener('contextmenu', (event) => popupmenu, false)
+
+    //Popup the menu in this window
+    function popupmenu(event) {
+        event.preventDefault()
+        event.stopPropagation()
+        text_box_menu.popup({ window: require('electron').remote.getCurrentWindow() })
+    }
+}
+
 let config = {//Application configuration object
-    properties: {
-        //holdover from cordova
-    },
     baseconfig: {//base configuration
         use_alt_storage: false,
         alt_location: "",
@@ -23,9 +71,9 @@ let config = {//Application configuration object
     initialize: function () {
         console.warn('Config handler is initalized')
         if (localStorage.getItem("APPnamecfg")) {//check if storage has the item
-            this.load()
+            config.load()
         } else {
-            this.validate()
+            config.validate()
         }
     },
     save: async function () {//Save the config file
@@ -140,6 +188,7 @@ let config = {//Application configuration object
     },
     restore: async function () {//restore configuration from a file
         console.warn('Configuration restoration initiated')
+
         dialog.showOpenDialog({
             buttonLabel: "open", filters: [
                 { name: 'Custom File Type', extensions: ['json'] },
@@ -159,10 +208,7 @@ let config = {//Application configuration object
                         if (fileout.key == "APPnamecfg") {//check if this file is a timetable backup file
                             config.data = fileout
                             config.save();
-                            setTimeout(() => {
-                                alert('Application will restart');
-                                location.reload()
-                            }, 2000)
+                            maininitalizer()
                         } else {
                             console.warn(filepath.filePaths[0] + ' is not a backup file')
                         }
@@ -206,47 +252,6 @@ let config = {//Application configuration object
         config.baseconfig.use_alt_storage = false
         localStorage.setItem("APPnamecfg_baseconfig", JSON.stringify(config.baseconfig))//save base config
     },
-}
-
-function window_menu() {//window menu
-    //build menu
-    const menu_body = new Menu()
-    menu_body.append(new MenuItem({ label: 'Restart application', click() { location.reload() } }))
-    menu_body.append(new MenuItem({ type: 'separator' }))
-    menu_body.append(new MenuItem({
-        label: 'Contact developer', click() {
-            shell.openExternal('https://anthonym01.github.io/Portfolio/?contact=me')
-        }
-    }))
-
-    //attach menu to window
-    window.addEventListener('contextmenu', (event) => {//opens menu on auxilery click
-        event.preventDefault()
-        menu_body.popup({ window: require('electron').remote.getCurrentWindow() })//popup menu
-    }, false)
-}
-
-function textboxmenu() {//text box menus
-    //construct meno
-    const text_box_menu = new Menu.buildFromTemplate([
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'selectAll' },
-        { role: 'seperator' },
-        { role: 'undo' },
-        { role: 'redo' },
-    ])
-
-    //add events to text boxes
-    textbox.addEventListener('contextmenu', (event) => popupmenu, false)
-
-    //Popup the menu in this window
-    function popupmenu(event) {
-        event.preventDefault()
-        event.stopPropagation()
-        text_box_menu.popup({ window: require('electron').remote.getCurrentWindow() })
-    }
 }
 
 let utility = {//Misculanious utilites

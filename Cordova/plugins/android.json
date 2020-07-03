@@ -21,6 +21,9 @@
     },
     "cordova-plugin-theme-detection": {
       "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
     }
   },
   "dependent_plugins": {}

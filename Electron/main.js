@@ -11,7 +11,7 @@ let tray = null;
 
 app.on('ready', function () {//App ready to roll
 	createmainWindow()
-	create_tray()
+	//create_tray()
 })
 
 function createmainWindow() {//Creates the main render process

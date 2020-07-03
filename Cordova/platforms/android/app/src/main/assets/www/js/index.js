@@ -1,3 +1,5 @@
+
+
 var app = {// Application Constructor
     initialize: function () {// deviceready Event Handler
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false)
@@ -49,6 +51,8 @@ function maininitalizer() {//Runs after 'Device ready'
     } else {
         console.error('Device plugin broke')
     }
+    
+    console.log(cordova.file);
 
     config.initialize();//Initalize configuration management
     utility.size_check()
@@ -582,14 +586,14 @@ let utility = {//Some usefull things
         }
     },
     /*  Produce toast messages    */
-    toast: function (text, durration_in_ms, position_top_right_left_bottom, offset_in_px) {
+    toast: async function (text, durration_in_ms, position_top_right_left_bottom, offset_in_px) {
         if (position_top_right_left_bottom == undefined) { position_top_right_left_bottom = 'bottom' }//default the position
         if (durration_in_ms == undefined) { durration_in_ms = 4000 }//default the duration
         if (offset_in_px == undefined) { offset_in_px = -160 }//default the offset
         window.plugins.toast.showWithOptions({ message: text, duration: durration_in_ms, position: position_top_right_left_bottom, addPixelsY: offset_in_px })
     },
     /*  Push text to the keyboard   */
-    clipboard: function (textpush) {
+    clipboard:async function (textpush) {
         copyText.toString()
         var temptxtbox = document.createElement("input")
         document.body.appendChild(temptxtbox)
