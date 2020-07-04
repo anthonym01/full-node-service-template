@@ -1,8 +1,6 @@
-const electron = require('electron');//includes electron dependency
-const { app, BrowserWindow, Tray, Menu, dialog } = electron
-
-const path = require('path');//path to necessary files
-const url = require('url');//web dependency
+const { app, BrowserWindow, Tray, Menu, dialog ,screen } = require('electron');
+const path = require('path');
+const url = require('url');
 const windowStateKeeper = require('electron-window-state');//preserves the window state
 //const { createPublicKey } = require('crypto');
 
@@ -12,13 +10,14 @@ let tray = null;
 app.on('ready', function () {//App ready to roll
 	createmainWindow()
 	//create_tray()
+	//Menu.setApplicationMenu(null)//Change application menu
 })
 
 function createmainWindow() {//Creates the main render process
 	app.allowRendererProcessReuse = true;//Allow render processes
 
 	//window manager plugin stuff
-	const { screenwidth, screenheight } = electron.screen.getPrimaryDisplay().workAreaSize //gets screen size
+	const { screenwidth, screenheight } = screen.getPrimaryDisplay().workAreaSize //gets screen size
 	let mainWindowState = windowStateKeeper({
 		defaultWidth: screenwidth,
 		defaultHeight: screenheight

@@ -1,5 +1,5 @@
 const main = require('electron').remote.require('./main');//acess export functions in main
-const { dialog, shell, Menu, MenuItem, systemPreferences } = require('electron').remote;//Acess to electron dependencies
+const { dialog, Menu, MenuItem, systemPreferences } = require('electron').remote;//Acess to electron dependencies
 var fs = require('fs');//file system
 
 window.addEventListener('load', function () {//window loads
@@ -289,5 +289,37 @@ let utility = {//Misculanious utilites
         RGB: function () { return { RED: this.number(255, 0), GREEN: this.number(255, 0), BLUE: this.number(255, 0) } /* object with RGB color code */ },
         HSL: function () { return { HUE: this.number(360, 0), SATURATION: this.number(100, 0) + '%', LIGHTENESS: this.number(100, 1) + '%' }/* HSL color code */ },
         number(max, min) { return Math.floor(Math.random() * (max - min + 1)) + min /* Random number*/ }
+    },
+    HEXtoHSL: function (hex_put) {
+        var redhex = hex_put.slice(0, 2);
+        var greenhex = hex_put.slice(2, 4);
+        var bluehex = hex_put.slice(4, 6);
+        console.log(hex_put, ' : ', redhex, ' : ', greenhex, ' : ', bluehex)
+        if (redhex == 0) { redhex = '00' }
+        if (greenhex == 0) { greenhex = '00' }
+        if (bluehex == 0) { bluehex = '00' }
+        var r = parseInt(redhex, 16)
+        var g = parseInt(greenhex, 16)
+        var b = parseInt(bluehex, 16)
+        r /= 255, g /= 255, b /= 255;
+
+        var max = Math.max(r, g, b), min = Math.min(r, g, b);
+        var h, s, l = (max + min) / 2;
+
+        if (max == min) {
+            h = s = 0; // achromatic
+        } else {
+            var d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+
+            h /= 6;
+        }
+        return { h, s, l, r, g, b };
     },
 }
