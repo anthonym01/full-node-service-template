@@ -1,7 +1,10 @@
-const { app, BrowserWindow, Tray, Menu, dialog ,screen } = require('electron');
+const { app, BrowserWindow, Tray, Menu, dialog, screen } = require('electron');
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');//preserves the window state
+const Store = require('electron-store');//Store objects in electron
+const fs = require('fs');//file system
+
 //const { createPublicKey } = require('crypto');
 
 let mainWindow = null;//defines the window as an abject
@@ -32,7 +35,7 @@ function createmainWindow() {//Creates the main render process
 		frame: true,
 		center: true,//center the window
 		alwaysOnTop: false,
-		icon: path.join(__dirname, '/assets/icons/icon.ico'),
+		icon: path.join(__dirname, '/assets/icons/icon.png'),
 		title: 'Blach app',
 		//titleBarStyle: 'hiddenInset',
 		minWidth: 400,

@@ -1,16 +1,25 @@
 const main = require('electron').remote.require('./main');//acess export functions in main
-const { dialog, Menu, MenuItem, systemPreferences } = require('electron').remote;//Acess to electron dependencies
+const { dialog, Menu, MenuItem, systemPreferences, nativeTheme } = require('electron').remote;//Acess to electron dependencies
 var fs = require('fs');//file system
 
 window.addEventListener('load', function () {//window loads
     console.warn('Running from:', process.resourcesPath)
+    console.log('System preference accent color: ', systemPreferences.getAccentColor())
+    console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)
+    console.log('System preference Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)
+
     window_menu()
     //textboxmenu()
+    if (localStorage.getItem("APPnamecfg")) {//check if storage has the item
+        config.load()
+    } else {
+        config.validate()
+    }
     maininitalizer()
 })
 
-function maininitalizer() {
-    config.initialize()
+function maininitalizer() {//Used to start re-startable app functions
+
 }
 
 function window_menu() {//window menu
@@ -67,14 +76,6 @@ let config = {//Application configuration object
     data: {//application data
         key: "APPnamecfg",
         /*usecount: 0,*/
-    },
-    initialize: function () {
-        console.warn('Config handler is initalized')
-        if (localStorage.getItem("APPnamecfg")) {//check if storage has the item
-            config.load()
-        } else {
-            config.validate()
-        }
     },
     save: async function () {//Save the config file
         console.table('Configuration is being saved', config.data)
@@ -270,10 +271,6 @@ let utility = {//Misculanious utilites
         //returns Object { "": "undefined" } if empty
         //Call with getParams(window.location.href);
     },
-    close: function () {//Close the app
-        config.save()
-        main.clossapp()
-    },
     clipboard: async function (textpush) {
         copyText.toString()
         var temptxtbox = document.createElement("input")
@@ -290,7 +287,7 @@ let utility = {//Misculanious utilites
         HSL: function () { return { HUE: this.number(360, 0), SATURATION: this.number(100, 0) + '%', LIGHTENESS: this.number(100, 1) + '%' }/* HSL color code */ },
         number(max, min) { return Math.floor(Math.random() * (max - min + 1)) + min /* Random number*/ }
     },
-    HEXtoHSL: function (hex_put) {
+    HEXtoHSL: function (hex_put) {//Convert  System preference color hex to a form my brain can can use
         var redhex = hex_put.slice(0, 2);
         var greenhex = hex_put.slice(2, 4);
         var bluehex = hex_put.slice(4, 6);
