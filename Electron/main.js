@@ -9,6 +9,7 @@ const fs = require('fs');//file system
 
 let mainWindow = null;//defines the window as an abject
 let tray = null;
+let comfig = null;
 
 app.on('ready', function () {//App ready to roll
 	createmainWindow()
@@ -96,6 +97,19 @@ app.on('activate', () => {//for darwin
 		mainWindow.show();
 	}
 });
+
+async function write_file(filepath, buffer_data) {
+	console.log(filepath, buffer_data)
+	fs.writeFile(filepath, buffer_data, 'utf8', (err) => {//write config to file as json
+		if (err) {
+			alert("An error occurred creating the file" + err.message)
+		} else {
+			console.log("The file has been successfully saved to: ", filepath);
+		}
+	})
+}
+
+exports.write_object_json_out = (filepath, buffer_data) => { write_file(filepath, buffer_data) }
 
 exports.clossapp = () => { app.quit() }//export quit app
 

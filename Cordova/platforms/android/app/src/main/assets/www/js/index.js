@@ -42,18 +42,6 @@ var app = {// Application Constructor
 
 function maininitalizer() {//Runs after 'Device ready'
 
-    if (typeof (device) != 'undefined') {//check device mode
-        if (device.platform == 'Android' || 'iOS') {//mobile
-            console.warn('Running on a mobile platform')
-        } else {
-            console.warn('Running on a Desktop platform')
-        }
-    } else {
-        console.error('Device plugin broke')
-    }
-    
-    console.log(cordova.file);
-
     config.initialize();//Initalize configuration management
     utility.size_check()
     Ui.initialize()
@@ -309,43 +297,41 @@ let Ui = {
         set_theme: function () {//determines which theme to use
             console.log('Set theme')
 
-            cordova.plugins.ThemeDetection.isAvailable(//detect device theme and adjust accordingly
-                function (success) {
-                    console.log(success)
-                    if (success.value == true) {//theme detection is availible
-                        cordova.plugins.ThemeDetection.isDarkModeEnabled(
-                            function (success) {//sucesfully detected a theme
-                                console.log(success)
+            //detect device theme and adjust accordingly
+            cordova.plugins.ThemeDetection.isAvailable(function (success) {
+                console.log(success)
+                if (success.value == true) {//theme detection is availible
+                    cordova.plugins.ThemeDetection.isDarkModeEnabled(
+                        function (success) {//sucesfully detected a theme
+                            console.log(success)
 
-                                if (success.value == true) {
-                                    //System darkmode enabled
-                                    if (config.data.theme == "devicebased") { set_dark() }
-                                    document.getElementById('device_theme_btn').style.color = "white"
-                                    document.getElementById('device_theme_btn').style.backgroundColor = "black"
+                            if (success.value == true) {
+                                //System darkmode enabled
+                                if (config.data.theme == "devicebased") { set_dark() }
+                                document.getElementById('device_theme_btn').style.color = "white"
+                                document.getElementById('device_theme_btn').style.backgroundColor = "black"
 
-                                } else {
-                                    //system darkmode dissabled
-                                    if (config.data.theme == "devicebased") { set_light() }
-                                    document.getElementById('device_theme_btn').style.color = "black"
-                                    document.getElementById('device_theme_btn').style.backgroundColor = "white"
-                                }
-                            },
-                            function (error) {//failed to detect a theme
-                                //unable to can, use default
-                                console.log(error)
-                                set_light()
+                            } else {
+                                //system darkmode dissabled
+                                if (config.data.theme == "devicebased") { set_light() }
+                                document.getElementById('device_theme_btn').style.color = "black"
+                                document.getElementById('device_theme_btn').style.backgroundColor = "white"
                             }
-                        );
-                    } else {//theme detection is un-availible
-                        document.getElementById('set_device').style.display = "none";
-                        document.getElementById('theme_bar').classList = "theme_bar_2";
-                    }
-                },
-                function (error) {//Theme detection error
-                    console.log(error)
-                    set_light()
+                        },
+                        function (error) {//failed to detect a theme
+                            //unable to can, use default
+                            console.log(error)
+                            set_light()
+                        }
+                    );
+                } else {//theme detection is un-availible
+                    document.getElementById('set_device').style.display = "none";
+                    document.getElementById('theme_bar').classList = "theme_bar_2";
                 }
-            );
+            }, function (error) {//Theme detection error
+                console.log(error)
+                set_light()
+            });
 
             if (config.data.theme == "dark") {
                 set_dark()
@@ -366,6 +352,8 @@ let Ui = {
             }
 
             function set_dark() {
+                StatusBar.styleLightContent()
+                StatusBar.backgroundColorByHexString('#000000')
                 if (utility.properties.first_start = true) { document.getElementById('hue' + config.data.accent_color + '-selec').classList = "accent_blob_active" }
                 switch (config.data.accent_color) {
                     case -1:
@@ -433,54 +421,79 @@ let Ui = {
                     case -1:
                         document.getElementById('body').classList = "light";
                         console.log('light inverse theme');
+                        StatusBar.styleDefault()
+                        StatusBar.backgroundColorByHexString('#ffffff')
                         break;
                     case 0:
                         document.getElementById('body').classList = "light _0";
                         console.log('%clight_0', "color: hsl(0,100%,50%)")
+                        StatusBar.backgroundColorByHexString('#ff0000')
                         break;
                     case 30:
                         document.getElementById('body').classList = "light _30";
-                        console.log('%clight_30', "color: hsl(30,100%,50%)");
+                        console.log('%clight_30', "color: hsl(30,100%,50%)"); 
+                        StatusBar.backgroundColorByHexString('#ff8000')
+                        StatusBar.styleLightContent()
                         break;
                     case 60:
                         document.getElementById('body').classList = "light _60";
                         console.log('%clight_60', "color: hsl(60,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#ffff00')
+                        StatusBar.styleDefault()
                         break;
                     case 90:
                         document.getElementById('body').classList = "light _90";
                         console.log('%clight_90', "color: hsl(90,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#80ff00')
+                        StatusBar.styleDefault()
                         break;
                     case 120:
                         document.getElementById('body').classList = "light _120";
                         console.log('%clight_120', "color: hsl(120,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#00ff00')
+                        StatusBar.styleDefault()
                         break;
                     case 150:
                         document.getElementById('body').classList = "light _150";
                         console.log('%clight_150', "color: hsl(150,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#00ff80')
+                        StatusBar.styleDefault()
                         break;
                     case 180:
                         document.getElementById('body').classList = "light _180";
                         console.log('%clight_180', "color: hsl(180,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#00ffff')
+                        StatusBar.styleDefault()
                         break;
                     case 210:
                         document.getElementById('body').classList = "light _210";
                         console.log('%clight_210', "color: hsl(210,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#0080ff')
+                        StatusBar.styleLightContent()
                         break;
                     case 240:
                         document.getElementById('body').classList = "light _240";
                         console.log('%clight_240', "color: hsl(240,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#0000ff')
+                        StatusBar.styleLightContent()
                         break;
                     case 270:
                         document.getElementById('body').classList = "light _270";
                         console.log('%clight_270', "color: hsl(270,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#8000ff')
+                        StatusBar.styleLightContent()
                         break;
                     case 300:
                         document.getElementById('body').classList = "light _300";
                         console.log('%clight_300', "color: hsl(300,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#ff00ff')
+                        StatusBar.styleLightContent()
                         break;
                     case 330:
                         document.getElementById('body').classList = "light _330";
                         console.log('%clight_330', "color: hsl(330,100%,50%)");
+                        StatusBar.backgroundColorByHexString('#ff0080')
+                        StatusBar.styleLightContent()
                         break;
                     default:
                         console.error('Theme error :', config.data.accent_color);
@@ -593,7 +606,7 @@ let utility = {//Some usefull things
         window.plugins.toast.showWithOptions({ message: text, duration: durration_in_ms, position: position_top_right_left_bottom, addPixelsY: offset_in_px })
     },
     /*  Push text to the keyboard   */
-    clipboard:async function (textpush) {
+    clipboard: async function (textpush) {
         copyText.toString()
         var temptxtbox = document.createElement("input")
         document.body.appendChild(temptxtbox)

@@ -86,15 +86,8 @@ let config = {//Application configuration object
         }
 
         function ToFileSystem() {//save config to directory defined by the user
-            console.log('saving to File system: ', config.baseconfig.alt_location.toString())
-            fs.writeFile(config.baseconfig.alt_location.toString() + "/APPnamecfg config.json", JSON.stringify(config.data), 'utf8', (err) => {//write to file
-                if (err) {//error
-                    alert("An error occurred creating the file, please select a new location to save app data " + err.message)
-                    config.selectlocation();
-                } else {//sucessfull
-                    console.log('config saved to: ', config.baseconfig.alt_location.toString())
-                }
-            })
+            console.log('saving to File system: ', config.baseconfig.alt_location)
+            main.write_object_json_out(config.baseconfig.alt_location + "/APPnamecfg config.json", JSON.stringify(config.data))//hand off writing the file to main process
         }
 
         function ToStorageAPI() {//Html5 storage API
@@ -165,27 +158,20 @@ let config = {//Application configuration object
         console.warn('Configuration backup initiated')
 
         var date = new Date();
-        var filepath = dialog.showSaveDialog({//electron file save dialogue
+        dialog.showSaveDialog({//electron file save dialogue
             defaultPath: "APPnamecfg backup " + Number(date.getMonth() + 1) + " - " + date.getDay() + " - " + date.getFullYear() + ".json",
             buttonLabel: "Save"
-        });
-
-        await filepath.then((filepath) => {//resolve filepath promise
+        }).then((filepath) => {
             console.log(filepath)
             if (filepath.canceled == true) {//the file save dialogue was canceled my the user
                 console.warn('The file dialogue was canceled by the user')
             } else {
-                fs.writeFile(filepath.filePath, JSON.stringify(config.data), 'utf8', (err) => {//write config to file as json
-                    if (err) {
-                        alert("An error occurred creating the file " + err.message)
-                    } else {
-                        console.log("The file has been successfully saved to: ", filepath.filePath);
-                    }
-                })
+                main.write_object_json_out(filepath.filePath, JSON.stringify(config.data))//hand off writing the file to main process
             }
         }).catch((err) => {//catch error
             alert('An error occured ', err.message);
         })
+
     },
     restore: async function () {//restore configuration from a file
         console.warn('Configuration restoration initiated')

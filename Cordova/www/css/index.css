@@ -42,57 +42,57 @@
 }
 
 ._30 {
-    --accent-color: hsl(30, 100%, 50%);
+    --accent-color: #ff8000;
     --primary_hue: 30;
 }
 
 ._60 {
-    --accent-color: hsl(60, 100%, 50%);
+    --accent-color: #ffff00;
     --primary_hue: 60;
 }
 
 ._90 {
-    --accent-color: hsl(90, 100%, 50%);
+    --accent-color: #80ff00;
     --primary_hue: 90;
 }
 
 ._120 {
-    --accent-color: hsl(120, 100%, 50%);
+    --accent-color: #00ff00;
     --primary_hue: 120;
 }
 
 ._150 {
-    --accent-color: hsl(150, 100%, 50%);
+    --accent-color: #00ff80;
     --primary_hue: 150;
 }
 
 ._180 {
-    --accent-color: hsl(180, 100%, 50%);
+    --accent-color: #00ffff;
     --primary_hue: 180;
 }
 
 ._210 {
-    --accent-color: hsl(210, 100%, 50%);
+    --accent-color: #0080ff;
     --primary_hue: 210;
 }
 
 ._240 {
-    --accent-color: hsl(240, 100%, 50%);
+    --accent-color: #0000ff;
     --primary_hue: 240;
 }
 
 ._270 {
-    --accent-color: hsl(270, 100%, 50%);
+    --accent-color: #8000ff;
     --primary_hue: 270;
 }
 
 ._300 {
-    --accent-color: hsl(300, 100%, 50%);
+    --accent-color: #ff00ff;
     --primary_hue: 300;
 }
 
 ._330 {
-    --accent-color: hsl(330, 100%, 50%);
+    --accent-color: #ff0080;
     --primary_hue: 330;
 }
 
