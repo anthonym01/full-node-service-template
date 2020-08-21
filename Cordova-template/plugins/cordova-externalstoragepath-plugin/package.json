@@ -1,0 +1,37 @@
+{
+  "_from": "cordova-externalstoragepath-plugin@^1.0.4",
+  "_id": "cordova-externalstoragepath-plugin@1.0.4",
+  "_inBundle": false,
+  "_integrity": "sha512-7nnDmXPa2wvBB0y2rE95dw3HQ94TxP5gMtfO3TA9AqoeqUNPgAaN+pLVpe3fpDr/2DV6WclzcCtRM6/EZzs6Ig==",
+  "_location": "/cordova-externalstoragepath-plugin",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "cordova-externalstoragepath-plugin@^1.0.4",
+    "name": "cordova-externalstoragepath-plugin",
+    "escapedName": "cordova-externalstoragepath-plugin",
+    "rawSpec": "^1.0.4",
+    "saveSpec": null,
+    "fetchSpec": "^1.0.4"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-externalstoragepath-plugin/-/cordova-externalstoragepath-plugin-1.0.4.tgz",
+  "_shasum": "be386e09fd096eab3cfd405af11ae334ef19e4d5",
+  "_spec": "cordova-externalstoragepath-plugin@^1.0.4",
+  "_where": "D:\\Git\\full-node-service-template\\Cordova",
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-externalstoragepath-plugin",
+    "platforms": [
+      "android"
+    ]
+  },
+  "deprecated": false,
+  "description": "A plugin for retrieving your external storage path. Works with Android 7.",
+  "name": "cordova-externalstoragepath-plugin",
+  "version": "1.0.4"
+}

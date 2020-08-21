@@ -1,0 +1,15 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-externalstoragepath-plugin": {
+      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
+    }
+  },
+  "dependent_plugins": {}
+}

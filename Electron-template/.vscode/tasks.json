@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "package-win-x64",
+			"problemMatcher": [],
+			"label": "npm: package-win-x64",
+			"detail": "electron-packager ./ --overwrite --asar --platform=win32 --arch=x64 --icon=assets/icons/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank_electron_template\""
+		}
+	]
+}
