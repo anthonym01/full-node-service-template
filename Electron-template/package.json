@@ -3,31 +3,59 @@
   "version": "1.0.0",
   "description": "Blank electron template",
   "main": "main.js",
-  "scripts": {
-    "start": "electron main.js",
-    "lazy-install": "npm install electron",
-    "package-mac": "electron-packager ./ --overwrite --platform=darwin --arch=x64 --icon=assets/icons/icon.png --prune=true --out=release-builds",
-    "deb-linux": "electron-installer-debian --src release-builds/{output-folder}/ --arch amd64 --config debian.json",
-    "prep-packagers": "npm install electron-packager && npm install -g electron-installer-debian",
-    "pack-all": "npm run package-win-x64 && npm run package-win-x32 && npm run package-linux-x64 && npm run package-linux-x32 && npm run package-linux-arm64 && npm run package-win-arm",
-    "package-win-x64": "electron-packager ./ --overwrite --asar --platform=win32 --arch=x64 --icon=assets/icons/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank_electron_template\"",
-    "package-win-x32": "electron-packager ./ --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank_electron_template\"",
-    "package-win-arm": "electron-packager ./ --overwrite --asar --platform=win32 --arch=arm64 --icon=assets/icons/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank_electron_template\"",
-    "package-linux-x64": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=x64 --icon=assets/icons/icon.png --prune=true --out=release-builds",
-    "package-linux-x32": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=ia32 --icon=assets/icons/icon.png --prune=true --out=release-builds",
-    "package-linux-arm64": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=arm64 --icon=assets/icons/icon.png --prune=true --out=release-builds",
-    "deb-all": "npm run deb-linux-x64 && npm run deb-linux-x32 && npm run deb-linux-arm64",
-    "deb-linux-x64": "electron-installer-debian --src release-builds/timetable-linux-x64/ --arch amd64 --config debian.json",
-    "deb-linux-x32": "electron-installer-debian --src release-builds/timetable-linux-x64/ --arch ia32 --config debian.json",
-    "deb-linux-arm64": "electron-installer-debian --src release-builds/timetable-linux-x64/ --arch arm64 --config debian.json"
+  "author": {
+    "name": "Anthonym",
+    "email": "samuelmatheson20@gmail.com"
   },
-  "author": "Anthonym",
+  "homepage": "https://null.none",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com"
+  },
   "icon": "assets/icons/icon.png",
   "license": "ISC",
   "bin": "BB01",
+  "scripts": {
+    "start": "electron main.js",
+    "lazy-install": "npm install electron",
+    "package-win-x64": "electron-packager ./ --overwrite --asar --platform=win32 --arch=x64 --icon=assets/icons/icon.ico --prune=true --out=dist --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank electron template\"",
+    "package-win-x32": "electron-packager ./ --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/icon.ico --prune=true --out=dist --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank electron template\"",
+    "package-win-arm64": "electron-packager ./ --overwrite --asar --platform=win32 --arch=arm64 --icon=assets/icons/icon.ico --prune=true --out=dist --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank electron template\"",
+    "package-linux-x64": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=x64 --icon=assets/icons/icon.png --prune=true --out=dist",
+    "package-linux-x32": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=ia32 --icon=assets/icons/icon.png --prune=true --out=dist",
+    "package-linux-arm64": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=arm64 --icon=assets/icons/icon.png --prune=true --out=dist",
+    "package-mac-x64": "electron-packager ./ --overwrite --platform=darwin --arch=x64 --icon=assets/icons/icon.png --prune=true --out=dist",
+    "package-mac-arm64": "electron-packager ./ --overwrite --platform=darwin --arch=arm64 --icon=assets/icons/icon.png --prune=true --out=dist",
+    "deb-linux": "electron-installer-debian --src dist/{output-folder}/ --arch amd64 --config debian.json",
+    "build": "electron-builder",
+    "builds-win": "electron-builder --win --x64 --ia32",
+    "builds-win-arm64": "electron-builder --win --arm64",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "appId": "com.blank.electron",
+    "icon": "assets/icons/icon.png",
+    "productName": "blank electron template",
+    "copyright": "Copyright © 2020 ${author}",
+    "buildVersion": "1.0.0",
+    "remoteBuild": "false",
+    "asar": "true",
+    "mac": {
+      "category": "utility"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "/assets/icons/icon.ico"
+    },
+    "linux": {
+      "target": "deb"
+    }
+
+  },
   "devDependencies": {
     "asar": "^1.0.0",
     "electron": "^9.2.1",
+    "electron-builder": "^22.8.0",
     "electron-packager": "^13.1.1"
   },
   "dependencies": {

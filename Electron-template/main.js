@@ -56,7 +56,7 @@ function createmainWindow() {//Creates the main render process
 }
 
 function create_tray() {//Create tray
-	tray = new Tray('assets/icons/icon.ico')
+	tray = new Tray('assets/icons/icon.png')
 
 	tray.addListener('double-click', function () {//double click on tray
 		if (BrowserWindow.getAllWindows().length !== 0) {
@@ -96,7 +96,7 @@ app.on('activate', () => {//for darwin
 	} else {
 		mainWindow.show();
 	}
-});
+})
 
 async function write_file(filepath, buffer_data) {
 	console.log(filepath, buffer_data)

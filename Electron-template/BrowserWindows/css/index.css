@@ -59,20 +59,7 @@ body {
     color: var(--text-color);
     background-color: var(--background-color);
     margin: 0;
-    font-family: Lexend_Deca;
-}
-
-.loadot {
-    position: fixed;
-    top: 0;
-    left: -10%;
-    width: 4vw;
-    height: 0.5vw;
-    border-radius: 20%;
-    background-color: var(--accent_color);
-    z-index: 9999;
-    animation: loadstrech 2000ms linear;
-    /*transition: left 500ms;*/
+    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif, Lexend_Deca;
 }
 
 /* Tablet / tall aspact ratio */
