@@ -28,7 +28,7 @@
     }
   },
   "dependencies": {
-    "cordova": "^9.0.0",
+    "cordova": "^10.0.0",
     "cordova-android": "^8.1.0",
     "cordova-externalstoragepath-plugin": "^1.0.4",
     "cordova-plugin-device": "^2.0.3",
