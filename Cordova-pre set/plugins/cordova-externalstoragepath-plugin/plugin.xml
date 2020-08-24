@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="cordova-externalstoragepath-plugin"
+    version="1.0.0">
+    <name>Cordova External Storage Plugin</name>
+    <description></description>
+    <license>MIT</license>
+    <keywords></keywords>
+    <repo>https://github.com/erikeuserr/cordova-externalstoragepath-plugin.git</repo>
+    <issue>https://github.com/erikeuserr/cordova-externalstoragepath-plugin/issues</issue>
+
+    <!-- android -->
+    <platform name="android">
+      <js-module src="www/plugin.js" name="plugin">
+        <runs/>
+
+        <!-- This is the window variable name you want, like window.MyCordovaPlugin -->
+        <clobbers target="CordovaExternalStoragePlugin" />
+      </js-module>
+      <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="CordovaExternalStoragePlugin">
+          <param name="android-package" value="com.erikeuserr.CordovaExternalStoragePlugin" />
+          <param name="onload" value="true" />
+        </feature>
+      </config-file>
+
+      <source-file src="src/android/com/erikeuserr/CordovaExternalStoragePlugin.java" target-dir="src/com/erikeuserr/" />
+    </platform>
+
+</plugin>

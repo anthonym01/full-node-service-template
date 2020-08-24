@@ -50,7 +50,6 @@
     "linux": {
       "target": "deb"
     }
-
   },
   "devDependencies": {
     "asar": "^1.0.0",
