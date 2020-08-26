@@ -12,29 +12,21 @@
     "type": "git",
     "url": "https://github.com"
   },
-  "icon": "assets/icons/icon.png",
+  "icon": "assets/icons/1024x1024.png",
   "license": "ISC",
   "bin": "BB01",
   "scripts": {
     "start": "electron main.js",
-    "lazy-install": "npm install electron",
-    "package-win-x64": "electron-packager ./ --overwrite --asar --platform=win32 --arch=x64 --icon=assets/icons/icon.ico --prune=true --out=dist --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank electron template\"",
-    "package-win-x32": "electron-packager ./ --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/icon.ico --prune=true --out=dist --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank electron template\"",
-    "package-win-arm64": "electron-packager ./ --overwrite --asar --platform=win32 --arch=arm64 --icon=assets/icons/icon.ico --prune=true --out=dist --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank electron template\"",
-    "package-linux-x64": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=x64 --icon=assets/icons/icon.png --prune=true --out=dist",
-    "package-linux-x32": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=ia32 --icon=assets/icons/icon.png --prune=true --out=dist",
-    "package-linux-arm64": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=arm64 --icon=assets/icons/icon.png --prune=true --out=dist",
-    "package-mac-x64": "electron-packager ./ --overwrite --platform=darwin --arch=x64 --icon=assets/icons/icon.png --prune=true --out=dist",
-    "package-mac-arm64": "electron-packager ./ --overwrite --platform=darwin --arch=arm64 --icon=assets/icons/icon.png --prune=true --out=dist",
-    "deb-linux": "electron-installer-debian --src dist/{output-folder}/ --arch amd64 --config debian.json",
-    "build": "electron-builder",
+    "re-install": "npm install electron",
+    "build-default": "electron-builder",
+    "build-linux": "electron-builder --linux deb appimage tar.xz snap",
     "builds-win": "electron-builder --win --x64 --ia32",
     "builds-win-arm64": "electron-builder --win --arm64",
     "postinstall": "electron-builder install-app-deps"
   },
   "build": {
     "appId": "com.blank.electron",
-    "icon": "assets/icons/icon.png",
+    "icon": "assets/icons/1024x1024.png",
     "productName": "blank electron template",
     "copyright": "Copyright © 2020 ${author}",
     "buildVersion": "1.0.0",
@@ -45,10 +37,12 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "/assets/icons/icon.ico"
+      "icon": "assets/icons/icon.ico"
     },
     "linux": {
-      "target": "deb"
+      "target": "deb",
+      "category": "utility",
+      "icon": "assets/icons/1024x1024.png"
     }
   },
   "devDependencies": {

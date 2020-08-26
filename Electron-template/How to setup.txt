@@ -7,8 +7,7 @@ N.B. you may need to restart
 
 **** Install electron dependencies
 1. Open this this text file is in, in your terminal/powershell
-2. run command "npm install electron"
-3. Run command "yarn add electron-builder --dev" (this is so you can use electron-builder to package your app later)
+2. run command "npm install electron && yarn add electron-builder --dev" (it may take a couple minutes)
 
 **** Setup your app
 i recomend reading the electron documentation https://www.electronjs.org/docs, however this template is current set up to take your

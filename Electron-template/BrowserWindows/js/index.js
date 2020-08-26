@@ -1,12 +1,15 @@
 const main = require('electron').remote.require('./main');//acess export functions in main
 const { dialog, Menu, MenuItem, systemPreferences, nativeTheme } = require('electron').remote;//Acess to electron dependencies
-var fs = require('fs');//file system
+const fs = require('fs');//file system
 
 window.addEventListener('load', function () {//window loads
     console.warn('Running from:', process.resourcesPath)
-    console.log('System preference accent color: ', systemPreferences.getAccentColor())
+    
+    if (process.platform == 'win32') {
+        console.log('System preference accent color: ', systemPreferences.getAccentColor())
+        console.log('System preference Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)
+    }
     console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)
-    console.log('System preference Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)
 
     window_menu()
     //textboxmenu()

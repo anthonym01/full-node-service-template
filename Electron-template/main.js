@@ -36,27 +36,21 @@ function createmainWindow() {//Creates the main render process
 		frame: true,
 		center: true,//center the window
 		alwaysOnTop: false,
-		icon: path.join(__dirname, '/assets/icons/icon.png'),//some linux window managers cant process due to bug
+		icon: path.join(__dirname, '/assets/icons/1024x1024.png'),//some linux window managers cant process due to bug
 		title: 'Blach app',
 		//titleBarStyle: 'hiddenInset',
+		webPreferences: { nodeIntegration: true, enableRemoteModule: true, },
 		minWidth: 400,
-		webPreferences: {
-			nodeIntegration: true,
-			enableRemoteModule: true,
-		}
 	})
 
-	mainWindow.loadURL(url.format({//load html into main window
-		pathname: path.join(__dirname, '/BrowserWindows/MainWindow.html'),
-		protocol: 'file:',
-		slashes: true
-	}))
+	mainWindow.loadURL(url.format({ pathname: path.join(__dirname, '/BrowserWindows/MainWindow.html'), protocol: 'file:', slashes: true }))
+	//mainWindow.loadURL('https://anthonym01.github.io/Portfolio')
 
 	mainWindowState.manage(mainWindow);//give window to window manager plugin
 }
 
 function create_tray() {//Create tray
-	tray = new Tray('assets/icons/icon.png')
+	tray = new Tray('assets/icons/1024x1024.png')
 
 	tray.addListener('double-click', function () {//double click on tray
 		if (BrowserWindow.getAllWindows().length !== 0) {
