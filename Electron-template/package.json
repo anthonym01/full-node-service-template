@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com"
   },
-  "icon": "assets/icons/256x256.png",
+  "icon": "assets/icons/icon.png",
   "license": "ISC",
   "bin": "BB01",
   "scripts": {
@@ -24,14 +24,15 @@
   },
   "build": {
     "appId": "com.blank.electron",
-    "icon": "assets/icons/256x256.png",
+    "icon": "assets/icons/icon.png",
     "productName": "blank electron template",
     "copyright": "Copyright © 2020 ${author}",
     "buildVersion": "1.0.0",
     "remoteBuild": "true",
     "asar": "true",
     "mac": {
-      "category": "utility"
+      "category": "utility",
+      "icon": "assets/icons/icon.png"
     },
     "win": {
       "target": "nsis",
@@ -40,7 +41,7 @@
     "linux": {
       "target": "deb",
       "category": "utility",
-      "icon": "assets/icons/256x256.png"
+      "icon": "assets/icons/icon.png"
     }
   },
   "devDependencies": {

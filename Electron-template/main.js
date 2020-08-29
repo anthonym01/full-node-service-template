@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, dialog, screen } = require('electron');
+const { app, BrowserWindow, Tray, Menu, dialog, screen, MenuItem } = require('electron');
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');//preserves the window state
@@ -7,14 +7,14 @@ const fs = require('fs');//file system
 
 //const { createPublicKey } = require('crypto');
 
-let mainWindow = null;//defines the window as an abject
-let tray = null;
-let comfig = null;
+let mainWindow = null//defines the window as an abject
+let tray = null
+let comfig = null
 
 app.on('ready', function () {//App ready to roll
 	createmainWindow()
-	//create_tray()
-	//Menu.setApplicationMenu(null)//Change application menu
+	create_tray()
+	Menu.setApplicationMenu(null)//Change application menu
 })
 
 function createmainWindow() {//Creates the main render process
@@ -36,7 +36,7 @@ function createmainWindow() {//Creates the main render process
 		frame: true,
 		center: true,//center the window
 		alwaysOnTop: false,
-		icon: path.join(__dirname, '/assets/icons/256x256.png'),//some linux window managers cant process due to bug
+		icon: path.join(__dirname, '/assets/icons/icon.png'),//some linux window managers cant process due to bug
 		title: 'Blach app',
 		//titleBarStyle: 'hiddenInset',
 		webPreferences: { nodeIntegration: true, enableRemoteModule: true, },
@@ -50,7 +50,7 @@ function createmainWindow() {//Creates the main render process
 }
 
 function create_tray() {//Create tray
-	tray = new Tray('assets/icons/256x256.png')
+	tray = new Tray('assets/icons/icon.png')
 
 	tray.addListener('double-click', function () {//double click on tray
 		if (BrowserWindow.getAllWindows().length !== 0) {

@@ -4,7 +4,7 @@ const fs = require('fs');//file system
 
 window.addEventListener('load', function () {//window loads
     console.warn('Running from:', process.resourcesPath)
-    
+
     if (process.platform == 'win32') {
         console.log('System preference accent color: ', systemPreferences.getAccentColor())
         console.log('System preference Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)
@@ -12,7 +12,9 @@ window.addEventListener('load', function () {//window loads
     console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)
 
     window_menu()
-    //textboxmenu()
+    textboxmenu()
+    //aplication_menu()
+
     if (localStorage.getItem("APPnamecfg")) {//check if storage has the item
         config.load()
     } else {
@@ -245,6 +247,10 @@ async function textboxmenu() {//text box menus
     }
 }
 
+async function aplication_menu() {//Build application menu
+    const application_menu = Menu.buildFromTemplate([])
+    Menu.setApplicationMenu(application_menu)
+}
 
 function get_url_variables(url) {
     //Yoinked from https://gomakethings.com/getting-all-query-string-values-from-a-url-with-vanilla-js/
@@ -305,22 +311,3 @@ function HEXtoHSL(hex_put) {//Convert  System preference color hex to a form my 
     }
     return { h, s, l, r, g, b };
 }
-
-var loading = null;
-
-function startload_anime() {//starts load bar representation
-
-    loading = setInterval(() => {
-        create_dot()
-    }, 300)
-
-    function create_dot() {
-        console.log('created dot')
-        let loadot = document.createElement('div')
-        loadot.classList = "loadot"
-        document.body.appendChild(loadot)
-        setTimeout(() => { document.body.removeChild(loadot) }, 2000)
-    }
-}
-
-function stopload_anime() { clearInterval(loading) }
