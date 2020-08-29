@@ -17,15 +17,10 @@
   "bin": "BB01",
   "scripts": {
     "start": "electron main.js",
-    "re-install": "npm install electron",
     "postinstall": "electron-builder install-app-deps",
-    "electron-builder-default": "electron-builder",
-    "electron-builder-linux": "electron-builder --linux deb appimage tar.xz snap",
-    "electron-builder-win": "electron-builder --win --x64 --ia32",
-    "electron-packager-win": "electron-packager ./ --overwrite --asar --platform=win32 --arch=all --icon=assets/icons/icon.ico --prune=true --out=dist --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank electron template\"",
-    "electron-packager-linux": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=all--icon=assets/icons/256x256.png --prune=true --out=dist",
-    "electron-packager-mac": "electron-packager ./ --overwrite --platform=darwin --arch=all --icon=assets/icons/256x256.png --prune=true --out=dist",
-    "deb-linux": "electron-installer-debian --src dist/{output-folder}/ --arch amd64 --config debian.json"
+    "builder-default": "electron-builder",
+    "builder-linux": "electron-builder --linux deb appimage tar.xz snap",
+    "builder-win": "electron-builder --win --x64 --ia32"
   },
   "build": {
     "appId": "com.blank.electron",

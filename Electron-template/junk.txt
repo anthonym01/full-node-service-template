@@ -1,7 +1,0 @@
-
-    "extraResources": [
-      {
-        "from": "assets/icons/icon.png",
-        "to": ""
-      }
-    ]
