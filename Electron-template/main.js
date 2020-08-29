@@ -36,7 +36,7 @@ function createmainWindow() {//Creates the main render process
 		frame: true,
 		center: true,//center the window
 		alwaysOnTop: false,
-		icon: path.join(__dirname, '/assets/icons/1024x1024.png'),//some linux window managers cant process due to bug
+		icon: path.join(__dirname, '/assets/icons/256x256.png'),//some linux window managers cant process due to bug
 		title: 'Blach app',
 		//titleBarStyle: 'hiddenInset',
 		webPreferences: { nodeIntegration: true, enableRemoteModule: true, },
@@ -50,7 +50,7 @@ function createmainWindow() {//Creates the main render process
 }
 
 function create_tray() {//Create tray
-	tray = new Tray('assets/icons/1024x1024.png')
+	tray = new Tray('assets/icons/256x256.png')
 
 	tray.addListener('double-click', function () {//double click on tray
 		if (BrowserWindow.getAllWindows().length !== 0) {
