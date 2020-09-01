@@ -14,7 +14,7 @@ let comfig = null
 app.on('ready', function () {//App ready to roll
 	createmainWindow()
 	create_tray()
-	Menu.setApplicationMenu(null)//Change application menu
+	//Menu.setApplicationMenu(null)//Change application menu
 })
 
 function createmainWindow() {//Creates the main render process
