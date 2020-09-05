@@ -12,7 +12,7 @@ window.addEventListener('load', function () {//window loads
     console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)
 
     window_menu()
-    textboxmenu()
+    //textboxmenu()
     //aplication_menu()
 
     if (localStorage.getItem("APPnamecfg")) {//check if storage has the item
@@ -224,7 +224,8 @@ async function window_menu() {
     }, false)
 }
 
-async function textboxmenu() {//text box menus
+//text box menus
+async function textboxmenu() {
     //construct meno
     const text_box_menu = new Menu.buildFromTemplate([
         { role: 'cut' },
@@ -247,7 +248,8 @@ async function textboxmenu() {//text box menus
     }
 }
 
-async function aplication_menu() {//Build application menu
+//Build application menu
+async function aplication_menu() {
     const application_menu = Menu.buildFromTemplate([])
     Menu.setApplicationMenu(application_menu)
 }

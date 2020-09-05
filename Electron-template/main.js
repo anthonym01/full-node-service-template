@@ -2,14 +2,13 @@ const { app, BrowserWindow, Tray, Menu, dialog, screen, MenuItem } = require('el
 const path = require('path');
 const url = require('url');
 const windowStateKeeper = require('electron-window-state');//preserves the window state
-const Store = require('electron-store');//Store objects in electron
+//const Store = require('electron-store');//Store objects in electron
 const fs = require('fs');//file system
 
 //const { createPublicKey } = require('crypto');
 
 let mainWindow = null//defines the window as an abject
 let tray = null
-let comfig = null
 
 app.on('ready', function () {//App ready to roll
 	createmainWindow()
@@ -38,15 +37,26 @@ function createmainWindow() {//Creates the main render process
 		alwaysOnTop: false,
 		icon: path.join(__dirname, '/assets/icons/icon.png'),//some linux window managers cant process due to bug
 		title: 'Blach app',
+		show:true,
 		//titleBarStyle: 'hiddenInset',
-		webPreferences: { nodeIntegration: true, enableRemoteModule: true, },
+		webPreferences: {
+			nodeIntegration: true,
+			enableRemoteModule: true,
+			nodeIntegrationInWorker: true,
+			worldSafeExecuteJavaScript: true
+		},
 		minWidth: 400,
 	})
 
-	mainWindow.loadURL(url.format({ pathname: path.join(__dirname, '/BrowserWindows/MainWindow.html'), protocol: 'file:', slashes: true }))
+	mainWindow.loadURL(url.format({
+		pathname: path.join(__dirname, '/BrowserWindows/MainWindow.html'),
+		protocol: 'file:',
+		slashes: true
+	}))
 	//mainWindow.loadURL('https://anthonym01.github.io/Portfolio')
 
 	mainWindowState.manage(mainWindow);//give window to window manager plugin
+	//mainWindow.once('ready-to-show', () => { mainWindow.show() })
 }
 
 function create_tray() {//Create tray
