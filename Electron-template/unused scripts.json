@@ -1,8 +1,0 @@
-{
-    "scripts": {
-        "packager-win": "electron-packager ./ --overwrite --asar --platform=win32 --arch=all --icon=assets/icons/icon.ico --prune=true --out=dist --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"blank electron template\"",
-        "packager-linux": "electron-packager ./ timetable --overwrite --asar --platform=linux --arch=all --icon=assets/icons/256x256.png --prune=true --out=release",
-        "packager-mac": "electron-packager ./ --overwrite --platform=darwin --arch=all --icon=assets/icons/256x256.png --prune=true --out=dist",
-        "deb-linux": "electron-installer-debian --src dist/{output-folder}/ --arch amd64 --config debian.json"
-    }
-}

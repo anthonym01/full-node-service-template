@@ -51,10 +51,10 @@
   "devDependencies": {
     "asar": "^1.0.0",
     "electron": "^10.1.1",
-    "electron-builder": "^22.8.0"
+    "electron-installer-debian": "^3.1.0"
   },
   "dependencies": {
-    "electron-store": "^5.2.0",
+    "electron-store": "^6.0.0",
     "electron-window-state": "^5.0.3"
   }
 }
