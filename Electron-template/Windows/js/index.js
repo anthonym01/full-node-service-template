@@ -1,19 +1,41 @@
 const main = require('electron').remote.require('./main');//acess export functions in main
-const { dialog, Menu, MenuItem, systemPreferences, nativeTheme } = require('electron').remote;//Acess to electron dependencies
+const { dialog, Menu, MenuItem, systemPreferences, nativeTheme, clipboard, shell } = require('electron').remote;//Acess to electron dependencies
 const fs = require('fs');//file system
+const my_website = 'https://anthonym01.github.io/Portfolio/?contact=me';
+
+const text_box_menu = new Menu.buildFromTemplate([//Text box menu (for convinience)
+    { role: 'cut' },
+    { role: 'copy' },
+    { role: 'paste' },
+    { role: 'selectAll' },
+    { role: 'seperator' },
+    { role: 'undo' },
+    { role: 'redo' },
+]);
+
+const menu_body = new Menu.buildFromTemplate([//Main body menu
+    { label: 'Force refresh UI', click() { maininitalizer() },accelerator:'CommandOrControl+F' },
+    //{ type: 'separator' },
+    { label: 'Contact developer', click() { shell.openExternal(my_website) } },
+    //{ role: 'reload' },
+    { role: 'toggledevtools' }
+]);
+
+window.addEventListener('contextmenu', (event) => {//Body menu attached to window
+    event.preventDefault()
+    menu_body.popup({ window: require('electron').remote.getCurrentWindow() })//popup menu
+}, false);
 
 window.addEventListener('load', function () {//window loads
-    console.warn('Running from:', process.resourcesPath)
+    console.log('Running from:', process.resourcesPath)
 
-    if (process.platform == 'win32') {
-        console.log('System preference accent color: ', systemPreferences.getAccentColor())
-        console.log('System preference Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)
+    if (typeof (systemPreferences.getAccentColor) && typeof (systemPreferences.getAnimationSettings) == 'function') {
+        console.log('System preference accent color: ', systemPreferences.getAccentColor())//get system accent color
+        console.log('System preference Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)//check if system prefers animations or not
     }
-    console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)
-
-    window_menu()
+    console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)//Check if system is set to dark or light
     //textboxmenu()
-    //aplication_menu()
+    Menu.setApplicationMenu(menu_body)
 
     if (localStorage.getItem("APPnamecfg")) {//check if storage has the item
         config.load()
@@ -24,7 +46,7 @@ window.addEventListener('load', function () {//window loads
 })
 
 function maininitalizer() {//Used to start re-startable app functions
-
+    console.log('main initalizer')
 }
 
 let config = {//Application configuration object
@@ -118,7 +140,7 @@ let config = {//Application configuration object
 
         var date = new Date();
         dialog.showSaveDialog({//electron file save dialogue
-            defaultPath: "APPnamecfg backup " + Number(date.getMonth() + 1) + " - " + date.getDay() + " - " + date.getFullYear() + ".json",
+            defaultPath: "APPnamecfg backup " + Number(date.getMonth() + 1) + " - " + date.getDate() + " - " + date.getFullYear() + ".json",
             buttonLabel: "Save"
         }).then((filepath) => {
             console.log(filepath)
@@ -200,43 +222,8 @@ let config = {//Application configuration object
     },
 }
 
-//window menu
-async function window_menu() {
-    //build menu
-    const menu_body = new Menu()
-    menu_body.append(new MenuItem({
-        label: 'Restart application', click() {
-            maininitalizer()
-        }
-    }))
-    menu_body.append(new MenuItem({ type: 'separator' }))
-    menu_body.append(new MenuItem({
-        label: 'Contact developer', click() {
-            shell.openExternal('https://anthonym01.github.io/Portfolio/?contact=me')
-        }
-    }))
-    menu_body.append(new MenuItem({ role: 'toggledevtools' }))
-
-    //attach menu to window
-    window.addEventListener('contextmenu', (event) => {//opens menu on auxilery click
-        event.preventDefault()
-        menu_body.popup({ window: require('electron').remote.getCurrentWindow() })//popup menu
-    }, false)
-}
-
 //text box menus
 async function textboxmenu() {
-    //construct meno
-    const text_box_menu = new Menu.buildFromTemplate([
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'selectAll' },
-        { role: 'seperator' },
-        { role: 'undo' },
-        { role: 'redo' },
-    ])
-
     //add events to text boxes
     textbox.addEventListener('contextmenu', (event) => popupmenu, false)
 
@@ -246,12 +233,6 @@ async function textboxmenu() {
         event.stopPropagation()
         text_box_menu.popup({ window: require('electron').remote.getCurrentWindow() })
     }
-}
-
-//Build application menu
-async function aplication_menu() {
-    const application_menu = Menu.buildFromTemplate([])
-    Menu.setApplicationMenu(application_menu)
 }
 
 function get_url_variables(url) {
@@ -268,17 +249,6 @@ function get_url_variables(url) {
     return params;
     //returns Object { "": "undefined" } if empty
     //Call with getParams(window.location.href);
-}
-
-async function clipboard(textpush) {
-    copyText.toString()
-    var temptxtbox = document.createElement("input")
-    document.body.appendChild(temptxtbox)
-    temptxtbox.setAttribute("id", "temp_copy")
-    document.getElementById("temp_copy").value = textpush
-    temptxtbox.select()
-    document.execCommand("copy")
-    document.body.removeChild(temptxtbox)
 }
 
 function HEXtoHSL(hex_put) {//Convert  System preference color hex to a form my brain can can use

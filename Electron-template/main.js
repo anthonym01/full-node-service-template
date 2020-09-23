@@ -1,23 +1,31 @@
-const { app, BrowserWindow, Tray, Menu, dialog, screen, MenuItem } = require('electron');
+const { app, BrowserWindow, Menu, screen, MenuItem, Tray } = require('electron');
 const path = require('path');
 const url = require('url');
-const windowStateKeeper = require('electron-window-state');//preserves the window state
-//const Store = require('electron-store');//Store objects in electron
-const fs = require('fs');//file system
-
 //const { createPublicKey } = require('crypto');
+const fs = require('fs');
+const windowStateKeeper = require('electron-window-state');//https://www.npmjs.com/package/electron-window-state
+const Store = require('electron-store');//Store objects (https://www.npmjs.com/package/electron-window-state)
+const storeinator = new Store;
 
-let mainWindow = null//defines the window as an abject
-let tray = null
+let mainWindow = null;//defines the window as an abject
+let tray = false;
+
+let config = {
+	athingy: true,
+}
 
 app.on('ready', function () {//App ready to roll
+	if (storeinator.get('default')) {
+		config = JSON.parse(storeinator.get('default'))
+	} else {
+		storeinator.set('default',JSON.stringify(config))
+	}
 	createmainWindow()
-	create_tray()
-	//Menu.setApplicationMenu(null)//Change application menu
+	//create_tray()
 })
 
 function createmainWindow() {//Creates the main render process
-	app.allowRendererProcessReuse = true;//Allow render processes
+	app.allowRendererProcessReuse = true;//Allow render processes to be reused
 
 	//window manager plugin stuff
 	const { screenwidth, screenheight } = screen.getPrimaryDisplay().workAreaSize //gets screen size
@@ -37,7 +45,7 @@ function createmainWindow() {//Creates the main render process
 		alwaysOnTop: false,
 		icon: path.join(__dirname, '/assets/icons/icon.png'),//some linux window managers cant process due to bug
 		title: 'Blach app',
-		show:true,
+		show: true,
 		//titleBarStyle: 'hiddenInset',
 		webPreferences: {
 			nodeIntegration: true,
@@ -49,38 +57,21 @@ function createmainWindow() {//Creates the main render process
 	})
 
 	mainWindow.loadURL(url.format({
-		pathname: path.join(__dirname, '/BrowserWindows/MainWindow.html'),
+		pathname: path.join(__dirname, '/Windows/MainWindow.html'),
 		protocol: 'file:',
 		slashes: true
 	}))
-	//mainWindow.loadURL('https://anthonym01.github.io/Portfolio')
 
 	mainWindowState.manage(mainWindow);//give window to window manager plugin
-	//mainWindow.once('ready-to-show', () => { mainWindow.show() })
 }
 
 function create_tray() {//Create tray
 	tray = new Tray('assets/icons/icon.png')
 
-	tray.addListener('double-click', function () {//double click on tray
-		if (BrowserWindow.getAllWindows().length !== 0) {
-			mainWindow.show()
-		} else {
-			createmainWindow()
-		}
-	})
+	tray.addListener('double-click', check_main_window)//double click tray
 
 	const contextMenu = Menu.buildFromTemplate([//build contect memu
-		{
-			id: 'name', label: 'Blach app alpha'
-			, click() {
-				if (BrowserWindow.getAllWindows().length !== 0) {//if no windows
-					mainWindow.show()
-				} else {
-					createmainWindow()
-				}
-			}
-		},
+		{ id: 'name', label: 'Blach app alpha', click() { check_main_window() } },
 		{ type: 'separator' },//seperator
 		{ role: 'Quit' },//quit app
 	])
@@ -89,9 +80,7 @@ function create_tray() {//Create tray
 }
 
 app.on('window-all-closed', () => {//all windows closed
-	if (process.platform !== 'darwin' && tray == null) {
-		app.quit();
-	}
+	if (process.platform !== 'darwin' && tray == false) { app.quit() }
 })
 
 app.on('activate', () => {//for darwin
@@ -113,12 +102,19 @@ async function write_file(filepath, buffer_data) {
 	})
 }
 
-exports.write_object_json_out = (filepath, buffer_data) => { write_file(filepath, buffer_data) }
+function check_main_window() {//Checks for main window and creates or shows it
+	if (BrowserWindow.getAllWindows().length !== 0) {//if no windows
+		mainWindow.show()
+	} else {
+		createmainWindow()
+	}
+}
 
-exports.clossapp = () => { app.quit() }//export quit app
-
-exports.minimize = () => { mainWindow.minimize() }//minimize window
-
-exports.setontop = () => { mainWindow.setAlwaysOnTop(true) }//always on top the window
-
-exports.setnotontop = () => { mainWindow.setAlwaysOnTop(false) }//always on top'nt the window
+module.exports = {//exported modules
+	write_object_json_out: function (filepath, buffer_data) { write_file(filepath, buffer_data) },
+	check_main_window: function () { check_main_window() },
+	clossapp: function () { app.quit() },//export quit app
+	minimize: function () { mainWindow.minimize() },//minimize window
+	setontop: function () { mainWindow.setAlwaysOnTop(true) },//always on top the window
+	setnotontop: function () { mainWindow.setAlwaysOnTop(false) },//always on top'nt the window
+}
