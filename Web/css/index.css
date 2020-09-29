@@ -1,75 +1,47 @@
-@font-face {
-    src: url(../fonts/handwriting-black-draft_DEMO.otf);
-    font-family: handwriting;
-}
-
 /*
 Google fonts
 font-family: 'Roboto', sans-serif;
 font-family: 'Lexend Deca', sans-serif;
 */
 
-/* Adamptive color scheme */
-@media screen {
+:root {
+    --text-color: rgb(0, 0, 0);
+    /* Variable for text color */
+    --background-color: rgb(255, 255, 255);
+    /* Variable for background color */
+    --accent-color: hsl(200, 100%, 50%);
+    /* Accent color */
+}
+
+@media (prefers-color-scheme: dark) {
     :root {
-        --text-color: rgb(0, 0, 0);
-        /* Variable for text color */
-        --background-color: rgb(255, 255, 255);
-        /* Variable for background color */
-        --accent-color: hsl(200, 100%, 50%);
-        /* Accent color */
-    }
-
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --text-color: rgb(255, 255, 255);
-            /* Variable for text color */
-            --background-color: rgb(0, 0, 0);
-            /* Variable for background color */
-            --accent-color: hsl(110, 100%, 50%);
-            /* Accent color */
-        }
-    }
-
-    .dark {
         --text-color: rgb(255, 255, 255);
         /* Variable for text color */
         --background-color: rgb(0, 0, 0);
         /* Variable for background color */
-        --accent-color: hsl(110, 100%, 50%);
-        /* Accent color */
-    }
-
-    .light {
-        --text-color: rgb(0, 0, 0);
-        /* Variable for text color */
-        --background-color: rgb(255, 255, 255);
-        /* Variable for background color */
         --accent-color: hsl(200, 100%, 50%);
         /* Accent color */
     }
+}
 
-    /* Base layout */
-    body {
-        color: var(--text-color);
-        background-color: var(--background-color);
-        text-shadow: 0vh 0vh 0.5vh var(--accent-color);
-    }
+/* Base layout */
+body {
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
 
-    body::before {
-        /* Remove upon deployment*/
-        position: absolute;
-        z-index: -1;
-        content: "Phone layout";
-        font-size: 5vh;
-        bottom: 0vh;
-        height: auto;
-        width: 98vw;
-        white-space: nowrap;
-        text-align: center;
-        animation: fade 3000ms infinite;
-    }
-
+body::before {
+    /* Remove upon deployment*/
+    position: absolute;
+    z-index: -1;
+    content: "Phone layout";
+    font-size: 5vh;
+    bottom: 0vh;
+    height: auto;
+    width: 98vw;
+    white-space: nowrap;
+    text-align: center;
+    animation: fade 3000ms infinite;
 }
 
 /* Tablet / tall aspact ratio */

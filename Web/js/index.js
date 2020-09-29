@@ -1,6 +1,10 @@
 window.addEventListener('load', function () {
-    console.warn("Welcome fellow power user OwO")
-    config.initialize()
+    console.warn("Welcome power user")
+    if (localStorage.getItem("APPname_cfg")) {
+        config.load()
+    } else {
+        config.validate()
+    }
 })
 
 //Config management object
@@ -8,14 +12,6 @@ let config = {
     data: {//Loacal app data
         key: "APPname_cfg",
         usecount: 0,
-    },
-    initialize: function () {//starts up the config manager
-        console.warn('Config handler is initalized')
-        if (localStorage.getItem("APPname_cfg")) {
-            this.load()
-        } else {
-            this.validate()
-        }
     },
     save: async function () {//Save the config file
         console.warn('Configuration is being saved')
@@ -50,8 +46,6 @@ let config = {
         this.validate()
     }
 }
-
-
 
 //stuff
 function get_url_variables(url) {//Gets url variables as an object
@@ -101,9 +95,4 @@ function linkify(text) {//Detects links in text
     return text.replace(urlRegex, function (url) {
         return '<a href="' + url + '">' + url + '</a>';
     });
-}
-
-function testlinkify() {
-    var lonk = 'https://www.youtube.com/watch?v=6lCQKe0adKk'
-    document.body.innerHTML = linkify(lonk)
 }
