@@ -1,0 +1,32 @@
+{
+  "name": "blank_app",
+  "displayName": "Blank_App",
+  "version": "1.0.0",
+  "description": "A Blank AF application.",
+  "main": "index.js",
+  "scripts": {
+    "build-android": "cordova build android"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-device": {},
+      "cordova-plugin-x-toast": {}
+    }
+  },
+  "dependencies": {
+    "cordova": "^10.0.0"
+  },
+  "devDependencies": {
+    "cordova-android": "^9.0.0",
+    "cordova-plugin-device": "^2.0.3",
+    "cordova-plugin-x-toast": "^2.7.2"
+  }
+}

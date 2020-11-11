@@ -40,8 +40,11 @@ var app = {// Application Constructor
 }; app.initialize()
 
 function maininitalizer() {//Runs after 'Device ready'
-
-    config.initialize();//Initalize configuration management
+    if (localStorage.getItem("APPname_cfg")) {
+        config.load()
+    } else {
+        config.validate()
+    }
     size_check()
     Ui.initialize()
 
@@ -62,14 +65,6 @@ let config = {
         animation: true,
         theme: "dark",
         accent_color: -1,
-    },
-    initialize: function () {//starts up the config manager
-        console.warn('Config handler is initalized')
-        if (localStorage.getItem("APPname_cfg")) {
-            this.load()
-        } else {
-            this.validate()
-        }
     },
     save: async function () {//Save the config file
         console.warn('Configuration is being saved')
@@ -127,7 +122,7 @@ let config = {
         console.table(config.data)
         this.validate()
     },
-    backup:async function () {
+    backup: async function () {
         console.log('Config Backup')
 
         filepath = 'Download/timetable_backup.json'
@@ -160,7 +155,7 @@ let config = {
             toast('Failed to get file permissions')
         })
     },
-    restore:async function () {
+    restore: async function () {
         console.log('Config restore')
 
         //filepath = '/testfile.json'//filepath

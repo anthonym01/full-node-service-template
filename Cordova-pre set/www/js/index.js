@@ -37,7 +37,8 @@ var app = {// Application Constructor
 
         console.log('Received Event: ' + id)
     },
-}; app.initialize()
+}; 
+app.initialize()
 
 function maininitalizer() {//Runs after 'Device ready'
     if (localStorage.getItem("APPname_cfg")) {
