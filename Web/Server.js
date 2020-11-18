@@ -5,6 +5,12 @@ const http = require('http');//needed for communication
 const fs = require('fs');//read files
 const port = 1999;//port for the server
 
+function notfoundpage(res, url) {//404 page goes here
+    res.writeHead(404);//write head 404 so the client expects an error message
+    res.write('404 page not , code: ', url);
+    console.error('File not found: ', url)
+}
+
 ///Create server
 const server = http.createServer(function (req, res) {
     //What the webpage will expect ot receive, res = response, req = request
@@ -59,9 +65,3 @@ const server = http.createServer(function (req, res) {
     }
 
 })
-
-function notfoundpage(res, url) {//404 page goes here
-    res.writeHead(404);//write head 404 so the client expects an error message
-    res.write('404 page not , code: ', url);
-    console.error('File not found: ', url)
-}
