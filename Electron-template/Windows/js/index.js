@@ -1,7 +1,10 @@
-const main = require('electron').remote.require('./main');//acess export functions in main
-const { dialog, Menu, MenuItem, systemPreferences, nativeTheme, clipboard, shell } = require('electron').remote;//Acess to electron dependencies
+const { ipcRenderer, remote } = require('electron');
+
+const main = remote.require('./main');//acess export functions in main
+const { dialog, Menu, MenuItem, systemPreferences, nativeTheme, clipboard, shell } = remote;//Acess to electron dependencies
 const fs = require('fs');//file system
-const my_website = 'https://anthonym01.github.io/Portfolio/?contact=me';
+
+const my_website = 'https://anthonym01.github.io/Portfolio/?contact=me';//My website
 
 const text_box_menu = new Menu.buildFromTemplate([//Text box menu (for convinience)
     { role: 'cut' },
@@ -14,16 +17,16 @@ const text_box_menu = new Menu.buildFromTemplate([//Text box menu (for convinien
 ]);
 
 const menu_body = new Menu.buildFromTemplate([//Main body menu
-    { label: 'Force refresh UI', click() { maininitalizer() },accelerator:'CommandOrControl+F' },
-    //{ type: 'separator' },
+    { label: 'Force refresh UI', click() { maininitalizer() }},
+    { role: 'reload' },
+    { type: 'separator' },
     { label: 'Contact developer', click() { shell.openExternal(my_website) } },
-    //{ role: 'reload' },
     { role: 'toggledevtools' }
 ]);
 
-window.addEventListener('contextmenu', (event) => {//Body menu attached to window
-    event.preventDefault()
-    menu_body.popup({ window: require('electron').remote.getCurrentWindow() })//popup menu
+window.addEventListener('contextmenu', (e) => {//Body menu attached to window
+    e.preventDefault();
+    menu_body.popup({ window: remote.getCurrentWindow() })//popup menu
 }, false);
 
 window.addEventListener('load', function () {//window loads
