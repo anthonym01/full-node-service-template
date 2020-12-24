@@ -1,27 +1,56 @@
-const { app, BrowserWindow, Menu, screen, MenuItem, Tray } = require('electron');
+const { app, BrowserWindow, Menu, screen, MenuItem, Tray, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
+const axios = require("axios");
 //const { createPublicKey } = require('crypto');
-const fs = require('fs');
+const worker = require('./worker.js');//offload annoying things
+const remote_host = 'http://localhost:1999';
 const windowStateKeeper = require('electron-window-state');//https://www.npmjs.com/package/electron-window-state
 const Store = require('electron-store');//Store objects (https://www.npmjs.com/package/electron-window-state)
-const storeinator = new Store;
+const storeinator = new Store;//a new store
 
-let mainWindow = null;//defines the window as an abject
-let tray = false;
+let mainWindow = null, tray = false;
 
 let config = {
-	athingy: true,
+	alt_location: false,
 }
 
 app.on('ready', function () {//App ready to roll
 	if (storeinator.get('default')) {
 		config = JSON.parse(storeinator.get('default'))
 	} else {
-		storeinator.set('default',JSON.stringify(config))
+		setstorage()
 	}
 	createmainWindow()
 	//create_tray()
+	axios.default.post(remote_host+'/post/test',JSON.stringify(app)).finally(()=>{console.log('Phoned home')})
+})
+
+ipcMain.on('mainwindow_channel', (event, data) => {//Receive Song data from mainwindow and apply to tray
+	console.log('mainwindow reports : ', data);
+})
+
+ipcMain.on('alt_storage_file', (event, filedata) => {//Alt storage file
+	if (config.alt_location == false) {
+		//no
+	} else {
+		worker.write_file(config.alt_location + "/APPnamecfg config.json", JSON.stringify(filedata))
+	}
+})
+
+ipcMain.on('wirte_file', (event, fpath, filedata) => { worker.write_file(fpath, filedata) })
+
+
+app.on('window-all-closed', () => {//all windows closed
+	if (process.platform !== 'darwin' && tray == false) { app.quit() }
+})
+
+app.on('activate', () => {//for darwin
+	if (BrowserWindow.getAllWindows().length === 0) {
+		createmainWindow();
+	} else {
+		mainWindow.show();
+	}
 })
 
 function createmainWindow() {//Creates the main render process
@@ -79,29 +108,6 @@ function create_tray() {//Create tray
 	tray.setContextMenu(contextMenu)
 }
 
-app.on('window-all-closed', () => {//all windows closed
-	if (process.platform !== 'darwin' && tray == false) { app.quit() }
-})
-
-app.on('activate', () => {//for darwin
-	if (BrowserWindow.getAllWindows().length === 0) {
-		createmainWindow();
-	} else {
-		mainWindow.show();
-	}
-})
-
-async function write_file(filepath, buffer_data) {
-	console.log(filepath, buffer_data)
-	fs.writeFile(filepath, buffer_data, 'utf8', (err) => {//write config to file as json
-		if (err) {
-			alert("An error occurred creating the file" + err.message)
-		} else {
-			console.log("The file has been successfully saved to: ", filepath);
-		}
-	})
-}
-
 function check_main_window() {//Checks for main window and creates or shows it
 	if (BrowserWindow.getAllWindows().length !== 0) {//if no windows
 		mainWindow.show()
@@ -110,11 +116,15 @@ function check_main_window() {//Checks for main window and creates or shows it
 	}
 }
 
-module.exports = {//exported modules
-	write_object_json_out: function (filepath, buffer_data) { write_file(filepath, buffer_data) },
+function setstorage() { storeinator.set('default', JSON.stringify(config)) }
+
+module.exports = {
 	check_main_window: function () { check_main_window() },
-	clossapp: function () { app.quit() },//export quit app
-	minimize: function () { mainWindow.minimize() },//minimize window
-	setontop: function () { mainWindow.setAlwaysOnTop(true) },//always on top the window
-	setnotontop: function () { mainWindow.setAlwaysOnTop(false) },//always on top'nt the window
+	write_to_file: async function (filepath, buffer_data) { worker.write_file(filepath, buffer_data); },
+	get: {
+		alt_location: function () { return config.alt_location },
+	},
+	set: {
+		alt_location: function (set) { config.alt_location = set; setstorage(); },
+	}
 }

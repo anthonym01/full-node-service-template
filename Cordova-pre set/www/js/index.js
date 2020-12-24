@@ -1,3 +1,4 @@
+const remote_host = 'http://192.168.0.9:1999';
 
 var app = {// Application Constructor
     initialize: function () {// deviceready Event Handler
@@ -37,14 +38,12 @@ var app = {// Application Constructor
 
         console.log('Received Event: ' + id)
     },
-}; 
+};
 app.initialize()
 
 function maininitalizer() {//Runs after 'Device ready'
     if (localStorage.getItem("APPname_cfg")) {
         config.load()
-    } else {
-        config.validate()
     }
     size_check()
     Ui.initialize()
@@ -54,8 +53,7 @@ function maininitalizer() {//Runs after 'Device ready'
         window.addEventListener('resize', function () { size_check() })//App is resized by split screen or dex
         properties.first_start = false;//App is startedned up
     }, 300);
-    //test_functionality()
-
+    post({phone:'phone phones home'}, 'post/test')
 }
 
 let config = {
@@ -76,52 +74,11 @@ let config = {
         console.warn('Configuration is being loaded')
         config.data = JSON.parse(localStorage.getItem("APPname_cfg"))
         console.table(config.data)
-        this.validate()
-    },
-    validate: function () {//validate configuration file
-        console.warn('Config is being validated')
-        var configisvalid = true
-
-        if (typeof (config.data.usecount) == 'undefined') {
-            config.data.usecount = 1
-            configisvalid = false
-            console.log('"usecount" did not exist and was set to default')
-        }
-
-        if (typeof (config.data.last_view) == 'undefined') {
-            config.data.last_view = null;
-            configisvalid = false
-            console.log('"last_view" did not exist and was set to default')
-        }
-
-        if (typeof (config.data.theme) == 'undefined') {
-            config.data.theme = "dark";
-            configisvalid = false
-            console.log('"theme" did not exist and was set to default')
-        }
-
-        if (typeof (config.data.accent_color) == 'undefined') {
-            config.data.accent_color = 210;
-            configisvalid = false
-            console.log('"accent_color" did not exist and was set to default')
-        }
-
-        if (typeof (config.data.animation) == 'undefined') {
-            config.data.animation = true;
-            configisvalid = false
-            console.log('"animation" did not exist and was set to default')
-        }
-
-        if (!configisvalid) {
-            console.log('config was found to be invalid and will be overwritten')
-            this.save()//Save new confog because old config is no longer valid
-        } else { console.log('config was found to be valid') }
     },
     delete: function () {//Does not delete the file itself. Just sets it to empty
         localStorage.clear("APPname_cfg")
         console.log('config deleted: ')
         console.table(config.data)
-        this.validate()
     },
     backup: async function () {
         console.log('Config Backup')
@@ -873,3 +830,37 @@ async function clipboard(textpush) {//Wack text to clipboard
 async function startload_anime() { document.getElementById('loadot').classList = "loadot_active" }
 
 async function stopload_anime() { document.getElementById('loadot').classList = "loadot" }
+
+// Wraped post and get functions
+async function request(what) {//make a request to server for data
+
+    try {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {//wait for and handle response
+            if (this.readyState == 4 && this.status == 200) {
+                console.log('Server replied with: ', this.responseText, ' In response: ', this.response)
+                return this.responseText
+            }
+        };
+
+        xhttp.open("GET", remote_host + '/' + what, true);//get request
+        xhttp.send();
+    } catch (err) {
+        console.warn('xhttp request failed ', err);
+    }
+
+}
+
+async function post(what, where) {//post data to server
+    var xhttp = new XMLHttpRequest(remote_host)
+
+    xhttp.onreadystatechange = function () {//wait for and handle response
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Server replied with: ', this.responseText, ' In response: ', this.response)
+        }
+    };
+
+    xhttp.open("POST", remote_host + '/' + where, true);
+    xhttp.send(JSON.stringify(what));
+}

@@ -5,95 +5,94 @@ const { dialog, Menu, MenuItem, systemPreferences, nativeTheme, clipboard, shell
 const fs = require('fs');//file system
 
 const my_website = 'https://anthonym01.github.io/Portfolio/?contact=me';//My website
-
-const text_box_menu = new Menu.buildFromTemplate([//Text box menu (for convinience)
-    { role: 'cut' },
-    { role: 'copy' },
-    { role: 'paste' },
-    { role: 'selectAll' },
-    { role: 'seperator' },
-    { role: 'undo' },
-    { role: 'redo' },
-]);
-
-const menu_body = new Menu.buildFromTemplate([//Main body menu
-    { label: 'Force refresh UI', click() { maininitalizer() }},
-    { role: 'reload' },
-    { type: 'separator' },
-    { label: 'Contact developer', click() { shell.openExternal(my_website) } },
-    { role: 'toggledevtools' }
-]);
-
-window.addEventListener('contextmenu', (e) => {//Body menu attached to window
-    e.preventDefault();
-    menu_body.popup({ window: remote.getCurrentWindow() })//popup menu
-}, false);
+const remote_host = 'http://localhost:1999';
 
 window.addEventListener('load', function () {//window loads
-    console.log('Running from:', process.resourcesPath)
+    create_body_menu()
+    create_text_menus()
 
-    if (typeof (systemPreferences.getAccentColor) && typeof (systemPreferences.getAnimationSettings) == 'function') {
-        console.log('System preference accent color: ', systemPreferences.getAccentColor())//get system accent color
-        console.log('System preference Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)//check if system prefers animations or not
-    }
-    console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)//Check if system is set to dark or light
-    //textboxmenu()
-    Menu.setApplicationMenu(menu_body)
+    switch (process.platform) {
+        case "linux":
+            console.log('Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)
+            break;
+        case "win32":
+            console.log('accent color: ', systemPreferences.getAccentColor())//get system accent color
+            console.log('Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)//check if system prefers animations or not
+            break;
+        default://no preference
 
-    if (localStorage.getItem("APPnamecfg")) {//check if storage has the item
-        config.load()
-    } else {
-        config.validate()
     }
+    console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)
+
+    if (localStorage.getItem("APPnamecfg")) { config.load() }// else { config.data = {} }
+
     maininitalizer()
 })
 
 function maininitalizer() {//Used to start re-startable app functions
     console.log('main initalizer')
+    ipcRenderer.send('mainwindow_channel', 'Initalized')//Send window reinitalized to main
+
 }
 
-let config = {//Application configuration object
-    baseconfig: {//base configuration
-        use_alt_storage: false,
-        alt_location: "",
-    },
+//text box menus
+async function create_text_menus() {
+    const text_box_menu = new Menu.buildFromTemplate([//Text box menu (for convinience)
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'selectAll' },
+        { role: 'seperator' },
+        { role: 'undo' },
+        { role: 'redo' },
+    ]);
+    //add events to text boxes
+    textbox.addEventListener('contextmenu', (event) => popupmenu, false)
+
+    //Popup the menu in this window
+    function popupmenu(event) {
+        event.preventDefault()
+        event.stopPropagation()
+        text_box_menu.popup({ window: require('electron').remote.getCurrentWindow() })
+    }
+}
+
+//Body menu
+async function create_body_menu() {
+    const menu_body = new Menu.buildFromTemplate([//Main body menu
+        { label: 'Force refresh UI', click() { maininitalizer() } },
+        { role: 'reload' },
+        { type: 'separator' },
+        { label: 'Contact developer', click() { shell.openExternal(my_website) } },
+        { role: 'toggledevtools' }
+    ]);
+
+    Menu.setApplicationMenu(menu_body)
+
+    window.addEventListener('contextmenu', (e) => {//Body menu attached to window
+        e.preventDefault();
+        menu_body.popup({ window: remote.getCurrentWindow() })//popup menu
+    }, false);
+}
+
+
+let config = {
     data: {//application data
         key: "APPnamecfg",
-        /*usecount: 0,*/
     },
     save: async function () {//Save the config file
         console.table('Configuration is being saved', config.data)
-
-        ToStorageAPI();//save to application storage reguardless incase the file gets removed by the user, because users are kinda dumb
-        if (config.baseconfig.use_alt_storage == true) {//save to alternate storage location
-            ToFileSystem();
-        }
-
-        function ToFileSystem() {//save config to directory defined by the user
-            console.log('saving to File system: ', config.baseconfig.alt_location)
-            main.write_object_json_out(config.baseconfig.alt_location + "/APPnamecfg config.json", JSON.stringify(config.data))//hand off writing the file to main process
-        }
-
-        function ToStorageAPI() {//Html5 storage API
-            console.log('config saved to application storage')
-            localStorage.setItem("APPnamecfg", JSON.stringify(config.data))
-        }
+        ipcRenderer.send('alt_storage_file', config.data)
+        localStorage.setItem("APPnamecfg", JSON.stringify(config.data))
     },
     load: function () {//Load the config file
         console.warn('Configuration is being loaded')
 
-        if (localStorage.getItem("APPnamecfg_baseconfig")) {//load base config
-            config.baseconfig = JSON.parse(localStorage.getItem("APPnamecfg_baseconfig"))
-        } else {
-            //first startup
-            localStorage.setItem("APPnamecfg_baseconfig", JSON.stringify(config.baseconfig))
-        }
-
-        if (config.baseconfig.use_alt_storage == true) {//Load from alt location
+        if (main.get.alt_location() != false) {//Load from alt location
             //load from alternate storage location
-            if (fs.existsSync(config.baseconfig.alt_location.toString() + "/APPnamecfg config.json")) {//Directory exists
-                var fileout = fs.readFileSync(config.baseconfig.alt_location.toString() + "/APPnamecfg config.json", { encoding: 'utf8' })//Read from file with charset utf8
-                console.warn('config Loaded from: ', config.baseconfig.alt_location.toString(), 'Data from fs read operation: ', fileout)
+            if (fs.existsSync(main.get.alt_location() + "/APPnamecfg config.json")) {//Directory exists
+                var fileout = fs.readFileSync(main.get.alt_location() + "/APPnamecfg config.json", { encoding: 'utf8' })//Read from file with charset utf8
+                console.warn('config Loaded from: ', main.get.alt_location(), 'Data from fs read operation: ', fileout)
                 fileout = JSON.parse(fileout)//parse the json
                 if (fileout.key == "APPnamecfg") {//check if file has key
                     config.data = fileout;
@@ -104,8 +103,7 @@ let config = {//Application configuration object
                 }
             } else {//file does not exist, was moved, deleted or is inaccesible
                 config.data = JSON.parse(localStorage.getItem("APPnamecfg"))
-                alert("file does not exist, was moved, deleted or is otherwise inaccesible, please select a new location to save app data ")
-                config.selectlocation();
+                notify.new("Error", "file does not exist, was moved, deleted or is otherwise inaccesible, click to select a new location to save app data", '', function () { config.selectlocation(); })
             }
         } else {//load from application storage
             config.data = JSON.parse(localStorage.getItem("APPnamecfg"))
@@ -113,54 +111,35 @@ let config = {//Application configuration object
         }
 
         console.table(config.data)
-        this.validate()
-    },
-    validate: function () {//validate configuration
-        console.warn('Config is being validated')
-        var configisvalid = true
-
-        /*if (typeof (config.data.usecount) == 'undefined') {
-            config.data.usecount = 1
-            configisvalid = false
-            console.log('"usecount" did not exist and was set to default')
-        }*/
-
-        if (!configisvalid) {
-            console.log('config was found to be invalid and will be overwritten')
-            this.save()//Save new confog because old config is no longer valid
-        } else { console.log('config was found to be valid') }
-
     },
     delete: function () {//Wjipe stowage
         localStorage.clear("APPnamecfg")//yeet storage key
         config.usedefault();//use default location
         console.log('config deleted: ')
         console.table(config.data)
-        this.validate()
     },
     backup: async function () {//backup configuration to a file
         console.warn('Configuration backup initiated')
 
         var date = new Date();
-        dialog.showSaveDialog({//electron file save dialogue
-            defaultPath: "APPnamecfg backup " + Number(date.getMonth() + 1) + " - " + date.getDate() + " - " + date.getFullYear() + ".json",
-            buttonLabel: "Save"
-        }).then((filepath) => {
-            console.log(filepath)
+
+        var filepath = dialog.showSaveDialog(remote.getCurrentWindow(), {//electron file save dialogue
+            defaultPath: "APPnamecfg backup " + Number(date.getMonth() + 1) + " - " + date.getDate() + " - " + date.getFullYear(),
+            buttonLabel: "Save", filters: [{ name: 'JSON', extensions: ['json'] }]
+        });
+
+        await filepath.then((filepath) => {//resolve filepath promise
             if (filepath.canceled == true) {//the file save dialogue was canceled my the user
                 console.warn('The file dialogue was canceled by the user')
             } else {
-                main.write_object_json_out(filepath.filePath, JSON.stringify(config.data))//hand off writing the file to main process
+                ipcRenderer.send('wirte_file', filepath.filePath, JSON.stringify(config.data))
             }
-        }).catch((err) => {//catch error
-            alert('An error occured ', err.message);
-        })
-
+        }).catch((err) => { alert('An error occured ', err.message); })
     },
     restore: async function () {//restore configuration from a file
         console.warn('Configuration restoration initiated')
 
-        dialog.showOpenDialog({
+        dialog.showOpenDialog(remote.getCurrentWindow(), {
             buttonLabel: "open", filters: [
                 { name: 'Custom File Type', extensions: ['json'] },
                 { name: 'All Files', extensions: ['*'] }
@@ -186,30 +165,30 @@ let config = {//Application configuration object
                     }
                 })
             }
-        }).catch((err) => {
-            alert('An error occured, ', err)
-        })
+        }).catch((err) => { alert('An error occured, ', err) })
     },
     selectlocation: async function () {//select location for configuration storage
         console.log('Select config location')
-        if (config.baseconfig.alt_location != undefined) {
-            var path = dialog.showOpenDialog({ properties: ['createDirectory', 'openDirectory'], defaultPath: config.baseconfig.alt_location.toString() })
+
+        var alt_location = main.get.alt_location() || false;
+
+        if (alt_location != false) {
+            var path = dialog.showOpenDialog(remote.getCurrentWindow(), { properties: ['createDirectory', 'openDirectory'], defaultPath: alt_location })
         } else {
-            var path = dialog.showOpenDialog({ properties: ['createDirectory', 'openDirectory'], defaultPath: null })
+            var path = dialog.showOpenDialog(remote.getCurrentWindow(), { properties: ['createDirectory', 'openDirectory'] })
         }
 
         await path.then((path) => {
             if (path.canceled == true) {//user canceled dialogue
-                config.usedefault()
+                console.warn('user canceled file dialogue')
             } else {
-                console.warn('Alternate configuration path :', path.filePaths[0])
+                console.log('Alternate configuration path :', path.filePaths[0])
 
-                config.baseconfig.use_alt_storage = true
-                config.baseconfig.alt_location = path.filePaths[0]
-                localStorage.setItem("APPnamecfg_baseconfig", JSON.stringify(config.baseconfig))//save base config
+                main.set.alt_location(path.filePaths[0])
 
-                if (fs.existsSync(config.baseconfig.alt_location.toString() + "/APPnamecfg config.json")) {//config file already exist there
+                if (fs.existsSync(path.filePaths[0] + "/APPnamecfg config.json")) {//config file already exist there
                     config.load()
+                    maininitalizer()
                 } else {//no config file exist there
                     config.save();
                 }
@@ -219,70 +198,80 @@ let config = {//Application configuration object
             alert('An error occured ', err.message)
         })
     },
-    usedefault: function () {//use default storage location
-        config.baseconfig.use_alt_storage = false
-        localStorage.setItem("APPnamecfg_baseconfig", JSON.stringify(config.baseconfig))//save base config
-    },
+    usedefault: function () { main.set.alt_location(false) },
 }
 
-//text box menus
-async function textboxmenu() {
-    //add events to text boxes
-    textbox.addEventListener('contextmenu', (event) => popupmenu, false)
+let notify = {//notification function house
+    reset: window.addEventListener('resize', () => { notify.clearall() }),
+    new: function (title, body, hover_title, ifunction) {
 
-    //Popup the menu in this window
-    function popupmenu(event) {
-        event.preventDefault()
-        event.stopPropagation()
-        text_box_menu.popup({ window: require('electron').remote.getCurrentWindow() })
-    }
-}
+        let notification = document.createElement("div")
+        notification.classList = "notification"
 
-function get_url_variables(url) {
-    //Yoinked from https://gomakethings.com/getting-all-query-string-values-from-a-url-with-vanilla-js/
-    var params = {};
-    var parser = document.createElement('a');
-    parser.href = url;
-    var query = parser.search.substring(1);
-    var vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split('=');
-        params[pair[0]] = decodeURIComponent(pair[1]);
-    }
-    return params;
-    //returns Object { "": "undefined" } if empty
-    //Call with getParams(window.location.href);
-}
+        let notification_title = document.createElement("div")//title
+        notification_title.classList = "title"
+        notification_title.innerHTML = title
 
-function HEXtoHSL(hex_put) {//Convert  System preference color hex to a form my brain can can use
-    var redhex = hex_put.slice(0, 2);
-    var greenhex = hex_put.slice(2, 4);
-    var bluehex = hex_put.slice(4, 6);
-    console.log(hex_put, ' : ', redhex, ' : ', greenhex, ' : ', bluehex)
-    if (redhex == 0) { redhex = '00' }
-    if (greenhex == 0) { greenhex = '00' }
-    if (bluehex == 0) { bluehex = '00' }
-    var r = parseInt(redhex, 16)
-    var g = parseInt(greenhex, 16)
-    var b = parseInt(bluehex, 16)
-    r /= 255, g /= 255, b /= 255;
+        let nbody = document.createElement("div")//body
+        nbody.classList = "notifbody"
+        nbody.innerHTML = body;
 
-    var max = Math.max(r, g, b), min = Math.min(r, g, b);
-    var h, s, l = (max + min) / 2;
-
-    if (max == min) {
-        h = s = 0; // achromatic
-    } else {
-        var d = max - min;
-        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-        switch (max) {
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-            case g: h = (b - r) / d + 2; break;
-            case b: h = (r - g) / d + 4; break;
+        if (hover_title != undefined) {
+            notification.title = hover_title
+        } else {
+            notification.title = 'click to dismiss'
         }
 
-        h /= 6;
+        notification.appendChild(notification_title)
+        notification.appendChild(nbody)
+        document.body.appendChild(notification)
+
+        if (typeof (ifunction) == 'function') { //imbedded function
+            notification.addEventListener('click', ifunction);
+            //Close button
+            let xbutton = document.createElement('div')
+            xbutton.setAttribute('class', 'x-button')
+            notification.appendChild(xbutton)
+            xbutton.title = 'click to dismiss';
+            xbutton.addEventListener('click', function (e) { removethis(e, notification) })
+        } else {
+            notification.addEventListener('click', function (e) { removethis(e, notification) })
+        }
+
+        //Timing effects
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)'
+            notify.shove()
+        }, 50);
+
+        setTimeout(() => { notification.style.opacity = '0.0' }, 10000); //dissapear
+
+        setTimeout(() => { try { document.body.removeChild(notification) } catch (err) { console.warn(err) } }, 11000); //remove from document
+
+        function removethis(e, rnotification) {
+            e.stopImmediatePropagation();
+            rnotification.style.transform = 'translateX(22rem)';
+            setTimeout(() => { rnotification.style.opacity = '0.0'; }, 100)
+            setTimeout(() => { try { document.body.removeChild(notification) } catch (err) { console.warn(err) } }, 1000)
+        }
+
+    },
+    shove: function () {
+        var notifications = document.querySelectorAll(".notification")
+        var reverse = notifications.length - 1;
+        for (let i in notifications) {
+            notifications[i].style.transform = 'translateY(' + -reverse * 9 + 'rem)';//9 rem., height of notification
+            reverse--;//get it, because oposite
+        }
+    },
+    clearall: function () {
+        document.querySelectorAll(".notification").forEach((notification) => {
+            try {
+                notification.style.opacity = '0.0';
+                notification.style.transform = 'translate(0,0)'
+            } catch (err) {
+                console.warn(err)
+            }
+        })
     }
-    return { h, s, l, r, g, b };
 }

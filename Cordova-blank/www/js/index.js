@@ -163,8 +163,7 @@ async function clipboard(textpush) {//Wack text to clipboard
     copyText.toString()
     var temptxtbox = document.createElement("input")
     document.body.appendChild(temptxtbox)
-    temptxtbox.setAttribute("id", "temp_copy")
-    document.getElementById("temp_copy").value = copyText
+    temptxtbox.value = copyText
     temptxtbox.select()
     document.execCommand("copy")
     document.body.removeChild(temptxtbox)
