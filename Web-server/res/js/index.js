@@ -14,11 +14,6 @@ document.getElementById('testinput').addEventListener('change', function () {
     document.getElementById('testpost_btn').title = 'post: '+ document.getElementById('testinput').value
 })
 
-
-
-
-
-
 //strip variables from links
 function get_url_variables(url) {//Gets url variables as an object
     if (url == undefined) { url = window.location.href }

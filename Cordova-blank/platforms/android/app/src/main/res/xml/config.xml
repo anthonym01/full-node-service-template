@@ -27,5 +27,4 @@
     <splash density="port" src="res/splashscreen/base_partrait.png" />
     <preference name="loglevel" value="DEBUG" />
     <preference name="ShowSplashScreenSpinner" value="false" />
-    <preference name="android-minSdkVersion" value="22" />
 </widget>

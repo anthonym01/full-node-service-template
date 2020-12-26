@@ -1,9 +1,7 @@
 const { ipcRenderer, remote } = require('electron');
-
 const main = remote.require('./main');//acess export functions in main
 const { dialog, Menu, MenuItem, systemPreferences, nativeTheme, clipboard, shell } = remote;//Acess to electron dependencies
 const fs = require('fs');//file system
-
 const my_website = 'https://anthonym01.github.io/Portfolio/?contact=me';//My website
 const remote_host = 'http://localhost:1999';
 

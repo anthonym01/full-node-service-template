@@ -53,7 +53,7 @@ function maininitalizer() {//Runs after 'Device ready'
         window.addEventListener('resize', function () { size_check() })//App is resized by split screen or dex
         properties.first_start = false;//App is startedned up
     }, 300);
-    post({phone:'phone phones home'}, '/post/test')
+    post({phone:'phone phones home'}, 'post/test')
 }
 
 let config = {
@@ -750,11 +750,6 @@ let directory_manager = {
     },
 }
 
-let properties = {
-    exit: false,
-    first_start: true,
-}
-
 async function back() {
     if (document.getElementById('file_directory').style.display == "block") {
         directory_manager.goBack()
@@ -767,12 +762,12 @@ async function back() {
 
 function exit_strategy() {//Heres how to string things togther to make something usefull
     console.warn('Exit strategy triggered')
-    if (properties.exit == true) {
+    if (exit_flag == true) {
         close()
     } else {
-        properties.exit = true;
+        exit_flag = true;
         toast("Press back button again to exit", 2000)
-        setTimeout(() => { properties.exit = false }, 2000)
+        setTimeout(() => { exit_flag = false }, 2000)
     }
 }
 

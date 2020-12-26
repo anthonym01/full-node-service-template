@@ -752,7 +752,6 @@ let directory_manager = {
 
 let properties = {
     exit: false,
-    first_start: true,
 }
 
 async function back() {
