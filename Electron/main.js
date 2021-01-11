@@ -80,7 +80,8 @@ function createmainWindow() {//Creates the main render process
 			nodeIntegration: true,
 			enableRemoteModule: true,
 			nodeIntegrationInWorker: true,
-			worldSafeExecuteJavaScript: true
+			worldSafeExecuteJavaScript: true,
+			contextIsolation:false
 		},
 		minWidth: 400,
 	})
