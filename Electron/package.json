@@ -1,6 +1,6 @@
 {
   "name": "blank_electron_template",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Blank electron template",
   "main": "main.js",
   "author": {
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com"
   },
-  "icon": "assets/icons/icon.png",
+  "icon": "build/icon.png",
   "license": "ISC",
   "bin": "BB01",
   "scripts": {
@@ -24,25 +24,36 @@
   },
   "build": {
     "appId": "com.blank.electron",
-    "icon": "assets/icons/icon.png",
+    "icon": "build/icon.png",
     "productName": "blank electron template",
     "copyright": "Copyright © 2020 ${author}",
-    "buildVersion": "1.0.0",
+    "buildVersion":  "0.0.1",
     "remoteBuild": "true",
     "asar": "true",
     "mac": {
       "category": "utility",
-      "icon": "assets/icons/icon.png"
+      "icon": "build/icon.png"
     },
     "win": {
       "target": "nsis",
-      "icon": "assets/icons/icon.ico"
+      "icon": "build/icon.ico"
     },
     "linux": {
       "target": "deb",
       "category": "utility",
-      "icon": "assets/icons/icon.png"
-    }
+      "icon": "build/icon.png"
+    },
+    "directories": {
+      "buildResources": "build"
+    },
+    "files": [
+      "Windows/**/*",
+      "node_modules/**/*",
+      "build/**/*",
+      "package.json",
+      "main.js",
+      "worker.js"
+    ]
   },
   "devDependencies": {
     "asar": "^1.0.0",

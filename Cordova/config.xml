@@ -1,5 +1,5 @@
-<?xml version='1.0.0' encoding='utf-8'?>
-<widget id="com.ANTHONYM.APPNAME" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<?xml version='0.0.1' encoding='utf-8'?>
+<widget id="com.ANTHONYM.APPNAME" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Appname</name>
     <description>
         description Is Discription
@@ -22,7 +22,7 @@
         <splash src="res/splashscreen/base_landscape.png" density="land"/>
         <splash src="res/splashscreen/base_partrait.png" density="port"/>
         <preference name="ShowSplashScreenSpinner" value="false"/>
-        <preference name="android-minSdkVersion" value="19" />
+        <preference name="android-minSdkVersion" value="22" />
         <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     </platform>
 </widget>

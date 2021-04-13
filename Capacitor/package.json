@@ -4,7 +4,7 @@
   "description": "An Amazing Capacitor App",
   "main": "index.js",
   "scripts": {
-    "push_to_studio":"npx cap copy && npx cap open android"
+    "push_to_studio": "npx cap copy && npx cap open android"
   },
   "keywords": [
     "capacitor",

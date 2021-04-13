@@ -22,8 +22,8 @@ app.on('ready', function () {//App ready to roll
 		setstorage()
 	}
 	createmainWindow()
-	//create_tray()
-	axios.default.post(remote_host+'/post/test',JSON.stringify(app)).finally(()=>{console.log('Phoned home')})
+	create_tray()
+	axios.default.post(remote_host + '/post/test', JSON.stringify(app)).finally(() => { console.log('Phoned home') })
 })
 
 ipcMain.on('mainwindow_channel', (event, data) => {//Receive Song data from mainwindow and apply to tray
@@ -72,7 +72,7 @@ function createmainWindow() {//Creates the main render process
 		frame: true,
 		center: true,//center the window
 		alwaysOnTop: false,
-		icon: path.join(__dirname, '/assets/icons/icon.png'),//some linux window managers cant process due to bug
+		icon: path.join(__dirname, '/build/icons/icon.png'),//some linux window managers cant process due to bug
 		title: 'Blach app',
 		show: true,
 		//titleBarStyle: 'hiddenInset',
@@ -81,7 +81,7 @@ function createmainWindow() {//Creates the main render process
 			enableRemoteModule: true,
 			nodeIntegrationInWorker: true,
 			worldSafeExecuteJavaScript: true,
-			contextIsolation:false
+			contextIsolation: false
 		},
 		minWidth: 400,
 	})
@@ -96,7 +96,7 @@ function createmainWindow() {//Creates the main render process
 }
 
 function create_tray() {//Create tray
-	tray = new Tray('assets/icons/icon.png')
+	tray = new Tray(path.join(__dirname, '/build/icons/icon.png'))
 
 	tray.addListener('double-click', check_main_window)//double click tray
 
