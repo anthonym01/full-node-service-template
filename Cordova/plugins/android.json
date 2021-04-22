@@ -9,27 +9,6 @@
   "installed_plugins": {
     "cordova-externalstoragepath-plugin": {
       "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
-    },
-    "cordova-plugin-x-toast": {
-      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
-    },
-    "cordova-plugin-device": {
-      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
-    },
-    "cordova-plugin-splashscreen": {
-      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
-    },
-    "cordova-plugin-screensize": {
-      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
-    },
-    "cordova-plugin-theme-detection": {
-      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
-    },
-    "cordova-plugin-file": {
-      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
-    },
-    "cordova-plugin-statusbar": {
-      "PACKAGE_NAME": "com.ANTHONYM.APPNAME"
     }
   },
   "dependent_plugins": {}

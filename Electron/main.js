@@ -16,6 +16,7 @@ let config = {
 }
 
 app.on('ready', function () {//App ready to roll
+	console.log('storage location ',app.getPath('userData'))
 	if (storeinator.get('default')) {
 		config = JSON.parse(storeinator.get('default'))
 	} else {
@@ -96,7 +97,7 @@ function createmainWindow() {//Creates the main render process
 }
 
 function create_tray() {//Create tray
-	tray = new Tray(path.join(__dirname, '/build/icons/icon.png'))
+	tray = new Tray(path.join(__dirname, 'build/icon.png'))
 
 	tray.addListener('double-click', check_main_window)//double click tray
 
