@@ -7,10 +7,10 @@
   "resolved" "https://registry.npmjs.org/@capacitor/android/-/android-2.4.5.tgz"
   "version" "2.4.5"
 
-"@capacitor/cli@^2.4.5":
-  "integrity" "sha512-nv0IRd3xnif8kIvAFk+ssEkwqZ8n0DvLuB7s0CmtRvMf6Rns02TTYndtV/YkSVja4JbrKb9FrcMd2aLu9KJEIg=="
-  "resolved" "https://registry.npmjs.org/@capacitor/cli/-/cli-2.4.5.tgz"
-  "version" "2.4.5"
+"@capacitor/cli@^2.4.7":
+  "integrity" "sha512-RC5EO3oA2gWniZK0JWRlZa+7MFIoHYiAtt+W4Hqq74nyv1C0z/MvRY3pX2DX7kKy6Uc1Z/25D0uSXRk+erv3RQ=="
+  "resolved" "https://registry.npmjs.org/@capacitor/cli/-/cli-2.4.7.tgz"
+  "version" "2.4.7"
   dependencies:
     "chalk" "^2.3.0"
     "commander" "^4.1.1"
@@ -24,10 +24,10 @@
     "which" "^1.3.0"
     "xml2js" "^0.4.19"
 
-"@capacitor/core@^2.4.5", "@capacitor/core@~2.4.0":
-  "integrity" "sha512-3GfDAN3s8ajglbn0X6wS+1mtmLwtaBNyvrje3qZ7mzRGVOMWLlOL+n2EeA9IlhMyp8KbQFwXr7gKUk6DjMAKUQ=="
-  "resolved" "https://registry.npmjs.org/@capacitor/core/-/core-2.4.5.tgz"
-  "version" "2.4.5"
+"@capacitor/core@^2.4.7", "@capacitor/core@~2.4.0":
+  "integrity" "sha512-ZPzXXQ4EPwR/ZhNDkmlxyzw4FvquIl/ROj8HMMM0MEd4xZfM8ulNGPIL6br9TWdlFLGBKq40eymPZjKaivGnig=="
+  "resolved" "https://registry.npmjs.org/@capacitor/core/-/core-2.4.7.tgz"
+  "version" "2.4.7"
   dependencies:
     "tslib" "^1.9.0"
 
