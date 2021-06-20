@@ -27,7 +27,7 @@
     "icon": "build/icon.png",
     "productName": "blank electron template",
     "copyright": "Copyright © 2020 ${author}",
-    "buildVersion":  "0.0.1",
+    "buildVersion": "0.0.1",
     "remoteBuild": "true",
     "asar": "true",
     "mac": {
@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "asar": "^1.0.0",
-    "electron": "^10.1.2",
+    "electron": "^13.1.2",
     "electron-builder": "^22.8.0"
   },
   "dependencies": {

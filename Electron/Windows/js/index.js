@@ -201,7 +201,7 @@ let config = {
 
 let notify = {//notification function house
     reset: window.addEventListener('resize', () => { notify.clearall() }),
-    new: function (title, body, hover_title, ifunction) {
+    inpage: function (title, body, hover_title, ifunction) {
 
         let notification = document.createElement("div")
         notification.classList = "notification"
