@@ -1,2 +1,2 @@
 #!/bin/bash
-npx cap copy && npx cap open
+npm install @capacitor/core @capacitor/cli && npx cap init && npm install @capacitor/browser && npm install @capacitor/app

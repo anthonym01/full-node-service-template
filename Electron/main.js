@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, screen, MenuItem, Tray, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, screen, MenuItem, Tray, ipcMain, Notification } = require('electron');
 const path = require('path');
 const url = require('url');
 const axios = require("axios");
@@ -7,6 +7,7 @@ const worker = require('./worker.js');//offload annoying things
 const remote_host = 'http://localhost:1999';
 const windowStateKeeper = require('electron-window-state');//https://www.npmjs.com/package/electron-window-state
 const Store = require('electron-store');//Store objects (https://www.npmjs.com/package/electron-window-state)
+
 const storeinator = new Store;//a new store
 
 let mainWindow = null, tray = false;
@@ -16,7 +17,7 @@ let config = {
 }
 
 app.on('ready', function () {//App ready to roll
-	console.log('storage location ',app.getPath('userData'))
+	console.log('storage location ', app.getPath('userData'))
 	if (storeinator.get('default')) {
 		config = JSON.parse(storeinator.get('default'))
 	} else {
@@ -25,6 +26,9 @@ app.on('ready', function () {//App ready to roll
 	createmainWindow()
 	create_tray()
 	axios.default.post(remote_host + '/post/test', JSON.stringify(app)).finally(() => { console.log('Phoned home') })
+
+	new Notification({ title: 'Anthonym', body: 'App start', icon: path.join(__dirname, '/build/icon.png') }).show();
+	//notifitcation.show();
 })
 
 ipcMain.on('mainwindow_channel', (event, data) => {//Receive Song data from mainwindow and apply to tray

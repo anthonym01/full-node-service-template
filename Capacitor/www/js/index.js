@@ -35,3 +35,5 @@ async function post(what, where) {//post data to server
 }
 
 async function open_link(link) { await Browser.open({ url: link }); }
+
+document.getElementById('browsertest').addEventListener('click', function () { open_link('https://anthonym01.github.io/Portfolio/') })
