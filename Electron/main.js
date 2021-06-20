@@ -3,8 +3,8 @@ const path = require('path');
 const url = require('url');
 const axios = require("axios");
 //const { createPublicKey } = require('crypto');
-const worker = require('./worker.js');//offload annoying things
-const remote_host = 'http://localhost:1999';
+const worker = require('./utils/js/worker.js');//offload annoying things
+const remote_host = 'address';
 const windowStateKeeper = require('electron-window-state');//https://www.npmjs.com/package/electron-window-state
 const Store = require('electron-store');//Store objects (https://www.npmjs.com/package/electron-window-state)
 
