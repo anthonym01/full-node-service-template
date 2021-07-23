@@ -21,6 +21,8 @@
     "@capacitor/cli": "^3.0.1",
     "@capacitor/core": "^3.0.1",
     "@capacitor/splash-screen": "latest",
-    "browserify": "^17.0.0"
+    "browserify": "^17.0.0",
+    "@capacitor/storage": "^1.0.2",
+    "@capacitor/toast": "^1.0.2"
   }
 }
