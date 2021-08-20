@@ -1,0 +1,14 @@
+{
+  "name": "web-server",
+  "version": "0.0.1",
+  "description": "A simple server",
+  "main": "Server.js",
+  "scripts": {
+    "start": "node Server.js"
+  },
+  "keywords": [
+    "server"
+  ],
+  "author": "Samuel A. Matheson",
+  "license": "ISC"
+}

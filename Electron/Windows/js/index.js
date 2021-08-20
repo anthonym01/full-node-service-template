@@ -4,20 +4,11 @@ const { dialog, Menu, MenuItem, systemPreferences, nativeTheme, clipboard, shell
 const fs = require('fs');//file system
 const my_website = 'https://anthonym01.github.io/Portfolio/?contact=me';//My website
 const remote_host = 'host';
-
-const utils = require('../utils/js/basicutils.js');//share utilities with main 
-const mainmenus = require('../Windows/js/mainemnus.js');
-
-//import { db } from './dbman.js'
-
-
-//let config = require('../Windows/js/dbman.js')
-//import
+//const mainmenus = require('../Windows/js/mainemnus.js');
 
 window.addEventListener('load', function () {//window loads
-    mainmenus.create_body_menu()
     
-    utils.inpage_notification('loaded')
+    
 
     switch (process.platform) {
         case "linux":
