@@ -10,5 +10,9 @@
     "server"
   ],
   "author": "Samuel A. Matheson",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "dotenv": "^10.0.0"
+  }
 }
