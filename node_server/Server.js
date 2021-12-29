@@ -2,12 +2,12 @@
 
 const http = require('http');
 const fs = require('fs');
-
+/*
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
-}
+}*/
 
-const port = process.env.PORT//||1999;//port for the server
+const port = process.env.PORT||1999;//port for the server
 
 async function notfoundpage(response, url) {//404 page goes here
     response.writeHead(404);
