@@ -1,13 +1,8 @@
-//run 'node server.js' to run
 
 const http = require('http');
 const fs = require('fs');
-/*
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}*/
 
-const port = process.env.PORT||1999;//port for the server
+const port = 6969;//port for the server
 
 async function notfoundpage(response, url) {//404 page goes here
     response.writeHead(404);
@@ -15,8 +10,7 @@ async function notfoundpage(response, url) {//404 page goes here
     console.error('File not found: ', url)
 }
 
-///Create server
-const server = http.createServer(function (request, response) {
+const server = http.createServer(function (request, response) {///Create server
 
     console.log('requested Url: ', request.url);
 
@@ -28,7 +22,7 @@ const server = http.createServer(function (request, response) {
 
             try {
                 response.writeHead(200, { 'Content-type': 'text/html' });//200 ok
-                fs.readFile('index.html', function (err, databuffer) {
+                fs.readFile('./index.html', function (err, databuffer) {
                     if (err) {
                         notfoundpage(response, 'index');
                     } else {
@@ -64,8 +58,9 @@ const server = http.createServer(function (request, response) {
 
             break;
 
-        default://Component of webpage
+        default://
 
+            //These need to be handled manually
             if (request.url.indexOf('.css') != -1) {//requestuested url is a css file
                 response.setHeader('Content-type', 'text/css');//Set the header to css, so the client will expects a css document
             } else if (request.url.indexOf('.js') != -1) { //requestuested url is a js file

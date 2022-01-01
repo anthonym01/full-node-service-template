@@ -1,18 +1,52 @@
 //test s stuff
 document.getElementById('testpost_btn').addEventListener('click', function () {
-    var what = JSON.stringify({ text: document.getElementById('testinput').value })
-    console.log('Test post to server ',what)
+    var what = JSON.stringify({ text: document.getElementById('postablegarbage').value })
+    console.log('Test post to server ', what)
     post(what, 'post/test')
 })
+
+async function post(what, where) {//post data to server
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {//wait for and handle response
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('Server replied with: ', this.responseText, ' In response: ', this.response)
+        }
+    };
+
+    xhttp.open("POST", where, true);
+    xhttp.send(JSON.stringify(what));
+}
 
 document.getElementById('testget_btn').addEventListener('click', function () {
     console.log('Test get from server')
     request('get/test')
 })
 
-document.getElementById('testinput').addEventListener('change', function () {
-    document.getElementById('testpost_btn').title = 'post: '+ document.getElementById('testinput').value
+async function request(what) {//make a request to server for data
+
+    try {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {//wait for and handle response
+            if (this.readyState == 4 && this.status == 200) {
+                console.log('Server replied with: ', this.responseText, ' In response: ', this.response)
+                return this.responseText
+            }
+        };
+
+        xhttp.open("GET", what, true);//get request
+        xhttp.send();
+    } catch (err) {
+        console.warn('xhttp request failed ', err);
+    }
+
+}
+
+document.getElementById('postablegarbage').addEventListener('change', function () {
+    document.getElementById('testpost_btn').title = 'post: ' + document.getElementById('postablegarbage').value
 })
+
 
 //strip variables from links
 function get_url_variables(url) {//Gets url variables as an object
@@ -57,39 +91,4 @@ function linkify(text) {//Detects links in text
     return text.replace(urlRegex, function (url) {//returns text with imbeded html links
         return '<a href="' + url + '">' + url + '</a>';
     });
-}
-
-
-// Wraped post and get functions
-async function request(what) {//make a request to server for data
-
-    try {
-        var xhttp = new XMLHttpRequest();
-
-        xhttp.onreadystatechange = function () {//wait for and handle response
-            if (this.readyState == 4 && this.status == 200) {
-                console.log('Server replied with: ', this.responseText, ' In response: ', this.response)
-                return this.responseText
-            }
-        };
-
-        xhttp.open("GET", what, true);//get request
-        xhttp.send();
-    } catch (err) {
-        console.warn('xhttp request failed ', err);
-    }
-
-}
-
-async function post(what, where) {//post data to server
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {//wait for and handle response
-        if (this.readyState == 4 && this.status == 200) {
-            console.log('Server replied with: ', this.responseText, ' In response: ', this.response)
-        }
-    };
-
-    xhttp.open("POST", where, true);
-    xhttp.send(JSON.stringify(what));
 }
