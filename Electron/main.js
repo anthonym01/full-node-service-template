@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, screen, MenuItem, Tray, ipcMain, Notification } = require('electron');
+const { app, BrowserWindow, Menu, screen, MenuItem, Tray, ipcMain, Notification, systemPreferences, nativeTheme } = require('electron');
 const path = require('path');
 const url = require('url');
 const axios = require("axios");
@@ -25,10 +25,28 @@ app.on('ready', function () {//App ready to roll
 	}
 	createmainWindow()
 	create_tray()
-	axios.default.post(remote_host + '/post/test', JSON.stringify(app)).finally(() => { console.log('Phoned home') })
+
+	try {//networking example
+
+		axios.default.post(remote_host + '/post/test', JSON.stringify(app)).finally(() => { console.log('Phoned home') })
+	} catch (error) {
+		console.warn('failed to phone homme: ', error)
+	}
 
 	new Notification({ title: 'Anthonym', body: 'App start', icon: path.join(__dirname, '/build/icon.png') }).show();
-	//notifitcation.show();
+
+	console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)
+	switch (process.platform) {
+		case "linux":
+			console.log('Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)
+			break;
+		case "win32":
+			console.log('accent color: ', systemPreferences.getAccentColor())//get system accent color
+			console.log('Anime settings: ', systemPreferences.getAnimationSettings().shouldRenderRichAnimation)//check if system prefers animations or not
+			break;
+		default://no preference
+
+	}
 })
 
 ipcMain.on('mainwindow_channel', (event, data) => {//Receive Song data from mainwindow and apply to tray
