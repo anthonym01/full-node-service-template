@@ -2,7 +2,7 @@
 const http = require('http');
 const fs = require('fs');
 
-const port = 6969;//port for the server
+const port = 6889;//port for the server
 
 async function notfoundpage(response, url) {//404 page goes here
     response.writeHead(404);
