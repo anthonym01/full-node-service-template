@@ -1,12 +1,8 @@
 const { ipcRenderer } = require('electron');
-const my_website = 'https://anthonym01.github.io/Portfolio/?contact=me';//My website
-const remote_host = 'host';
 
 window.addEventListener('load', function () {//window loads
-
-    config.load()
-    maininitalizer()
-
+    config.load();
+    maininitalizer();
 })
 
 function maininitalizer() {//Used to start re-startable app functions
@@ -40,3 +36,9 @@ let config = {
         console.table(config.data)
     },
 }
+
+document.addEventListener('contextmenu',function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    ipcRenderer.send('bodycontextmenu');
+})
