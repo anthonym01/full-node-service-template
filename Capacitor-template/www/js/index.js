@@ -10,7 +10,7 @@ App.addListener('backButton', () => {//back button on android
     console.warn('back button pressed')
 })
 
-window.addEventListener('load',function(){
+window.addEventListener('load',async function(){
 
     try {
         await config.load()
