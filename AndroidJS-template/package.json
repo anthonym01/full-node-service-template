@@ -1,8 +1,8 @@
 {
     "version": "1.0.0",
     "name": "AndroidJS-template",
-    "app-name": "AndroidJS-template",
-    "package-name": "webview",
+    "app-name": "AndroidJS template",
+    "package-name": "androidjs_template",
     "project-type": "webview",
     "icon": "./assets/icon/icon.png",
     "dist-path": "./dist",
@@ -22,6 +22,9 @@
     },
     "project-name": "AndroidJS-template",
     "theme": {
-        "fullScreen": true
+        "fullScreen": false,
+        "colorAccent": "#003cff",
+        "colorPrimary": "#000000",
+        "colorPrimaryDark": "#FFFFFF"
     }
 }
