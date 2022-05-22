@@ -1,0 +1,13 @@
+{
+  "appId": "com.example.app",
+  "appName": "capacitor-template",
+  "bundledWebRuntime": true,
+  "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh",
+  "CAPACITOR_ANDROID_STUDIO_PATH": "/opt/android-studio/bin/studio.sh",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}
