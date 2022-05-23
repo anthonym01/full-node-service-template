@@ -4,7 +4,8 @@
   "description": "An Amazing Capacitor App",
   "main": "index.js",
   "scripts": {
-    "push_to_studio": "npx cap copy && npx cap open android",
+    "open android": "npx cap open android",
+    "run android":"npx cap run android",
     "servewww": "serve ./www",
     "bundle": "browserify www/js/index.js -o www/js/bundle.js"
   },
@@ -15,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@capacitor/android": "^3.5.1",
     "@capacitor/app": "^1.0.1",
     "@capacitor/browser": "^1.0.1",
     "@capacitor/camera": "1.0.1",

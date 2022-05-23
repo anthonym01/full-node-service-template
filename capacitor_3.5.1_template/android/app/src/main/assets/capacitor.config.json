@@ -1,0 +1,15 @@
+{
+	"appId": "com.ANTHONYM.APPNAME",
+	"appName": "blankapp",
+	"bundledWebRuntime": true,
+	"npmClient": "yarn",
+	"webDir": "www",
+	"linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh",
+	"CAPACITOR_ANDROID_STUDIO_PATH": "/opt/android-studio/bin/studio.sh",
+	"ANDROID_SDK_ROOT": "/home/samuel/Android/Sdk/",
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 0
+		}
+	}
+}
