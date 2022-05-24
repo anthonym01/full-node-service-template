@@ -7,8 +7,10 @@ App.addListener('appStateChange', ({ isActive }) => {// app state is changed, us
 });
 
 App.addListener('backButton', () => {//back button on android
+    event.preventDefault()
     console.warn('back button pressed')
-})
+    Toast
+});
 
 window.addEventListener('load', function () {
 
