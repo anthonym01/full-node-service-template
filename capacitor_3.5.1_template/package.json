@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "open android": "npx cap open android",
-    "run android":"npx cap run android",
+    "run android": "npx cap run android",
     "servewww": "serve ./www",
     "bundle": "browserify www/js/index.js -o www/js/bundle.js"
   },
