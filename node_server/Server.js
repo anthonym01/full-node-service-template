@@ -2,12 +2,23 @@
 const http = require('http');
 const fs = require('fs');
 
-const port = 6889;//port for the server
+const port = 6889;//port for the server make sure its unused/availible
 
 async function notfoundpage(response, url) {//404 page goes here
     response.writeHead(404);
-    response.write('404 page not , code: ', url);
-    console.error('File not found: ', url)
+    response.write('404 ', url, 'not found');
+    console.error('404 not found: ', url);
+}
+
+async function writeresponce(response, filepath) {
+    fs.readFile(filepath, function (err, databuffer) {
+        if (err) {
+            console.error(err);
+        } else {
+            response.write(databuffer);
+        }
+        response.end();//end response
+    })
 }
 
 const server = http.createServer(function (request, response) {///Create server
@@ -19,24 +30,12 @@ const server = http.createServer(function (request, response) {///Create server
     switch (request.url) {
 
         case '/': case '/index.html':
-
-            try {
-                response.writeHead(200, { 'Content-type': 'text/html' });//200 ok
-                fs.readFile('./index.html', function (err, databuffer) {
-                    if (err) {
-                        notfoundpage(response, 'index');
-                    } else {
-                        response.write(databuffer);
-                    }
-                    response.end();//end response
-                })
-            } catch (err) {
-                console.log('Catastrophy on index: ', err)
-            }
-
+            response.writeHead(200, { 'Content-type': 'text/html' });//200 == ok
+            writeresponce(response, './www/index.html');
             break;
 
-        case '/get/test'://A test get
+        //A test get
+        case '/get/test':
 
             try {
                 console.log('test get from server');
@@ -58,7 +57,7 @@ const server = http.createServer(function (request, response) {///Create server
 
             break;
 
-        default://
+        default:
 
             //These need to be handled manually
             if (request.url.indexOf('.css') != -1) {//requestuested url is a css file
@@ -71,15 +70,8 @@ const server = http.createServer(function (request, response) {///Create server
                 //media handled automatically
             }
 
-            fs.readFile(request.url.replace('/', ''), function (err, data) {//read request.url.replace('/', '') file
-                if (err) {//error because file not found/inaccesible
-                    notfoundpage(response, request.url);//show 404 page
-                } else {
-                    response.writeHead(200);//200 ok
-                    response.write(data);//responsepond with data from file
-                }
-                response.end();//end responseponse
-            })
+            response.writeHead(200);//200 ok
+            writeresponce(response, request.url.replace('/', 'www/'));
     }
 
 })
