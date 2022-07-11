@@ -11,14 +11,18 @@ async function notfoundpage(response, url) {//404 page goes here
 }
 
 async function writeresponce(response, filepath) {
-    fs.readFile(filepath, function (err, databuffer) {
-        if (err) {
-            console.error(err);
-        } else {
-            response.write(databuffer);
-        }
-        response.end();//end response
-    })
+    try {
+        fs.readFile(filepath, function (err, databuffer) {
+            if (err) {
+                console.error(err);
+            } else {
+                response.write(databuffer);
+            }
+            response.end();//end response
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 const server = http.createServer(function (request, response) {///Create server
