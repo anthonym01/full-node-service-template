@@ -31,7 +31,6 @@ let config = {
     },
     delete: function () {//Wjipe stowage
         localStorage.clear("APPnamecfg")//yeet storage key
-        config.usedefault();//use default location
         console.log('config deleted: ')
         console.table(config.data)
     },
