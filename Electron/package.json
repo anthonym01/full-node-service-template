@@ -7,10 +7,10 @@
     "name": "Anthonym",
     "email": "samuelmatheson20@gmail.com"
   },
-  "homepage": "https://null.none",
+  "homepage": "https://github.com/anthonym01/full-node-service-template",
   "repository": {
     "type": "git",
-    "url": "https://github.com"
+    "url": "https://github.com/anthonym01/full-node-service-template"
   },
   "icon": "build/icon.png",
   "license": "ISC",
@@ -58,8 +58,8 @@
   },
   "devDependencies": {
     "asar": "^1.0.0",
-    "electron": "^19.0.6",
-    "electron-builder": "^23.0.3"
+    "electron": "^21.3.1",
+    "electron-builder": "^23.6.0"
   },
   "dependencies": {
     "axios": "^0.27.2",
