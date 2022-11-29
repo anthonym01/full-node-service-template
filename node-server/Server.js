@@ -2,7 +2,7 @@
 const http = require('http');
 const fs = require('fs');
 
-const port = 6889;//port for the server make sure its unused/availible
+const port = 6889;//testing port
 
 async function notfoundpage(response, url) {
     //404 page goes here
@@ -24,7 +24,7 @@ async function writeresponce(response, filepath) {//for files in responses
                 response.writeHead(200);//200 ok
                 response.write(databuffer);
             }
-            response.end();//end response
+            response.end();
         })
     } catch (error) {
         console.log(error)
@@ -37,11 +37,24 @@ const server = http.createServer(function (request, response) {///Create server
 
     response.setHeader('Acess-Control-Allow-Origin', '*');//allow access control from client, this will automatically handle most media files
 
-    switch (request.url) {
+    switch (request.url) {//switching requests is old, its better to use express.js
 
         case '/': case '/index.html':
-            response.writeHead(200, { 'Content-type': 'text/html' });//200 == ok
-            writeresponce(response, './www/index.html');
+            
+            try {
+                fs.readFile('./www/index.html', function (err, databuffer) {
+                    if (err) {
+                        response.writeHead(404);//not okay
+                        console.error(err);
+                    } else {
+                        response.writeHead(200, { 'Content-type': 'text/html' });//200 == ok
+                        response.write(databuffer);
+                    }
+                    response.end();
+                })
+            } catch (error) {
+                console.log(error)
+            }
             break;
 
         //A test get
