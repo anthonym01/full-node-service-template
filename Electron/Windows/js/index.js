@@ -6,7 +6,7 @@ window.addEventListener('load', function () {//window loads
 })
 
 function maininitalizer() {//Used to start re-startable app functions
-    console.log('main initalizer')
+    console.log('main initalizer');
     ipcRenderer.send('mainwindow_channel', 'Initalized')//Send window reinitalized to main
 
 }

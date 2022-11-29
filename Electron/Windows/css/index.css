@@ -47,6 +47,10 @@ body {
     }
 }
 
+
+/* 
+    Internal notifications
+*/
 .notification {
     position: fixed;
     bottom: 0.2rem;

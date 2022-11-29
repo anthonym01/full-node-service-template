@@ -1,4 +1,5 @@
 const { app, BrowserWindow, Menu, screen, Tray, ipcMain, Notification, systemPreferences, nativeTheme, shell } = require('electron');
+
 //const { createPublicKey } = require('crypto');
 const path = require('path');
 const url = require('url');
@@ -8,9 +9,9 @@ const Store = require('electron-store');//Store objects (https://www.npmjs.com/p
 const storeinator = new Store;//a new store
 const worker = require('./utils/js/worker.js');//offload annoying things
 const my_website = 'https://anthonym01.github.io/Portfolio/?contact=me';//My website
-const remote_host = 'localhost';
 
-const menu_body = new Menu.buildFromTemplate([//Main body menu
+//Main body menu
+const menu_body = new Menu.buildFromTemplate([
 	//{ label: 'Force refresh UI', click() { maininitalizer() } },
 	{ role: 'reload' },
 	{ type: 'separator' },
@@ -18,7 +19,8 @@ const menu_body = new Menu.buildFromTemplate([//Main body menu
 	{ role: 'toggledevtools' }
 ]);
 
-const text_box_menu = new Menu.buildFromTemplate([//Text box menu (for convinience)
+//Text box menu (for convinience)
+const text_box_menu = new Menu.buildFromTemplate([
 	{ role: 'cut' },
 	{ role: 'copy' },
 	{ role: 'paste' },
@@ -35,27 +37,29 @@ let config = {// configuration data
 };
 
 app.on('ready', function () {//App ready to roll
-	console.log('storage location ', app.getPath('userData'))
+	console.log('storage location ', app.getPath('userData'));
 
 	//Load configuation file
 	if (storeinator.get('default')) {
-		config = JSON.parse(storeinator.get('default'))
+		config = JSON.parse(storeinator.get('default'));
 	} else {
-		setstorage()
+		setstorage();
 	}
 
-	createmainWindow()
-	create_tray()
+	createmainWindow();
+	create_tray();
 
+	const remote_host = 'localhost:80';
 	//networking example
 	try {
-		axios.default.post(remote_host + '/post/test', JSON.stringify(app)).finally(() => { console.log('Phoned home') })
+		axios.default.post(remote_host + '/post/test', JSON.stringify(app)).finally(() => { console.log('Phoned home to: ',remote_host) })
 	} catch (error) {
 		console.warn('failed to phone homme: ', error)
 	}
 
-	// Desktop notification
-	new Notification({ title: 'Anthonym', body: 'App start', icon: path.join(__dirname, '/build/icon.png') }).show();
+	// Desktop notification example
+	let exampleNotlification = 	new Notification({ title: 'Anthonym', body: 'App start', icon: path.join(__dirname, '/build/icon.png') });
+	exampleNotlification.show();
 
 	console.log('System preference Dark mode: ', nativeTheme.shouldUseDarkColors)
 	switch (process.platform) {
@@ -83,15 +87,6 @@ app.on('activate', () => {//for darwin
 	}
 });
 
-ipcMain.on('mainwindow_channel', (event, data) => {//Receive Song data from mainwindow and apply to tray
-	console.log('mainwindow reports : ', data);
-})
-
-ipcMain.on('wirte_file', (event, fpath, filedata) => { worker.write_file(fpath, filedata) })
-
-ipcMain.on('bodycontextmenu', (event) => {
-	menu_body.popup({ window: mainWindow })
-})
 
 function createmainWindow() {//Creates the main render process
 	app.allowRendererProcessReuse = true;//Allow render processes to be reused
@@ -158,3 +153,14 @@ function check_main_window() {//Checks for main window and creates or shows it (
 }
 
 async function setstorage() { storeinator.set('default', JSON.stringify(config)) }
+
+
+ipcMain.on('mainwindow_channel', (event, data) => {//Receive Song data from mainwindow and apply to tray
+	console.log('mainwindow reports : ', data);
+})
+
+ipcMain.on('wirte_file', (event, fpath, filedata) => { worker.write_file(fpath, filedata) })
+
+ipcMain.on('bodycontextmenu', (event) => {
+	menu_body.popup({ window: mainWindow })
+})
