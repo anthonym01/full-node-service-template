@@ -2,7 +2,6 @@
 
 const express = require('express');
 const app = express();
-//const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const port = 1999;//port for the server
