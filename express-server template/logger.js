@@ -45,7 +45,8 @@ const loggerite = {
                 writelog(datum);
             }
         }
-    }, error: async function (datum) {//log bad happenings
+    },
+    error: async function (datum) {//log bad happenings
         console.error(datum);
         const log_path = this.get_paths();
         writelog(datum);
