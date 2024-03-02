@@ -7,7 +7,6 @@ const fs = require('fs');
 const path = require('path');
 const logs = require('./logger');
 const database = require('./database');
-const { log } = require('console');
 
 async function notfoundpage(response, url) {//404 page goes here
     response.writeHead(404);
@@ -15,22 +14,22 @@ async function notfoundpage(response, url) {//404 page goes here
     logs.info('File not found: ' + url);
 }
 
-app.use(express.static('www'))
+app.use(express.static('www'))//bind root path to /www
 
-app.get('/', (request, response) => { startingpoint(response) });//starting point request
+//starting point request
+app.get('/', (request, response) => { startingpoint(response) });
+app.get('/index.html', (request, response) => { startingpoint(response) });
 
-app.get('/index.html', (request, response) => { startingpoint(response) });//starting point request
-
-//A test get
+//test get
 app.get('/get/test', (req, res) => {
     // Receive a small amount of test data and send back a response
     try {
         console.log('test get server');
         req.on('data', function (data) {
-            console.log('get raw payload: ', data, ' Parsed: ', JSON.parse(data));
-            res.end(JSON.stringify({ test: "test get received" }));
+            console.log('got: ', data);
+            res.end(JSON.stringify({ testget: "test get received" }));
         });
-        res.writeHead(200, { 'Content-type': 'application/json' });
+        //res.writeHead(200, { 'Content-type': 'application/json' });
         res.send(JSON.stringify({ test: 'test get is okay' }));
     } catch (error) {
         console.log('Catastrophy on test get: ', err);
