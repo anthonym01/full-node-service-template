@@ -39,8 +39,8 @@ async function post(what, where) {//basic post
 //Test post button
 document.getElementById('testpost_btn').addEventListener('click', function () {
     console.log("testpost");
-    post({ payload: document.getElementById('postablegarbage').value }), '/post/test');
-})
+    post({ payload: document.getElementById('postablegarbage').value }, '/post/test');
+});
 
 //local storage handler
 let config = {
