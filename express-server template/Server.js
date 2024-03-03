@@ -1,6 +1,5 @@
 //'node server.js'
 const port = 1999;//port for the server 80, 443, 8080
-
 const express = require('express');
 const app = express();
 const fs = require('fs');
@@ -22,12 +21,12 @@ app.get('/index.html', (request, response) => { startingpoint(response) });
 
 //test get
 app.get('/get/test', (req, res) => {
-    // Receive a small amount of test data and send back a response
+
     try {
-        console.log('test get server');
+        console.log('test get');
         req.on('data', function (data) {
             console.log('got: ', data);
-            res.end(JSON.stringify({ testget: "test get received" }));
+            res.end(JSON.stringify({ testget: "test get data received" }));
         });
         //res.writeHead(200, { 'Content-type': 'application/json' });
         res.send(JSON.stringify({ test: 'test get is okay' }));
@@ -36,12 +35,12 @@ app.get('/get/test', (req, res) => {
     }
 });
 
-//a test post
+//test post
 app.post('/post/test', (req, res) => {
     //receive more data than a get
     logs.info('test post to server');
     req.on('data', function (data) {
-        logs.info('Posted : ' + data + ' Parsed: ' + JSON.parse(data));
+        logs.info('Posted : ' + data);
         res.end(JSON.stringify({ test: "test post received" }));
     });
 });
