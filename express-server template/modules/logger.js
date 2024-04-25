@@ -5,12 +5,12 @@ const loggerite = {
     get_paths: function () {//Paths for logs are generated 
         try {
             const timex = new Date();
-            const file_path = path.join(__dirname, `./logs/${timex.getMonth()}-${timex.getFullYear()}/${timex.getMonth()}-${timex.getDate()}.log`);// '/logs/mm-yyyy/mm-dd.log'
+            const file_path = path.join(__dirname, `../logs/${timex.getMonth()}-${timex.getFullYear()}/${timex.getMonth()}-${timex.getDate()}.log`);// '/logs/mm-yyyy/mm-dd.log'
 
             return { file_path, timex }
         } catch (error) {
             console.error(error);
-            return { file_path: path.join(__dirname, `./logs/default.log`), timex: 0 }
+            return { file_path: path.join(__dirname, `../logs/default.log`), timex: 0 }
         }
     },
     checkfs: function () {

@@ -1,11 +1,18 @@
-//'node server.js'
+//'node Server.js'
+/*
+    dependencies  for a Node.js server using Express framework.
+*/
+
 const port = 1999;//port for the server 80, 443, 8080
 const express = require('express');
 const app = express();
 const fs = require('fs');
 const path = require('path');
-const logs = require('./logger');
-const database = require('./database');
+
+const logs = require('./modules/logger');
+const database = require('./modules/database');
+
+database.initalize();
 
 async function notfoundpage(response, url) {//404 page goes here
     response.writeHead(404);
@@ -16,8 +23,8 @@ async function notfoundpage(response, url) {//404 page goes here
 app.use(express.static('www'))//bind root path to /www
 
 //starting point request
-app.get('/', (request, response) => { startingpoint(response) });
-app.get('/index.html', (request, response) => { startingpoint(response) });
+//app.get('/', (request, response) => { startingpoint(response) });
+//app.get('/index.html', (request, response) => { startingpoint(response) });
 
 //test get
 app.get('/get/test', (req, res) => {
@@ -60,9 +67,9 @@ async function startingpoint(response) {//serve index.html
             } else {
                 response.write(databuffer);
             }
-            logs.info("User came online "+response);
+            logs.info("User came online " + response);
             response.end();//end response
-            
+
         });
     } catch (err) {
         logs.error('Catastrophy on index: \n' + err);
@@ -87,5 +94,3 @@ async function writeresponce(res, filepath) {
         logs.error(error);
     }
 }
-
-database.initalize();
