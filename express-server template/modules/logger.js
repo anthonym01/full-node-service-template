@@ -13,7 +13,7 @@ const loggerite = {
             return { file_path: path.join(__dirname, `../logs/default.log`), timex: 0 }
         }
     },
-    initalize: function () {this.checkfs() },
+    initalize: function () { this.checkfs() },
     checkfs: function () {
         // Check and make folders for logs
         console.log('checking log path');
@@ -36,12 +36,15 @@ const loggerite = {
         const log_properties = this.get_paths();//get log paths
         try {
             if (typeof datum2 !== 'undefined') {//if two data are passed
+                if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
+                if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
                 console.log(datum1, datum2);
-                writelog2(datum1, datum2);
+                writelog(`${datum1},${datum2}`);
                 return 2;
             }
             if (typeof datum1 !== 'undefined') {//if one data is passed
                 console.log(datum1);
+                if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
                 writelog(datum1);
                 return 1;
             }
@@ -52,7 +55,6 @@ const loggerite = {
 
         function writelog(datum) {
             try {
-                if (typeof datum === 'object') datum = `\n${JSON.stringify(datum, null, 2)}`;
                 fs.appendFileSync(log_properties.file_path, `${log_properties.timex} : ${datum}\n------------------------------------------------------------\n`, { encoding: 'utf8' });
             } catch (error) {
                 throw error;

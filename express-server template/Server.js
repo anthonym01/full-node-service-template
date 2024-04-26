@@ -52,7 +52,7 @@ app.post('/post/test', (req, res) => {
     });
 });
 
-app.listen(port, () => { logs.info('Running on port ' + port) })//Listen for requests, this starts the server
+app.listen(port, () => { logs.info('Running on port ', port) })//Listen for requests, this starts the server
 
 
 async function startingpoint(response) {//serve index.html
