@@ -3,11 +3,10 @@ const path = require('path');
 
 const loggerite = {
     initalize: function () { this.checkfs() },
-    get_paths: function () {//Paths for logs are generated 
+    get_paths: function () {//Paths for logs are generated based on time
         try {
             const timex = new Date();
             const file_path = path.join(__dirname, `../logs/${timex.getMonth()}-${timex.getFullYear()}/${timex.getMonth()}-${timex.getDate()}.log`);// '/logs/mm-yyyy/mm-dd.log'
-
             return { file_path, timex }
         } catch (error) {
             console.error(error);
@@ -25,7 +24,7 @@ const loggerite = {
                     fs.mkdirSync(path.dirname(log_properties.file_path), { recursive: true });
                 }
                 console.log('Create: ', log_properties.file_path);
-                fs.writeFileSync(log_properties.file_path, 'Start log\n', { encoding: 'utf8' });
+                fs.writeFileSync(log_properties.file_path, `Start log - ${log_properties.timex}\n\n`, { encoding: 'utf8' });
             }
         } catch (error) {
             console.error(error);
