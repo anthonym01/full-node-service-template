@@ -3,7 +3,7 @@ const logs = require('./logger');
 const fs = require('fs');
 const path = require('path');
 
-let database = {
+const database = {
     initalize: function () {
         /*
             Checks for paths '/database/', '/database/users.json'
