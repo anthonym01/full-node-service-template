@@ -13,6 +13,7 @@ const loggerite = {
             return { file_path: path.join(__dirname, `../logs/default.log`), timex: 0 }
         }
     },
+    initalize: function () {this.checkfs() },
     checkfs: function () {
         // Check and make folders for logs
         console.log('checking log path');
@@ -32,19 +33,18 @@ const loggerite = {
         return -1;
     },
     info: async function (datum1, datum2) {//log happenings
-        const log_properties = this.get_paths();
+        const log_properties = this.get_paths();//get log paths
         try {
-            if (typeof datum2 !== 'undefined') {
+            if (typeof datum2 !== 'undefined') {//if two data are passed
                 console.log(datum1, datum2);
                 writelog2(datum1, datum2);
                 return 2;
             }
-            if (typeof datum1 !== 'undefined') {
+            if (typeof datum1 !== 'undefined') {//if one data is passed
                 console.log(datum1);
                 writelog(datum1);
                 return 1;
             }
-
         } catch (error) {
             console.error("Logger Error", error);
             loggerite.checkfs();
