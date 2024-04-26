@@ -31,18 +31,31 @@ const loggerite = {
         }
         return -1;
     },
-    info: async function (datum) {//log happenings
-        console.log(datum);
+    info: async function (datum1, datum2) {//log happenings
         const log_properties = this.get_paths();
-        writelog(datum);
+        try {
+            if (typeof datum2 !== 'undefined') {
+                console.log(datum1, datum2);
+                writelog2(datum1, datum2);
+                return 2;
+            }
+            if (typeof datum1 !== 'undefined') {
+                console.log(datum1);
+                writelog(datum1);
+                return 1;
+            }
+
+        } catch (error) {
+            console.error("Logger Error", error);
+            loggerite.checkfs();
+        }
+
         function writelog(datum) {
             try {
-                fs.appendFileSync(log_properties.file_path, `${log_properties.timex} : ${datum}\n`, { encoding: 'utf8' });
+                if (typeof datum === 'object') datum = `\n${JSON.stringify(datum, null, 2)}`;
+                fs.appendFileSync(log_properties.file_path, `${log_properties.timex} : ${datum}\n------------------------------------------------------------\n`, { encoding: 'utf8' });
             } catch (error) {
-
-                console.error("Logger Error", error);
-                loggerite.checkfs();
-                writelog(datum);
+                throw error;
             }
         }
     },
@@ -52,6 +65,7 @@ const loggerite = {
         writelog(datum);
         function writelog(datum) {
             try {
+                if (typeof datum === 'object') datum = JSON.stringify(datum, null, 2);
                 fs.appendFileSync(log_properties.file_path, `\n****************************************\nError:\n${log_properties.timex} :\n${datum}\n******************************************\n\n`, { encoding: 'utf8' });
             } catch (error) {
 
@@ -60,7 +74,8 @@ const loggerite = {
                 writelog(datum);
             }
         }
-    }
+    },
+
 }
 
 module.exports = loggerite;

@@ -4,11 +4,20 @@ const fs = require('fs');
 const path = require('path');
 
 const database = {
+    get_paths: function () {
+        const root = path.join(__dirname, '../database/');//root path
+        const users = path.join(root, 'users.json');//users record
+        const users_data = path.join(root, 'userdata/');//user data directory
+
+        return { root, users, users_data };
+    },
     initalize: function () {
         /*
             Checks for paths '/database/', '/database/users.json'
         */
+        const database_paths = this.get_paths();
         logs.info('Initalize database');
+        logs.info(database_paths);
         try {
             if (!fs.existsSync(path.join(__dirname, './database/'))) {
                 logs.error("Database does not exist");
