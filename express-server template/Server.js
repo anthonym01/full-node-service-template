@@ -47,7 +47,7 @@ app.post('/post/test', (req, res) => {
     //receive more data than a get
     logs.info('test post to server');
     req.on('data', function (data) {
-        logs.info('Posted : ' + data);
+        logs.info('Posted : ', data);
         res.end(JSON.stringify({ test: "test post received" }));
     });
 });

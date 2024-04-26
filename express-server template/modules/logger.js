@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const loggerite = {
+    initalize: function () { this.checkfs() },
     get_paths: function () {//Paths for logs are generated 
         try {
             const timex = new Date();
@@ -13,7 +14,6 @@ const loggerite = {
             return { file_path: path.join(__dirname, `../logs/default.log`), timex: 0 }
         }
     },
-    initalize: function () { this.checkfs() },
     checkfs: function () {
         // Check and make folders for logs
         console.log('checking log path');
