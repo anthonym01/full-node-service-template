@@ -1,15 +1,16 @@
 
 window.addEventListener('load', async function () {//Starting point
     try {
-        await config.load()
+        await config.load();//Load config from local storage
     } catch (err) {
-        console.warn('Something bad happened: ', err)
+        console.warn('Something bad happened: ', err);
     } finally {
         /*
             startup things
         */
 
-        document.getElementById('testpost_btn').addEventListener('click', function () {//Test post button
+        document.getElementById('testpost_btn').addEventListener('click', function () {
+            //Test post button
             console.log("testpost");
             post({ payload: document.getElementById('postablegarbage').value }, '/post/test');
         });
@@ -31,11 +32,12 @@ async function request(what) {// fetch example
     }
 }
 
-async function post(what, where) { // fetch with post example
+async function post(what, where) {
+    /* This block of code is a function named `post` that performs a POST request using the Fetch API.*/
     try {
         const response = await fetch(where, {
             method: "POST",
-            body: JSON.stringify(what),
+            body: JSON.stringify(what),//JSON.stringify({ payload: "test" }),
             headers: { "Content-type": "application/json; charset=UTF-8" }
         });
         if (!response.ok) { throw new Error('Network failiure'); }
@@ -54,20 +56,19 @@ let config = {
     data: {//Loacal app data
 
     },
-    save: async function () {//Save the config file
+    save: async function () {//Save config via local storage
         console.table('Configuration is being saved', config.data)
         localStorage.setItem("express_cfg", JSON.stringify(config.data))
     },
-    load: function () {//Load the config file
+    load: function () {//Load config from local storage
         console.warn('Configuration is being loaded')
         config.data = JSON.parse(localStorage.getItem("express_cfg"))
         console.log('config Loaded from application storage')
     },
-    delete: function () {//wipe storage
+    delete: function () {//wipe the config
         localStorage.clear("express_cfg");//yeet the storage key
         console.log('config deleted: ');
         console.table(config.data);
         config.data = {};
     },
-
 }
