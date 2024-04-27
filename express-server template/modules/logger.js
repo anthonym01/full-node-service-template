@@ -43,7 +43,7 @@ const loggerite = {
                 if (typeof datum4 === 'object') datum4 = `\n${JSON.stringify(datum4, null, 2)}`;
                 if (typeof datum5 === 'object') datum5 = `\n${JSON.stringify(datum5, null, 2)}`;
                 if (typeof datum6 === 'object') datum6 = `\n${JSON.stringify(datum6, null, 2)}`;
-                writelog(`${datum1},${datum2},${datum3},${datum4},${datum5},${datum6}`);
+                writelog(`${datum1} ${datum2} ${datum3} ${datum4} ${datum5} ${datum6}`);
                 return 6;
             }
             if (typeof datum5 !== 'undefined') {//if five data are passed
@@ -53,7 +53,7 @@ const loggerite = {
                 if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
                 if (typeof datum4 === 'object') datum4 = `\n${JSON.stringify(datum4, null, 2)}`;
                 if (typeof datum5 === 'object') datum5 = `\n${JSON.stringify(datum5, null, 2)}`;
-                writelog(`${datum1},${datum2},${datum3},${datum4},${datum5}`);
+                writelog(`${datum1} ${datum2} ${datum3} ${datum4} ${datum5}`);
                 return 5;
             }
             if (typeof datum4 !== 'undefined') {//if four data are passed
@@ -62,7 +62,7 @@ const loggerite = {
                 if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
                 if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
                 if (typeof datum4 === 'object') datum4 = `\n${JSON.stringify(datum4, null, 2)}`;
-                writelog(`${datum1},${datum2},${datum3},${datum4}`);
+                writelog(`${datum1} ${datum2} ${datum3} ${datum4}`);
                 return 4;
             }
             if (typeof datum3 !== 'undefined') {//if three data are passed
@@ -70,14 +70,14 @@ const loggerite = {
                 if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
                 if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
                 if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
-                writelog(`${datum1},${datum2},${datum3}`);
+                writelog(`${datum1} ${datum2} ${datum3}`);
                 return 3;
             }
             if (typeof datum2 !== 'undefined') {//if two data are passed
                 console.log(datum1, datum2);
                 if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
                 if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
-                writelog(`${datum1},${datum2}`);
+                writelog(`${datum1} ${datum2}`);
                 return 2;
             }
             if (typeof datum1 !== 'undefined') {//if one data is passed
@@ -110,7 +110,7 @@ const loggerite = {
                 if (typeof datum4 === 'object') datum4 = `\n${JSON.stringify(datum4, null, 2)}`;
                 if (typeof datum5 === 'object') datum5 = `\n${JSON.stringify(datum5, null, 2)}`;
                 if (typeof datum6 === 'object') datum6 = `\n${JSON.stringify(datum6, null, 2)}`;
-                writelog(`${datum1},${datum2},${datum3},${datum4},${datum5},${datum6}`);
+                writelog(`${datum1} ${datum2} ${datum3} ${datum4} ${datum5} ${datum6}`);
                 return 6;
             }
             if (typeof datum5 !== 'undefined') {
@@ -120,7 +120,7 @@ const loggerite = {
                 if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
                 if (typeof datum4 === 'object') datum4 = `\n${JSON.stringify(datum4, null, 2)}`;
                 if (typeof datum5 === 'object') datum5 = `\n${JSON.stringify(datum5, null, 2)}`;
-                writelog(`${datum1},${datum2},${datum3},${datum4},${datum5}`);
+                writelog(`${datum1} ${datum2} ${datum3} ${datum4} ${datum5}`);
                 return 5;
             }
             if (typeof datum4 !== 'undefined') {
@@ -129,7 +129,7 @@ const loggerite = {
                 if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
                 if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
                 if (typeof datum4 === 'object') datum4 = `\n${JSON.stringify(datum4, null, 2)}`;
-                writelog(`${datum1},${datum2},${datum3},${datum4}`);
+                writelog(`${datum1} ${datum2} ${datum3} ${datum4}`);
                 return 4;
             }
             if (typeof datum3 !== 'undefined') {
@@ -137,14 +137,14 @@ const loggerite = {
                 if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
                 if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
                 if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
-                writelog(`${datum1},${datum2},${datum3}`);
+                writelog(`${datum1} ${datum2} ${datum3}`);
                 return 3;
             }
             if (typeof datum2 !== 'undefined') {
                 console.error(datum1, datum2);
                 if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
                 if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
-                writelog(`${datum1},${datum2}`);
+                writelog(`${datum1} ${datum2}`);
                 return 2;
             }
             if (typeof datum1 !== 'undefined') {
