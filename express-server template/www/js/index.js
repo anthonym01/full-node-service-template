@@ -5,10 +5,7 @@ window.addEventListener('load', async function () {//Starting point
     } catch (err) {
         console.warn('Something bad happened: ', err);
     } finally {
-        /*
-            startup things
-        */
-
+ 
         document.getElementById('testpost_btn').addEventListener('click', function () {
             //Test post button
             console.log("testpost");
@@ -18,11 +15,11 @@ window.addEventListener('load', async function () {//Starting point
     }
 });
 
-async function request(what) {// fetch example
+async function request(what) {
+    /* This block of code is a function named `request` that performs a GET request using the Fetch */
     try {
         const response = await fetch(what);
         if (!response.ok) { throw new Error('Network failiure'); }
-
         const data = await response.json();
         console.log(data);
         return data;
@@ -51,19 +48,19 @@ async function post(what, where) {
     }
 }
 
-//local storage handler
 let config = {
+    /* The `config` is used to manage local application data by saving,loading, and deleting configuration settings via local storage. */
     data: {//Loacal app data
 
     },
     save: async function () {//Save config via local storage
-        console.table('Configuration is being saved', config.data)
-        localStorage.setItem("express_cfg", JSON.stringify(config.data))
+        console.table('Configuration is being saved', config.data);
+        localStorage.setItem("express_cfg", JSON.stringify(config.data));
     },
     load: function () {//Load config from local storage
-        console.warn('Configuration is being loaded')
-        config.data = JSON.parse(localStorage.getItem("express_cfg"))
-        console.log('config Loaded from application storage')
+        console.log('Configuration is being loaded');
+        config.data = JSON.parse(localStorage.getItem("express_cfg"));
+        console.log('config Loaded: ', config.data);
     },
     delete: function () {//wipe the config
         localStorage.clear("express_cfg");//yeet the storage key

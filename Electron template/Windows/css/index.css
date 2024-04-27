@@ -1,0 +1,161 @@
+
+/* Minecraft cracked font */
+@font-face {
+    src: url(../fonts/LexendDeca-Regular.ttf);
+    font-family: Lexend_Deca;
+}
+
+/*
+font-family: 'Roboto', sans-serif;
+font-family: 'Lexend Deca', sans-serif;
+*/
+:root {
+    --text-color: rgb(0, 0, 0);
+    --background-color: rgb(255, 255, 255);
+    --accent_color: rgb(0, 153, 255);
+    --grey: rgb(122, 122, 122);
+    --off_grey: rgb(205, 205, 205);
+    --half_grey: rgb(165, 165, 165);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: rgb(255, 255, 255);
+        --background-color: rgb(0, 0, 0);
+        --accent_color: rgb(0, 153, 255);
+        --grey: rgb(122, 122, 122);
+        --off_grey: rgb(50, 50, 50);
+        --half_grey: rgb(90, 90, 90);
+    }
+}
+
+body {
+    color: var(--text-color);
+    background-color: var(--background-color);
+    margin: 0;
+    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif, Lexend_Deca;
+}
+
+
+@keyframes stretch {
+    from {
+        width: 0%
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+
+/* 
+    Internal notifications
+*/
+.notification {
+    position: fixed;
+    bottom: 0.2rem;
+    right: 0.5rem;
+    height: 9rem;
+    width: 20rem;
+    /*320px at default zoom*/
+    transform: translateX(22rem);
+    background-color:var(--background-color);
+    color: var(--text-color);
+    overflow: hidden;
+    box-shadow: 0 0 0.2rem 0 var(--accent_color);
+    cursor: pointer;
+    transition: transform 500ms, box-shadow 200ms, opacity 200ms, height 300ms, width 300ms;
+    -webkit-user-select: none;
+}
+
+.notification .title {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 1.9rem;
+    font-size: 1.5rem;
+    text-align: center;
+    white-space: nowrap;
+    line-height: 120%;
+    cursor: inherit;
+}
+
+.notification .title::before {
+    position: absolute;
+    transform: translate(0, 0);
+    top: 0;
+    left: 0;
+    z-index: 99;
+    background-color: rgb(255, 255, 255);
+    height: 0.2rem;
+    animation: stretch 11000ms;
+    content: "";
+    cursor: inherit;
+}
+
+.notification .notifbody {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0% 1.5% 0% 1.5%;
+    height: 7.1rem;
+    font-size: 1.2rem;
+    overflow: hidden;
+    cursor: inherit;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* notification X button */
+.x-button {
+    height: 1.9rem;
+    width: 1.9rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.x-button::before,
+.x-button::after {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 0.19rem;
+    content: "";
+    background-color: #f00;
+    border-radius: 0.25rem;
+    transition: transform 300ms, box-shadow 200ms;
+}
+
+.x-button::before {
+    /*Left */
+    right: 45%;
+    transform: rotate(-45deg);
+}
+
+.x-button::after {
+    /*Right */
+    left: 45%;
+    transform: rotate(45deg);
+}
+
+.x-button:hover::before {
+    transform: rotate(-230deg);
+}
+
+.x-button:hover::after {
+    transform: rotate(230deg);
+}
+
+.x-button:hover::before,
+.x-button:hover::after {
+    box-shadow: 0 0 0.3rem 0 #fff;
+}
+
+/* Tablet / tall aspact ratio */
+@media screen and (min-aspect-ratio: 1/3) and (min-aspect-ratio: 3/4) and (min-width:300px) {}
+
+/*    <--  Landscape layout / Standard (with min-width) -->     */
+@media screen and (min-aspect-ratio: 3/2) and (min-width:400px) {}

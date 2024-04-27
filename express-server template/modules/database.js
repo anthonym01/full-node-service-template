@@ -56,8 +56,7 @@ const database = {
     },
     Create_user: async function (userdetails) {
         /* 
-            Create a new user
-            Expects format:
+            Create a new user, Expects format:
             userdetails = {
                 uname:"",
                 password:"",
@@ -107,22 +106,28 @@ const database = {
         }
     },
     does_user_exist: async function (username) {
-        const database_paths = this.get_paths();
+        try {
+            const database_paths = this.get_paths();
+            logs.info('Check database for user: ', username);
+            let userfile_data = fs.readFile(path.join(database_paths.users_data, username, '.json'), { encoding: 'utf-8' });
+            logs.info('User data: ', userfile_data);
+            let userdata = JSON.parse(userfile_data);
+            //let userdata = JSON.parse(fs.readFile(database_paths.users, { encoding: 'utf-8' }));
+            for (let iterate in userdata.users) {
+                if (userdata.users[iterate].uname == username) {
+                    console.log('Found user at: ', iterate);
+                    return true;
+                }
+            }
+            return false;
+        } catch (error) {
+            logs.error('Error in does_user_exist: ', error);
+            return 'error'
+        }
+
         /*
             check if ${username} user already existsv in '/database/users.json' and check user data file
         */
-        console.log('Check database for user: ', username);
-
-        let userdata = JSON.parse(fs.readFile(database_paths.users, { encoding: 'utf-8' }));
-
-
-        for (let iterate in userdata.users) {
-            if (userdata.users[iterate].uname == username) {
-                console.log('Found user at: ', iterate);
-                return true;
-            }
-        }
-        return false;
     }
 };
 

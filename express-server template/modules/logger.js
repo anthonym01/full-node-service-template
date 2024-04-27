@@ -166,7 +166,6 @@ const loggerite = {
             }
         }
     },
-
 }
 
 module.exports = loggerite;
