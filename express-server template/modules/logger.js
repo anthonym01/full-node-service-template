@@ -99,7 +99,8 @@ const loggerite = {
             }
         }
     },
-    error: async function (datum1, datum2, datum3, datum4, datum5, datum6) {//log bad happenings
+    //log bad happenings
+    error: async function (datum1, datum2, datum3, datum4, datum5, datum6) {
         const log_properties = this.get_paths();
         try {
             if (typeof datum6 !== 'undefined') {

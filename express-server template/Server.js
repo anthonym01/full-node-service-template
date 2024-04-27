@@ -16,9 +16,9 @@ logs.initalize();//initalize logger
 database.initalize();//initalize database
 
 logs.info('Server starting');//log server start
-database.does_user_exist('Anthonym').then((result) => {
+/*database.does_user_exist('Anthonym').then((result) => {
     logs.info('Does user exist: ', result);
-});//check if user exists
+});*///check if user exists
 
 app.use(express.static('www'))//bind root path to /www
 

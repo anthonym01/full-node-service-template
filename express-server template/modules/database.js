@@ -6,10 +6,10 @@ const path = require('path');
 const database = {
     get_paths: function () {
         const root = path.join(__dirname, '../database/');//root path
-        const users = path.join(root, 'users.json');//users record
-        const users_data = path.join(root, 'userdata/');//user data directory
+        const users_file = path.join(root, 'users.json');//users record
+        const users_data_records = path.join(root, 'userdata/');//user data directory
 
-        return { root, users, users_data };
+        return { root, users_file, users_data_records };
     },
     initalize: function () {
         /*
@@ -24,9 +24,9 @@ const database = {
                 fs.mkdirSync(database_paths.root);
             }
 
-            if (!fs.existsSync(database_paths.users)) {//check if users record exists
-                logs.info('Creating test users records');
-                fs.writeFileSync(database_paths.users,
+            if (!fs.existsSync(database_paths.users_file)) {//check if users record exists
+                logs.info('Creating test users record :', database_paths.users_file);
+                fs.writeFileSync(database_paths.users_file,
                     JSON.stringify({
                         db_version: 0,
                         users: [//some test users
@@ -37,9 +37,9 @@ const database = {
                 );
             }
 
-            if (!fs.existsSync(database_paths.users_data)) {//check if user data directory exists
-                logs.info('Creating user data directory', database_paths.users_data);
-                fs.mkdirSync(database_paths.users_data);
+            if (!fs.existsSync(database_paths.users_data_records)) {//check if user data directory exists
+                logs.info('Creating user data directory', database_paths.users_data_records);
+                fs.mkdirSync(database_paths.users_data_records);
             }
             logs.info("Database check succeded");
         } catch (error) {
@@ -70,7 +70,7 @@ const database = {
         try {
 
             //check if this user already exists
-            let userdata = JSON.parse(fs.readFile(database_paths.users, { encoding: 'utf-8' }));
+            let userdata = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));
 
             //!! Improve matching later
             let user_is_found = false;
@@ -91,9 +91,9 @@ const database = {
                     password: userdetails.password,
                 });
                 userdata.db_version = Number(userdata.db_version) + 1;
-                fs.writeFileSync(database_paths.users, JSON.stringify(userdata), { encoding: 'utf-8' });
+                fs.writeFileSync(database_paths.users_file, JSON.stringify(userdata), { encoding: 'utf-8' });
                 //create this specific users file
-                fs.writeFileSync(path.join(database_paths.users_data, userdetails["uname"], '.json'), JSON.stringify({
+                fs.writeFileSync(path.join(database_paths.users_data_records, userdetails["uname"], '.json'), JSON.stringify({
                     version: 0,
                     lastupdate: new Date().getTime(),
                     data: userdetails.data || {},//initial data if any
@@ -107,13 +107,11 @@ const database = {
     },
     does_user_exist: async function (username) {
         try {
-            const database_paths = this.get_paths();
-            logs.info('Check database for user: ', username);
-            let userfile_data = fs.readFile(path.join(database_paths.users_data, username, '.json'), { encoding: 'utf-8' });
-            logs.info('User data: ', userfile_data);
-            let userdata = JSON.parse(userfile_data);
-            //let userdata = JSON.parse(fs.readFile(database_paths.users, { encoding: 'utf-8' }));
-            for (let iterate in userdata.users) {
+            const database_paths = database.get_paths();
+            logs.info('Check database for user: ', username, ' at ', database_paths.users_file);
+
+            let userdata = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
+            for (let iterate in userdata.users) {//check if user exists
                 if (userdata.users[iterate].uname == username) {
                     console.log('Found user at: ', iterate);
                     return true;
@@ -124,10 +122,6 @@ const database = {
             logs.error('Error in does_user_exist: ', error);
             return 'error'
         }
-
-        /*
-            check if ${username} user already existsv in '/database/users.json' and check user data file
-        */
     }
 };
 
