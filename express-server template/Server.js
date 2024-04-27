@@ -12,74 +12,46 @@ const path = require('path');
 const logs = require('./modules/logger');
 const database = require('./modules/database');
 
-database.initalize();
-
-async function notfoundpage(response, url) {//404 page goes here
-    response.writeHead(404);
-    response.write('404 page not , code: ' + url);
-    logs.info('File not found: ' + url);
-}
+logs.initalize();//initalize logger
+database.initalize();//initalize database
 
 app.use(express.static('www'))//bind root path to /www
 
-//starting point request
-//app.get('/', (request, response) => { startingpoint(response) });
-//app.get('/index.html', (request, response) => { startingpoint(response) });
-
-//test get
-app.get('/get/test', (req, res) => {
-
+app.get('/get/test', (req, res) => {//test get
     try {
-        console.log('test get');
+        logs.info('test get');
         req.on('data', function (data) {
-            console.log('got: ', data);
+            logs.info('got: ', data);
             res.end(JSON.stringify({ testget: "test get data received" }));
         });
         //res.writeHead(200, { 'Content-type': 'application/json' });
         res.send(JSON.stringify({ test: 'test get is okay' }));
     } catch (error) {
-        console.log('Catastrophy on test get: ', err);
+        logs.error('Catastrophy on test get: ', err);
     }
 });
 
-//test post
-app.post('/post/test', (req, res) => {
+app.post('/post/test', (req, res) => {//test post
     //receive more data than a get
-    logs.info('test post to server');
-    req.on('data', function (data) {
-        logs.info('Posted : ', data);
-        res.end(JSON.stringify({ test: "test post received" }));
-    });
+    try {
+        logs.info('test post to server');
+        req.on('data', function (data) {
+            logs.info('Posted : ', data);
+            res.end(JSON.stringify({ test: "test post received" }));
+        });
+    } catch (error) {
+        logs.error('Catastrophy on test post: ', err);
+    }
 });
 
 app.listen(port, () => { logs.info('Running on port ', port) })//Listen for requests, this starts the server
-
-
-async function startingpoint(response) {//serve index.html
-    try {
-        response.setHeader('Acess-Control-Allow-Origin', '*');//allow access control from client, this will automatically handle most media files
-
-        response.writeHead(200, { 'Content-type': 'text/html' });//200 ok
-
-        fs.readFile('www/index.html', function (err, databuffer) {
-            if (err) {
-                logs.error(err);
-            } else {
-                response.write(databuffer);
-            }
-            logs.info("User came online " + response);
-            response.end();//end response
-
-        });
-    } catch (err) {
-        logs.error('Catastrophy on index: \n' + err);
-    }
-}
 
 async function writeresponce(res, filepath) {
     //write files in responses
 
     try {
+        res.setHeader('Acess-Control-Allow-Origin', '*');//allow access control from client, this will automatically handle most media files
+
         fs.readFile(filepath, function (err, databuffer) {
             if (err) {
                 res.writeHead(404);//not okay

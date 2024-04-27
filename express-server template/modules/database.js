@@ -16,20 +16,20 @@ const database = {
             Checks for paths '/database/', '/database/users.json'
         */
         const database_paths = this.get_paths();
-        logs.info('Initalize database');
-        logs.info(database_paths);
+        logs.info('Initalize database: ', database_paths);
+
         try {
-            if (!fs.existsSync(path.join(__dirname, './database/'))) {
+            if (!fs.existsSync(database_paths.root)) {//check if database exists
                 logs.error("Database does not exist");
-                fs.mkdirSync(path.join(__dirname, './database/'));
+                fs.mkdirSync(database_paths.root);
             }
 
-            if (!fs.existsSync(path.join(__dirname, './database/users.json'))) {
+            if (!fs.existsSync(database_paths.users)) {//check if users record exists
                 logs.info('Creating test users records');
-                fs.writeFileSync(path.join(__dirname, './database/users.json'),
+                fs.writeFileSync(database_paths.users,
                     JSON.stringify({
                         db_version: 0,
-                        users: [//test users
+                        users: [//some test users
                             { uname: "Anthonym", password: "0000" },
                             { uname: "test", password: "0000" }
                         ]
@@ -37,15 +37,15 @@ const database = {
                 );
             }
 
-            if (!fs.existsSync(path.join(__dirname, './database/userdata/'))) {
-                logs.info('Creating user data directory' + path.join(__dirname, './database/userdata/'));
-                fs.mkdirSync(path.join(__dirname, './database/userdata/'));
+            if (!fs.existsSync(database_paths.users_data)) {//check if user data directory exists
+                logs.info('Creating user data directory', database_paths.users_data);
+                fs.mkdirSync(database_paths.users_data);
             }
             logs.info("Database check succeded");
         } catch (error) {
             // shouldnt get any errors here unless something is realy wrong
             console.log('Startup error, check if node runtime has write permission in ', __dirname);
-            console.warn(error);
+            logs.error("Database Error: ", error);
         }
     },
     cleanup: async function () {
@@ -64,14 +64,15 @@ const database = {
                 data:{}//initial data for user
             }
         */
-
-        console.log('Add new user entry to database :', userdetails);
+        const database_paths = this.get_paths();
+        logs.info('Add new user entry to database :', userdetails);
 
         //! Need to forbid unwritable characters or convert username with another primary key
         try {
 
             //check if this user already exists
-            let userdata = JSON.parse(fs.readFile(path.join(__dirname, '/database/users.json'), { encoding: 'utf-8' }));
+            let userdata = JSON.parse(fs.readFile(database_paths.users, { encoding: 'utf-8' }));
+
             //!! Improve matching later
             let user_is_found = false;
             for (let iterate in userdata.users) {
@@ -90,36 +91,29 @@ const database = {
                     uname: userdetails.uname,
                     password: userdetails.password,
                 });
-
                 userdata.db_version = Number(userdata.db_version) + 1;
-                fs.writeFileSync(path.join(__dirname, '/database/users.json'), JSON.stringify(userdata), { encoding: 'utf-8' });
-
+                fs.writeFileSync(database_paths.users, JSON.stringify(userdata), { encoding: 'utf-8' });
                 //create this specific users file
-                fs.writeFileSync(path.join(__dirname, './database/userdata/' + userdetails["uname"] + '.json'), JSON.stringify({
+                fs.writeFileSync(path.join(database_paths.users_data, userdetails["uname"], '.json'), JSON.stringify({
                     version: 0,
                     lastupdate: new Date().getTime(),
                     data: userdetails.data || {},//initial data if any
                 }));
                 return true;//user should now be in database
-
             }
-
-
-
         } catch (error) {
             console.log('error ', error)
             return false;//handle later
         }
-
-
     },
     does_user_exist: async function (username) {
+        const database_paths = this.get_paths();
         /*
             check if ${username} user already existsv in '/database/users.json' and check user data file
         */
         console.log('Check database for user: ', username);
 
-        let userdata = JSON.parse(fs.readFile(path.join(__dirname, '/database/users.json'), { encoding: 'utf-8' }));
+        let userdata = JSON.parse(fs.readFile(database_paths.users, { encoding: 'utf-8' }));
 
 
         for (let iterate in userdata.users) {
