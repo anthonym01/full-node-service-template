@@ -41,7 +41,7 @@ app.post('/post/test', (req, res) => {//test post
     try {
         logs.info('test post to server');
         req.on('data', function (data) {
-            logs.info('Posted : ', data);
+            logs.info('Posted : ', JSON.parse(data));
             res.end(JSON.stringify({ test: "test post received" }));
         });
     } catch (error) {

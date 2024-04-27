@@ -5,7 +5,7 @@ window.addEventListener('load', async function () {//Starting point
     } catch (err) {
         console.warn('Something bad happened: ', err);
     } finally {
- 
+        //Test get button
         document.getElementById('testpost_btn').addEventListener('click', function () {
             //Test post button
             console.log("testpost");
