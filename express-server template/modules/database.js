@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const database = {
+     //returns paths to database files
     get_paths: function () {
         const root = path.join(__dirname, '../database/');//root path
         const users_file = path.join(root, 'users.json');//users record
@@ -11,11 +12,9 @@ const database = {
 
         return { root, users_file, users_data_records };
     },
+    //Checks for paths '/database/', '/database/users.json'
     initalize: function () {
-        /*
-            Checks for paths '/database/', '/database/users.json'
-        */
-        const database_paths = this.get_paths();
+        const database_paths = this.get_paths();//get database paths
         logs.info('Initalize database: ', database_paths);
 
         try {
