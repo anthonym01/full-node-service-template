@@ -3,7 +3,7 @@
     dependencies  for a Node.js server using Express framework.
 */
 
-const port = 8080;//port for the server 80, 443, 8080
+const port = 8082;//port for the server 80, 443, 8082
 const express = require('express');
 const app = express();
 const fs = require('fs');
@@ -20,7 +20,8 @@ logs.info('Server starting');//log server start
     logs.info('Does user exist: ', result);
 });*///check if user exists
 
-app.use(express.static('www'))//bind root path to /www
+//bind root path to /www
+app.use(express.static('www')).listen(()=>{logs.info('incomming connection: ',app)})
 
 app.get('/get/test', (req, res) => {//test get
     try {
