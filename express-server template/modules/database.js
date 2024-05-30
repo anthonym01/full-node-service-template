@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const database = {
-     //returns paths to database files
+    //returns paths to database files
     get_paths: function () {
         const root = path.join(__dirname, '../database/');//root path
         const users_file = path.join(root, 'users.json');//users record
@@ -122,7 +122,20 @@ const database = {
             logs.error('Error in does_user_exist: ', error);
             return 'error'
         }
-    }
+    },
+    get_user_data: async function (username) {
+        try {
+            const database_paths = database.get_paths();
+            logs.info('Get user data for: ', username, ' at ', database_paths.users_data_records);
+
+            let user_data = JSON.parse(fs.readFileSync(path.join(database_paths.users_data_records, username, '.json'), { encoding: 'utf-8' }));//get users record
+            logs.info('User data: ', user_data);
+            return user_data;
+        } catch (error) {
+            logs.error('Error in get_user_data: ', error);
+            return false
+        }
+    },
 };
 
 module.exports = database;

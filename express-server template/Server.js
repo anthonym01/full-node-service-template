@@ -25,7 +25,7 @@ app.use(express.static('www')).listen(() => {
             logs.info('Does "Anthonym" exist: ', result);
         });
     } catch (error) {
-
+        logs.error('Catastrophy on server start: ', error);
     }
 });
 
