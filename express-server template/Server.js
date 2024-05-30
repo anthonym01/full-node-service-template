@@ -12,16 +12,22 @@ const path = require('path');
 const logs = require('./modules/logger');
 const database = require('./modules/database');
 
-logs.initalize();//initalize logger
-database.initalize();//initalize database
+
 
 logs.info('Server starting');//log server start
-/*database.does_user_exist('Anthonym').then((result) => {
-    logs.info('Does user exist: ', result);
-});*///check if user exists
 
 //bind root path to /www
-app.use(express.static('www')).listen(()=>{logs.info('incomming connection: ',app)})
+app.use(express.static('www')).listen(() => {
+    try {
+        logs.initalize();//initalize logger
+        database.initalize();//initalize database
+        database.does_user_exist('Anthonym').then((result) => {
+            logs.info('Does "Anthonym" exist: ', result);
+        });
+    } catch (error) {
+
+    }
+});
 
 app.get('/get/test', (req, res) => {//test get
     try {

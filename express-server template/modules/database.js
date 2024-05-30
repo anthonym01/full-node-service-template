@@ -109,13 +109,14 @@ const database = {
             const database_paths = database.get_paths();
             logs.info('Check database for user: ', username, ' at ', database_paths.users_file);
 
-            let userdata = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
-            for (let iterate in userdata.users) {//check if user exists
-                if (userdata.users[iterate].uname == username) {
-                    console.log('Found user at: ', iterate);
+            let users_file_data = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
+            for (let iterate in users_file_data.users) {//check if user exists
+                if (users_file_data.users[iterate].uname == username) {
+                    logs.info('Found user at: ', iterate);
                     return true;
                 }
             }
+            logs.info('Cound not find user :(');
             return false;
         } catch (error) {
             logs.error('Error in does_user_exist: ', error);
