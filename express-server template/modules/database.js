@@ -29,8 +29,8 @@ const database = {
                     JSON.stringify({
                         db_version: 0,
                         users: [//some test users
-                            { uname: "Anthonym", password: "0000" },
-                            { uname: "test", password: "0000" }
+                            { uuid: Date.now(),uname: "Anthonym", password: "0000" },
+                            { uuid: Date.now()+1000,uname: "test", password: "0000" }
                         ]
                     })
                 );
@@ -39,6 +39,7 @@ const database = {
             if (!fs.existsSync(database_paths.users_data_records)) {//check if user data directory exists
                 logs.info('Creating user data directory', database_paths.users_data_records);
                 fs.mkdirSync(database_paths.users_data_records);
+                
             }
             logs.info("Database check succeded");
         } catch (error) {
@@ -136,6 +137,71 @@ const database = {
             return false
         }
     },
+    update_user_data: async function (username, new_data) {
+        try {
+            const database_paths = database.get_paths();
+            logs.info('Update user data for: ', username, ' at ', database_paths.users_data_records);
+
+            let user_data = JSON.parse(fs.readFileSync(path.join(database_paths.users_data_records, username, '.json'), { encoding: 'utf-8' }));//get users record
+            user_data.data = new_data;
+            user_data.version = Number(user_data.version) + 1;
+            user_data.lastupdate = new Date().getTime();
+            fs.writeFileSync(path.join(database_paths.users_data_records, username, '.json'), JSON.stringify(user_data), { encoding: 'utf-8' });
+            logs.info('User data updated: ', user_data);
+            return true;
+        } catch (error) {
+            logs.error('Error in update_user_data: ', error);
+            return false
+        }
+    },
+    delete_user: async function (username) {
+        try {
+            const database_paths = database.get_paths();
+            logs.info('Delete user: ', username, ' at ', database_paths.users_data_records);
+
+            let user_data = JSON.parse(fs.readFileSync(path.join(database_paths.users_data_records, username, '.json'), { encoding: 'utf-8' }));//get users record
+            fs.unlinkSync(path.join(database_paths.users_data_records, username, '.json'));//delete user data record
+            logs.info('User data deleted: ', user_data);
+
+            let users_file_data = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
+            for (let iterate in users_file_data.users) {//check if user exists
+                if (users_file_data.users[iterate].uname == username) {
+                    users_file_data.users.splice(iterate, 1);//remove user from users record
+                    users_file_data.db_version = Number(users_file_data.db_version) + 1;
+                    fs.writeFileSync(database_paths.users_file, JSON.stringify(users_file_data), { encoding: 'utf-8' });//update users record
+                    logs.info('User removed from users record: ', users_file_data);
+                    return true;
+                }
+            }
+            logs.error('Could not find user in users record');
+            return false;
+        } catch (error) {
+            logs.error('Error in delete_user: ', error);
+            return false
+        }
+    },
+    change_password: async function (username, new_password) {
+        try {
+            const database_paths = database.get_paths();
+            logs.info('Change password for: ', username, ' at ', database_paths.users_file);
+
+            let users_file_data = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
+            for (let iterate in users_file_data.users) {//check if user exists
+                if (users_file_data.users[iterate].uname == username) {
+                    users_file_data.users[iterate].password = new_password;
+                    users_file_data.db_version = Number(users_file_data.db_version) + 1;
+                    fs.writeFileSync(database_paths.users_file, JSON.stringify(users_file_data), { encoding: 'utf-8' });//update users record
+                    logs.info('Password changed for user: ', username);
+                    return true;
+                }
+            }
+            logs.error('Could not find user in users record');
+            return false;
+        } catch (error) {
+            logs.error('Error in change_password: ', error);
+            return false
+        }
+    }
 };
 
 module.exports = database;
