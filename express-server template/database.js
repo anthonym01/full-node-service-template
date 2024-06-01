@@ -47,17 +47,18 @@ const database = {
         */
         logs.info('Clean up database placeholder')
     },
-    Create_user: async function (userdetails) {
+    Create_user: async function (new_user_details) {
+
+        // Expects format:
         /* 
-            Expects format:
-            userdetails = {
+            new_user_details = {
                 uuid:00000000000000000000000000000000,//mandatory, will be generated if not provided
                 uname:"",//mandatory
                 password:"",//mandatory
                 data:{}//initial data for user
             }
         */
-        logs.info('Add new user entry to database :', userdetails);
+        logs.info('Add new user entry to database :', new_user_details);
 
         try {
             //check if this user already exists
@@ -66,7 +67,7 @@ const database = {
             //!! Improve matching later
             let user_is_found = false;
             for (let iterate in user_record_file_data.users) {
-                if (user_record_file_data.users[iterate].uname == userdetails["uname"]) {
+                if (user_record_file_data.users[iterate].uname == new_user_details["uname"]) {
                     user_is_found = true;
                     logs.info('User already exists at: ', user_record_file_data.users[iterate].uuid);
                     return false;//user will not be overwritten
@@ -77,8 +78,8 @@ const database = {
             let new_uuid = Date.now();
             user_record_file_data.users.push({
                 uuid: new_uuid,
-                uname: userdetails.uname,
-                password: userdetails.password,
+                uname: new_user_details.uname,
+                password: new_user_details.password,
             });
 
             user_record_file_data.db_version = Number(user_record_file_data.db_version) + 1;
@@ -89,7 +90,7 @@ const database = {
             fs.writeFileSync(path.join(db_data_path, String(new_uuid) + '.json'), JSON.stringify({
                 version: 0,
                 lastupdate: new Date().getTime(),
-                data: userdetails.data || { test: "no data passed to user" },
+                data: new_user_details.data || { test: "no data passed to user" },
             }));
             return true;//user should now be in database
 
@@ -98,37 +99,20 @@ const database = {
             return false;//handle later
         }
     },
-    does_user_exist: async function (username) {
+    get_user_data_by_uuid: async function (uuid) {
         try {
-            const database_paths = database.get_paths();
-            logs.info('Check database for user: ', username, ' at ', database_paths.users_file);
+            logs.info('Get user data for: ', uuid);
 
-            let users_file_data = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
-            for (let iterate in users_file_data.users) {//check if user exists
-                if (users_file_data.users[iterate].uname == username) {
-                    logs.info('Found user at: ', iterate);
-                    return true;
-                }
-            }
-            logs.info('Cound not find user :(');
-            return false;
-        } catch (error) {
-            logs.error('Error in does_user_exist: ', error);
-            return 'error'
-        }
-    },
-    get_user_data: async function (username) {
-        try {
-            const database_paths = database.get_paths();
-            logs.info('Get user data for: ', username, ' at ', database_paths.users_data_records);
-
-            let user_data = JSON.parse(fs.readFileSync(path.join(database_paths.users_data_records, username, '.json'), { encoding: 'utf-8' }));//get users record
+            let user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(uuid)+'.json'), { encoding: 'utf-8' }));//get users record
             logs.info('User data: ', user_data);
             return user_data;
         } catch (error) {
             logs.error('Error in get_user_data: ', error);
             return false
         }
+    },
+    get_user_data_by_username: async function (username) {
+        
     },
     update_user_data: async function (username, new_data) {
         try {

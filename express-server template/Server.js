@@ -12,8 +12,6 @@ const path = require('path');
 const logs = require('./logger');
 const database = require('./database');
 
-
-
 logs.info('Server starting');//log server start
 
 //bind root path to /www
@@ -21,9 +19,7 @@ app.use(express.static('www')).listen(() => {
     try {
         logs.initalize();//initalize logger
         database.initalize();//initalize database
-        database.does_user_exist('Anthonym').then((result) => {
-            logs.info('Does "Anthonym" exist: ', result);
-        });
+        database.get_user_data_by_uuid(1717209024517);//test get user data
     } catch (error) {
         logs.error('Catastrophy on server start: ', error);
     }
