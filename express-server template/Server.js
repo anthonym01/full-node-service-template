@@ -12,12 +12,13 @@ const path = require('path');
 const logs = require('./logger');
 const database = require('./database');
 
+logs.initalize();//initalize logger
 logs.info('Server starting');//log server start
 
 //bind root path to /www
 app.use(express.static('www')).listen(() => {
     try {
-        logs.initalize();//initalize logger
+        
         database.initalize();//initalize database
         database.get_user_data_by_uuid(1717209024517);//test get user data
     } catch (error) {
