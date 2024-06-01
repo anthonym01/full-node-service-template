@@ -3,44 +3,37 @@ const logs = require('./logger');
 const fs = require('fs');
 const path = require('path');
 
-const database = {
-    //returns paths to database files
-    get_paths: function () {
-        const root = path.join(__dirname, '../database/');//root path
-        const users_file = path.join(root, 'users.json');//users record
-        const users_data_records = path.join(root, 'userdata/');//user data directory
+const root_db_directory = path.join(__dirname, '/database/');//root path
+const user_records_path = path.join(root_db_directory, 'users.json');//users record
+const db_data_path = path.join(root_db_directory, 'userdata/');//data directory
 
-        return { root, users_file, users_data_records };
-    },
-    //Checks for paths '/database/', '/database/users.json'
+const database = {
     initalize: function () {
-        const database_paths = this.get_paths();//get database paths
-        logs.info('Initalize database: ', database_paths);
+        logs.info('Initalize database: ', root_db_directory);
 
         try {
-            if (!fs.existsSync(database_paths.root)) {//check if database exists
+            //check if database exists
+            if (!fs.existsSync(root_db_directory)) {
                 logs.error("Database does not exist");
-                fs.mkdirSync(database_paths.root);
+                fs.mkdirSync(root_db_directory);
             }
 
-            if (!fs.existsSync(database_paths.users_file)) {//check if users record exists
-                logs.info('Creating test users record :', database_paths.users_file);
-                fs.writeFileSync(database_paths.users_file,
-                    JSON.stringify({
-                        db_version: 0,
-                        users: [//some test users
-                            { uuid: Date.now(),uname: "Anthonym", password: "0000" },
-                            { uuid: Date.now()+1000,uname: "test", password: "0000" }
-                        ]
-                    })
-                );
+            //check if user data directory exists
+            if (!fs.existsSync(db_data_path)) {
+                logs.info('Creating user data directory', db_data_path);
+                fs.mkdirSync(db_data_path);
             }
 
-            if (!fs.existsSync(database_paths.users_data_records)) {//check if user data directory exists
-                logs.info('Creating user data directory', database_paths.users_data_records);
-                fs.mkdirSync(database_paths.users_data_records);
-                
+            //check if users record exists
+            if (!fs.existsSync(user_records_path)) {
+                logs.info('Creating test users record :', user_records_path);
+                //create users record
+                fs.writeFileSync(user_records_path, JSON.stringify({ db_version: 0, users: [] }), { encoding: 'utf-8' });
+                //create test users
+                database.Create_user({ uname: "test", password: "0000" });
+                database.Create_user({ uname: "Anthonym", password: "0000" });
             }
+
             logs.info("Database check succeded");
         } catch (error) {
             // shouldnt get any errors here unless something is realy wrong
@@ -56,50 +49,50 @@ const database = {
     },
     Create_user: async function (userdetails) {
         /* 
-            Create a new user, Expects format:
+            Expects format:
             userdetails = {
-                uname:"",
-                password:"",
+                uuid:00000000000000000000000000000000,//mandatory, will be generated if not provided
+                uname:"",//mandatory
+                password:"",//mandatory
                 data:{}//initial data for user
             }
         */
-        const database_paths = this.get_paths();
         logs.info('Add new user entry to database :', userdetails);
 
-        //! Need to forbid unwritable characters or convert username with another primary key
         try {
-
             //check if this user already exists
-            let userdata = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));
+            let user_record_file_data = JSON.parse(fs.readFileSync(user_records_path, { encoding: 'utf-8' }));
 
             //!! Improve matching later
             let user_is_found = false;
-            for (let iterate in userdata.users) {
-                if (userdata.users[iterate].uname == userdetails["uname"]) {
+            for (let iterate in user_record_file_data.users) {
+                if (user_record_file_data.users[iterate].uname == userdetails["uname"]) {
                     user_is_found = true;
-                    console.log('Found user at: ', iterate);
-                    break;
+                    logs.info('User already exists at: ', user_record_file_data.users[iterate].uuid);
+                    return false;//user will not be overwritten
                 }
             }
 
-            if (user_is_found) {
-                return false;//user will not be overwritten
-            } else {
-                //update users record
-                userdata.users.push({
-                    uname: userdetails.uname,
-                    password: userdetails.password,
-                });
-                userdata.db_version = Number(userdata.db_version) + 1;
-                fs.writeFileSync(database_paths.users_file, JSON.stringify(userdata), { encoding: 'utf-8' });
-                //create this specific users file
-                fs.writeFileSync(path.join(database_paths.users_data_records, userdetails["uname"], '.json'), JSON.stringify({
-                    version: 0,
-                    lastupdate: new Date().getTime(),
-                    data: userdetails.data || {},//initial data if any
-                }));
-                return true;//user should now be in database
-            }
+            //update users records list with new user
+            let new_uuid = Date.now();
+            user_record_file_data.users.push({
+                uuid: new_uuid,
+                uname: userdetails.uname,
+                password: userdetails.password,
+            });
+
+            user_record_file_data.db_version = Number(user_record_file_data.db_version) + 1;
+
+            fs.writeFileSync(user_records_path, JSON.stringify(user_record_file_data), { encoding: 'utf-8' });
+
+            //create this specific users file
+            fs.writeFileSync(path.join(db_data_path, String(new_uuid) + '.json'), JSON.stringify({
+                version: 0,
+                lastupdate: new Date().getTime(),
+                data: userdetails.data || { test: "no data passed to user" },
+            }));
+            return true;//user should now be in database
+
         } catch (error) {
             console.log('error ', error)
             return false;//handle later

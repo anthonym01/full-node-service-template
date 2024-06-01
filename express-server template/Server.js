@@ -9,8 +9,8 @@ const app = express();
 const fs = require('fs');
 const path = require('path');
 
-const logs = require('./modules/logger');
-const database = require('./modules/database');
+const logs = require('./logger');
+const database = require('./database');
 
 
 
