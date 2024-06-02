@@ -131,10 +131,10 @@ const database = {
         }
     },
     update_user_data_by_uuid: async function (uuid, new_data) {
-        try {*
+        try {
             logs.info('Update at: ', uuid, ' with: ', new_data);
 
-            let user_data = JSON.parse(fs.readFileSync(path.join(database_paths.users_data_records, username, '.json'), { encoding: 'utf-8' }));//get users record
+            let user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(uuid)+'.json'), { encoding: 'utf-8' }));//get users record
             user_data.data = new_data;
             user_data.version = Number(user_data.version) + 1;
             user_data.lastupdate = new Date().getTime();
