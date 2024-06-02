@@ -130,10 +130,9 @@ const database = {
             return false
         }
     },
-    update_user_data: async function (username, new_data) {
-        try {
-            const database_paths = database.get_paths();
-            logs.info('Update user data for: ', username, ' at ', database_paths.users_data_records);
+    update_user_data_by_uuid: async function (uuid, new_data) {
+        try {*
+            logs.info('Update at: ', uuid, ' with: ', new_data);
 
             let user_data = JSON.parse(fs.readFileSync(path.join(database_paths.users_data_records, username, '.json'), { encoding: 'utf-8' }));//get users record
             user_data.data = new_data;

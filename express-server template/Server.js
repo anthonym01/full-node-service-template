@@ -18,7 +18,6 @@ logs.info('Server starting');//log server start
 //bind root path to /www
 app.use(express.static('www')).listen(() => {
     try {
-        
         database.initalize();//initalize database
         database.get_user_data_by_uuid(1717209024517);//test get user data
         database.Create_user({ uname: "testduplicate", password: "0000" });//test create user
