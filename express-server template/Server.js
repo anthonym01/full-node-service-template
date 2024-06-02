@@ -22,6 +22,7 @@ app.use(express.static('www')).listen(() => {
         database.initalize();//initalize database
         database.get_user_data_by_uuid(1717209024517);//test get user data
         database.Create_user({ uname: "testduplicate", password: "0000" });//test create user
+        database.get_user_data_by_username("testduplicate");//test get user data by username
     } catch (error) {
         logs.error('Catastrophy on server start: ', error);
     }

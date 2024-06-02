@@ -76,7 +76,7 @@ const database = {
                     return false;//user will not be overwritten
                 }
             }
-            
+
             //update users records list with new user
             let new_uuid = new_user_details.uuid || Date.now();
             user_record_file_data.users.push({
@@ -115,7 +115,20 @@ const database = {
         }
     },
     get_user_data_by_username: async function (username) {
+        try {
+            logs.info('Get user data for: ', username);
+            const users_file_data = JSON.parse(fs.readFileSync(user_records_path, { encoding: 'utf-8' }));//get users record
 
+            for (let iterate in users_file_data.users) {//check if user exists
+                if (users_file_data.users[iterate].uname == username) {
+                    logs.info('Username coresponds to: ', users_file_data.users[iterate].uuid);
+                    return await this.get_user_data_by_uuid(users_file_data.users[iterate].uuid);
+                }
+            }
+        } catch (error) {
+            logs.error('Error in get_user_data: ', error);
+            return false
+        }
     },
     update_user_data: async function (username, new_data) {
         try {
