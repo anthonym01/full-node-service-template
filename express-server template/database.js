@@ -52,7 +52,7 @@ const database = {
         // Expects format:
         /* 
             new_user_details = {
-                uuid:00000000000000000000000000000000,//mandatory, will be generated if not provided
+                uuid:00000000000000000000000000000000,//will be generated if not provided
                 uname:"",//mandatory
                 password:"",//mandatory
                 data:{}//initial data for user
@@ -64,18 +64,21 @@ const database = {
             //check if this user already exists
             let user_record_file_data = JSON.parse(fs.readFileSync(user_records_path, { encoding: 'utf-8' }));
 
+            if (fs.existsSync(path.join(db_data_path, String(new_user_details.uuid) + '.json'))) {
+                logs.info('User data already exists at: ', new_user_details.uuid);
+                return false;//user will not be overwritten
+            }
+
             //!! Improve matching later
-            let user_is_found = false;
             for (let iterate in user_record_file_data.users) {
                 if (user_record_file_data.users[iterate].uname == new_user_details["uname"]) {
-                    user_is_found = true;
                     logs.info('User already exists at: ', user_record_file_data.users[iterate].uuid);
                     return false;//user will not be overwritten
                 }
             }
-
+            
             //update users records list with new user
-            let new_uuid = Date.now();
+            let new_uuid = new_user_details.uuid || Date.now();
             user_record_file_data.users.push({
                 uuid: new_uuid,
                 uname: new_user_details.uname,
@@ -103,7 +106,7 @@ const database = {
         try {
             logs.info('Get user data for: ', uuid);
 
-            let user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(uuid)+'.json'), { encoding: 'utf-8' }));//get users record
+            let user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(uuid) + '.json'), { encoding: 'utf-8' }));//get users record
             logs.info('User data: ', user_data);
             return user_data;
         } catch (error) {
@@ -112,7 +115,7 @@ const database = {
         }
     },
     get_user_data_by_username: async function (username) {
-        
+
     },
     update_user_data: async function (username, new_data) {
         try {

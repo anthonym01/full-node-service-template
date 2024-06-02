@@ -1,1 +1,1 @@
-{"db_version":2,"users":[{"uuid":1717209024513,"uname":"test","password":"0000"},{"uuid":1717209024517,"uname":"Anthonym","password":"0000"}]}
+{"db_version":5,"users":[{"uuid":1717209024513,"uname":"test","password":"0000"},{"uuid":1717209024517,"uname":"Anthonym","password":"0000"},{"uuid":1717343929743,"uname":"testduplicate","password":"0000"},{"uuid":1717344212466,"uname":"testduplicate","password":"0000"},{"uuid":1717344541826,"uname":"testduplicate","password":"0000"}]}
