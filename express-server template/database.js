@@ -47,7 +47,7 @@ const database = {
         */
         logs.info('Clean up database placeholder')
     },
-    Create_user: async function (new_user_details) {
+    create_user: async function (new_user_details) {
 
         // Expects format:
         /* 
@@ -102,6 +102,43 @@ const database = {
             return false;//handle later
         }
     },
+    delete_user: async function (username) {
+        try {
+            const database_paths = database.get_paths();
+            logs.info('Delete user: ', username, ' at ', database_paths.users_data_records);
+
+            let user_data = JSON.parse(fs.readFileSync(path.join(database_paths.users_data_records, username, '.json'), { encoding: 'utf-8' }));//get users record
+            fs.unlinkSync(path.join(database_paths.users_data_records, username, '.json'));//delete user data record
+            logs.info('User data deleted: ', user_data);
+
+            let users_file_data = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
+            for (let iterate in users_file_data.users) {//check if user exists
+                if (users_file_data.users[iterate].uname == username) {
+                    users_file_data.users.splice(iterate, 1);//remove user from users record
+                    users_file_data.db_version = Number(users_file_data.db_version) + 1;
+                    fs.writeFileSync(database_paths.users_file, JSON.stringify(users_file_data), { encoding: 'utf-8' });//update users record
+                    logs.info('User removed from users record: ', users_file_data);
+                    return true;
+                }
+            }
+            logs.error('Could not find user in users record');
+            return false;
+        } catch (error) {
+            logs.error('Error in delete_user: ', error);
+            return false
+        }
+    },
+    get_user:{
+        credentials: async function (identifier) {
+
+        },
+        data: async function (identifier) {
+
+        }
+    },
+    update_user:{
+
+    },
     get_user_data_by_uuid: async function (uuid) {
         try {
             logs.info('Get user data for: ', uuid);
@@ -143,32 +180,6 @@ const database = {
             return true;
         } catch (error) {
             logs.error('Error in update_user_data: ', error);
-            return false
-        }
-    },
-    delete_user: async function (username) {
-        try {
-            const database_paths = database.get_paths();
-            logs.info('Delete user: ', username, ' at ', database_paths.users_data_records);
-
-            let user_data = JSON.parse(fs.readFileSync(path.join(database_paths.users_data_records, username, '.json'), { encoding: 'utf-8' }));//get users record
-            fs.unlinkSync(path.join(database_paths.users_data_records, username, '.json'));//delete user data record
-            logs.info('User data deleted: ', user_data);
-
-            let users_file_data = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
-            for (let iterate in users_file_data.users) {//check if user exists
-                if (users_file_data.users[iterate].uname == username) {
-                    users_file_data.users.splice(iterate, 1);//remove user from users record
-                    users_file_data.db_version = Number(users_file_data.db_version) + 1;
-                    fs.writeFileSync(database_paths.users_file, JSON.stringify(users_file_data), { encoding: 'utf-8' });//update users record
-                    logs.info('User removed from users record: ', users_file_data);
-                    return true;
-                }
-            }
-            logs.error('Could not find user in users record');
-            return false;
-        } catch (error) {
-            logs.error('Error in delete_user: ', error);
             return false
         }
     },
