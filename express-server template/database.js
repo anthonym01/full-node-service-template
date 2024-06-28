@@ -128,16 +128,25 @@ const database = {
             return false
         }
     },
-    get_user:{
+    get_user: {
         credentials: async function (identifier) {
+            if (typeof identifier == 'string') {
+                
+            } else {
 
+            }
         },
         data: async function (identifier) {
 
         }
     },
-    update_user:{
+    update_user: {
+        credentials: async function (identifier, credentials) {
 
+        },
+        data: async function (identifier, data) {
+
+        }
     },
     get_user_data_by_uuid: async function (uuid) {
         try {
@@ -171,7 +180,7 @@ const database = {
         try {
             logs.info('Update at: ', uuid, ' with: ', new_data);
 
-            let user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(uuid)+'.json'), { encoding: 'utf-8' }));//get users record
+            let user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(uuid) + '.json'), { encoding: 'utf-8' }));//get users record
             user_data.data = new_data;
             user_data.version = Number(user_data.version) + 1;
             user_data.lastupdate = new Date().getTime();
