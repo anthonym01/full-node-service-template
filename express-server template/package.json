@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "bundle": "browserify www/js/index.js -o www/js/bundle.js",
-    "start": "node Server.js"
+    "start": "node Server.js",
+    "test-database": "node tests/database.js"
   },
   "keywords": [
     "express",
