@@ -3,19 +3,34 @@ const logs = require('./logger');
 const fs = require('fs');
 const path = require('path');
 
-const root_db_directory = path.join(__dirname, '/database/');//root path
-const user_records_path = path.join(root_db_directory, 'users.json');//users record
-const db_data_path = path.join(root_db_directory, 'userdata/');//data directory
+let root_db_directory = path.join(__dirname, '/database/');//root path
+let user_records_path = path.join(root_db_directory, 'users.json');//users record
+let db_data_path = path.join(root_db_directory, 'userdata/');//data directory
 
 const database = {
-    initalize: function () {
-        logs.info('Initalize database: ', root_db_directory);
+    initalize: function (path_for_database_folder) {
+        logs.info('Initalizing database');
+
+        //Allow the use of alternate paths/multiple databases at the same time
+        if (typeof (path_for_database_folder) == undefined || 'undefined' || null) {
+            
+            root_db_directory = path.join(__dirname, '/database/');//root path
+            logs.info('Initalize database with default path: ', root_db_directory);
+        } else {
+            root_db_directory = path.join(__dirname, String(path_for_database_folder));//root path
+            logs.info('Initalize database on: ', root_db_directory);
+        }
+        user_records_path = path.join(root_db_directory, 'users.json');//users record
+        db_data_path = path.join(root_db_directory, 'userdata/');//data directory
+
 
         try {
             //check if database exists
             if (!fs.existsSync(root_db_directory)) {
                 logs.error("Database does not exist");
                 fs.mkdirSync(root_db_directory);
+            }else{
+                logs.info('Prior database exists')
             }
 
             //check if user data directory exists
@@ -30,14 +45,14 @@ const database = {
                 //create users record
                 fs.writeFileSync(user_records_path, JSON.stringify({ db_version: 0, users: [] }), { encoding: 'utf-8' });
                 //create test users
-                database.Create_user({ uname: "test", password: "0000" });
-                database.Create_user({ uname: "Anthonym", password: "0000" });
+                database.create_user({ uname: "test", password: "0000" });
+                database.create_user({ uname: "Anthonym", password: "0000" });
             }
 
             logs.info("Database check succeded");
         } catch (error) {
             // shouldnt get any errors here unless something is realy wrong
-            console.log('Startup error, check if node runtime has write permission in ', __dirname);
+            console.log('Startup error, check if node runtime has write permission in ', root_db_directory);
             logs.error("Database Error: ", error);
         }
     },
@@ -131,7 +146,7 @@ const database = {
     get_user: {
         credentials: async function (identifier) {
             if (typeof identifier == 'string') {
-                
+
             } else {
 
             }
