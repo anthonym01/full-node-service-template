@@ -151,8 +151,27 @@ const database = {
 
             }
         },
-        data: async function (identifier) {
+        data: async function (username_or_uuid) {
+            logs.info('Get user data for: ', username_or_uuid);
 
+            try {
+                const users_file_data = JSON.parse(fs.readFileSync(user_records_path, { encoding: 'utf-8' }));//get users record
+
+                for (let iterate in users_file_data.users) {//check if user exists
+                    if (users_file_data.users[iterate].uname == username_or_uuid || users_file_data.users[iterate].uuid == Number(username_or_uuid)) {
+                        logs.info(username_or_uuid, 'coresponds to: ', { uuid: users_file_data.users[iterate].uuid, uname: users_file_data.users[iterate].uname }, 'at index: ', iterate);
+
+                        const user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(users_file_data.users[iterate].uuid) + '.json'), { encoding: 'utf-8' }));//get users record
+                        logs.info(`\n${username_or_uuid}'s data: `, user_data);
+                        return user_data;
+                    }
+                }
+                logs.info('User could not be found',username_or_uuid)
+                return {info:'User could not be found',username_or_uuid}
+            } catch (error) {
+                logs.error('Error in get_user_data: ', error);
+                return false
+            }
         }
     },
     update_user: {
@@ -161,34 +180,6 @@ const database = {
         },
         data: async function (identifier, data) {
 
-        }
-    },
-    get_user_data_by_uuid: async function (uuid) {
-        try {
-            logs.info('Get user data for: ', uuid);
-
-            let user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(uuid) + '.json'), { encoding: 'utf-8' }));//get users record
-            logs.info('User data: ', user_data);
-            return user_data;
-        } catch (error) {
-            logs.error('Error in get_user_data: ', error);
-            return false
-        }
-    },
-    get_user_data_by_username: async function (username) {
-        try {
-            logs.info('Get user data for: ', username);
-            const users_file_data = JSON.parse(fs.readFileSync(user_records_path, { encoding: 'utf-8' }));//get users record
-
-            for (let iterate in users_file_data.users) {//check if user exists
-                if (users_file_data.users[iterate].uname == username) {
-                    logs.info('Username coresponds to: ', users_file_data.users[iterate].uuid);
-                    return await this.get_user_data_by_uuid(users_file_data.users[iterate].uuid);
-                }
-            }
-        } catch (error) {
-            logs.error('Error in get_user_data: ', error);
-            return false
         }
     },
     update_user_data_by_uuid: async function (uuid, new_data) {
