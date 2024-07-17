@@ -126,13 +126,13 @@ const database = {
             fs.unlinkSync(path.join(database_paths.users_data_records, username, '.json'));//delete user data record
             logs.info('User data deleted: ', user_data);
 
-            let users_file_data = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
-            for (let iterate in users_file_data.users) {//check if user exists
-                if (users_file_data.users[iterate].uname == username) {
-                    users_file_data.users.splice(iterate, 1);//remove user from users record
-                    users_file_data.db_version = Number(users_file_data.db_version) + 1;
-                    fs.writeFileSync(database_paths.users_file, JSON.stringify(users_file_data), { encoding: 'utf-8' });//update users record
-                    logs.info('User removed from users record: ', users_file_data);
+            let userlist = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
+            for (let iterate in userlist.users) {//check if user exists
+                if (userlist.users[iterate].uname == username) {
+                    userlist.users.splice(iterate, 1);//remove user from users record
+                    userlist.db_version = Number(userlist.db_version) + 1;
+                    fs.writeFileSync(database_paths.users_file, JSON.stringify(userlist), { encoding: 'utf-8' });//update users record
+                    logs.info('User removed from users record: ', userlist);
                     return true;
                 }
             }
@@ -143,31 +143,36 @@ const database = {
             return false
         }
     },
+    find: function (userlist, username_or_uuid) {
+        for (let iterate in userlist.users) {//check if user exists
+            if (userlist.users[iterate].uname == username_or_uuid || userlist.users[iterate].uuid == Number(username_or_uuid)) {
+                logs.info(username_or_uuid, 'coresponds to: ', { uuid: userlist.users[iterate].uuid, uname: userlist.users[iterate].uname }, 'at index: ', iterate);
+                return iterate;
+            }
+        }
+        return false;
+    },
     get_user: {
         credentials: async function (identifier) {
-            if (typeof identifier == 'string') {
 
-            } else {
-
-            }
         },
         data: async function (username_or_uuid) {
             logs.info('Get user data for: ', username_or_uuid);
 
             try {
-                const users_file_data = JSON.parse(fs.readFileSync(user_records_path, { encoding: 'utf-8' }));//get users record
+                const userlist = JSON.parse(fs.readFileSync(user_records_path, { encoding: 'utf-8' }));//get users record
 
-                for (let iterate in users_file_data.users) {//check if user exists
-                    if (users_file_data.users[iterate].uname == username_or_uuid || users_file_data.users[iterate].uuid == Number(username_or_uuid)) {
-                        logs.info(username_or_uuid, 'coresponds to: ', { uuid: users_file_data.users[iterate].uuid, uname: users_file_data.users[iterate].uname }, 'at index: ', iterate);
+                const working_index = await database.find(userlist, username_or_uuid);
 
-                        const user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(users_file_data.users[iterate].uuid) + '.json'), { encoding: 'utf-8' }));//get users record
-                        logs.info(`\n${username_or_uuid}'s data: `, user_data);
-                        return user_data;
-                    }
+                if (working_index === false) {
+                    logs.error('User could not be found', username_or_uuid);
+                    return { info: 'User could not be found', username_or_uuid }
                 }
-                logs.info('User could not be found',username_or_uuid)
-                return {info:'User could not be found',username_or_uuid}
+
+                const user_data = JSON.parse(fs.readFileSync(path.join(db_data_path, String(userlist.users[working_index].uuid) + '.json'), { encoding: 'utf-8' }));//get users record
+                logs.info(`\n${username_or_uuid}'s data: `, user_data);
+                return user_data;
+
             } catch (error) {
                 logs.error('Error in get_user_data: ', error);
                 return false
@@ -203,12 +208,12 @@ const database = {
             const database_paths = database.get_paths();
             logs.info('Change password for: ', username, ' at ', database_paths.users_file);
 
-            let users_file_data = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
-            for (let iterate in users_file_data.users) {//check if user exists
-                if (users_file_data.users[iterate].uname == username) {
-                    users_file_data.users[iterate].password = new_password;
-                    users_file_data.db_version = Number(users_file_data.db_version) + 1;
-                    fs.writeFileSync(database_paths.users_file, JSON.stringify(users_file_data), { encoding: 'utf-8' });//update users record
+            let userlist = JSON.parse(fs.readFileSync(database_paths.users_file, { encoding: 'utf-8' }));//get users record
+            for (let iterate in userlist.users) {//check if user exists
+                if (userlist.users[iterate].uname == username) {
+                    userlist.users[iterate].password = new_password;
+                    userlist.db_version = Number(userlist.db_version) + 1;
+                    fs.writeFileSync(database_paths.users_file, JSON.stringify(userlist), { encoding: 'utf-8' });//update users record
                     logs.info('Password changed for user: ', username);
                     return true;
                 }
