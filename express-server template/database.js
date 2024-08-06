@@ -3,7 +3,7 @@ const logs = require('./logger');
 const fs = require('fs');
 const path = require('path');
 
-let root_db_directory = path.join(__dirname, '/database/');//root path
+let root_db_directory = path.join(process.cwd(), '/database/');//root path
 let user_records_path = path.join(root_db_directory, 'users.json');//users record
 let db_data_path = path.join(root_db_directory, 'userdata/');//data directory
 

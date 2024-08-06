@@ -19,7 +19,7 @@ logs.info('Server starting');//log server start
 app.use(express.static('www')).listen(() => {
     try {
         database.initalize();//initalize database
-        
+
     } catch (error) {
         logs.error('Catastrophy on server start: ', error);
     }
@@ -52,7 +52,11 @@ app.post('/post/test', (req, res) => {//test post
     }
 });
 
-app.listen(port, () => { logs.info('Running on port ', port) })//Listen for requests, this starts the server
+app.listen(port, () => {
+    logs.info('Running on port ', port);
+    logs.info('Process ID: ', process.pid);
+    logs.info('Process path: ', process.cwd());
+})//Listen for requests, this starts the server
 
 async function writeresponce(res, filepath) {
     //write files in responses
