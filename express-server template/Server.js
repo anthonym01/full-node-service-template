@@ -1,7 +1,5 @@
 //'node Server.js'
-/*
-    dependencies  for a Node.js server using Express framework.
-*/
+//This is the server file, it will handle all requests and responses
 
 const port = 8082;//port for the server 80, 443, 8082
 const express = require('express');
@@ -9,8 +7,8 @@ const app = express();
 const fs = require('fs');
 const path = require('path');
 
-const logs = require('./logger');
-const database = require('./database');
+const logs = require('./modules/logger');
+const database = require('./modules/database');
 
 logs.initalize();//initalize logger
 logs.info('Server starting');//log server start
