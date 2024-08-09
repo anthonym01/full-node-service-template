@@ -1,23 +1,29 @@
 //'node Server.js'
 //This is the server file, it will handle all requests and responses
 
-const port = 8082;//port for the server 80, 443, 8082
+//Server configuration
+const port = 8082;// 80, 443, 8082 nginx
 const express = require('express');
 const app = express();
-const fs = require('fs');
-const path = require('path');
-
 const logs = require('./modules/logger');
 const database = require('./modules/database');
 
-logs.initalize();//initalize logger
-logs.info('Server starting');//log server start
+app.listen(port, () => {
+    try {
+        logs.initalize();//initalize logger
+        logs.info('Server starting');//log server start
+        logs.info('Running on port ', port);
+        logs.info('Process ID: ', process.pid);
+        logs.info('Process path: ', process.cwd());
+    } catch (error) {
+        logs.error('Catastrophy on server start: ', error);
+    }
+})//Listen for requests, this starts the server
 
-//bind root path to /www
+//bind root path to /www folder
 app.use(express.static('www')).listen(() => {
     try {
         database.initalize();//initalize database
-
     } catch (error) {
         logs.error('Catastrophy on server start: ', error);
     }
@@ -49,30 +55,3 @@ app.post('/post/test', (req, res) => {//test post
         logs.error('Catastrophy on test post: ', err);
     }
 });
-
-app.listen(port, () => {
-    logs.info('Running on port ', port);
-    logs.info('Process ID: ', process.pid);
-    logs.info('Process path: ', process.cwd());
-})//Listen for requests, this starts the server
-
-async function writeresponce(res, filepath) {
-    //write files in responses
-
-    try {
-        res.setHeader('Acess-Control-Allow-Origin', '*');//allow access control from client, this will automatically handle most media files
-
-        fs.readFile(filepath, function (err, databuffer) {
-            if (err) {
-                res.writeHead(404);//not okay
-                logs.error(err);
-            } else {
-                res.writeHead(200);//200 ok
-                res.write(databuffer);
-            }
-            res.end();//end response
-        })
-    } catch (error) {
-        logs.error(error);
-    }
-}
