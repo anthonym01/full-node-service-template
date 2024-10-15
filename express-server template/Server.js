@@ -15,6 +15,7 @@ app.listen(port, () => {
         logs.info('Running on port ', port);
         logs.info('Process ID: ', process.pid);
         logs.info('Process path: ', process.cwd());
+        database.initalize();//initalize database
     } catch (error) {
         logs.error('Catastrophy on server start: ', error);
     }
@@ -22,11 +23,7 @@ app.listen(port, () => {
 
 //bind root path to /www folder
 app.use(express.static('www')).listen(() => {
-    try {
-        database.initalize();//initalize database
-    } catch (error) {
-        logs.error('Catastrophy on server start: ', error);
-    }
+
 });
 
 app.get('/get/test', (req, res) => {//test get
