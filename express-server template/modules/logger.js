@@ -10,7 +10,7 @@ const loggerite = {
     get_paths: function () {
         try {
             const timex = new Date();//date-time
-            const file_path = path.join(process.cwd(), `/logs/${timex.getMonth()+1}-${timex.getFullYear()}/${timex.getMonth()+1}-${timex.getDate()}.log`);// '/logs/mm-yyyy/mm-dd.log'
+            const file_path = path.join(process.cwd(), `/logs/${timex.getMonth()+1}-${timex.getFullYear()}/${timex.getMonth()+1}-${timex.getDate()}.log`);// './logs/mm-yyyy/mm-dd.log'
             return { file_path, timex }
         } catch (error) {
             console.error(error);
