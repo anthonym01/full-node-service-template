@@ -4,9 +4,9 @@
   "description": "A basic express template",
   "main": "index.js",
   "scripts": {
-    "bundle": "browserify www/js/index.js -o www/js/bundle.js",
-    "start": "node Server.js",
-    "test-database": "node tests/database_test.js"
+    "start": "node express_server.js",
+    "test-database": "node tests/database_test.js",
+    "test-logs":"node tests/logger.js"
   },
   "keywords": [
     "express",
