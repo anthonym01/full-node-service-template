@@ -9,8 +9,8 @@ const loggerite = {
     //Paths for logs are generated based on time
     get_paths: function () {
         try {
-            const timex = new Date();//date-time
-            const file_path = path.join(process.cwd(), `/logs/${timex.getMonth() + 1}-${timex.getFullYear()}/${timex.getMonth() + 1}-${timex.getDate()}.log`);// './logs/mm-yyyy/mm-dd.log'
+            const timex = new Date();
+            const file_path = path.join(process.cwd(), `/logs/${timex.getMonth() + 1}-${timex.getFullYear()}/${timex.getMonth() + 1}-${timex.getDate()}.log`);//'./logs/mm-yyyy/mm-dd.log'
             return { file_path, timex }
         } catch (error) {
             console.error(error);
@@ -23,7 +23,7 @@ const loggerite = {
         const log_properties = this.get_paths();
         try {
             if (!fs.existsSync(log_properties.file_path)) {//if log file does not exist
-                if (!fs.existsSync(path.dirname(log_properties.file_path))) {//if log folder does not exist
+                if (!fs.existsSync(path.dirname(log_properties.file_path))) {//if /logs folder does not exist
                     console.log('Create: ', path.dirname(log_properties.file_path));
                     fs.mkdirSync(path.dirname(log_properties.file_path), { recursive: true });//create log folder
                 }
@@ -36,30 +36,32 @@ const loggerite = {
         return -1;
     },
     //log happenings
-    info: async function (/*...args*/) {
-        //console.log('Arguments: ', arguments);
+    info: async function (...args) {
         const log_properties = this.get_paths();//get log paths
-        // Keep node consoles style for numbers objects and blobs
+        
+        /*
+            Keep node consoles style for numbers objects and blobs
+        */
+        // Process arguments
         const argummentlength = arguments.length;
         if (argummentlength == 0) {
-
-
+            console.log("no arguments passed to logger")
+            return 0
         } else if (argummentlength == 1) {
             console.log(arguments[0]);
             let arguments1 = arguments[0];
             if (typeof arguments1 === 'object') arguments1 = `\n${JSON.stringify(arguments1, null, 2)}`;
             writelog(arguments1);
+            return 1;
         } else if (argummentlength == 2) {
-
             console.log(arguments[0], arguments[1]);
             let arguments1 = arguments[0];
             let arguments2 = arguments[1];
             if (typeof arguments1 === 'object') arguments1 = `\n${JSON.stringify(arguments1, null, 2)}`;
             if (typeof arguments2 === 'object') arguments2 = `\n${JSON.stringify(arguments2, null, 2)}`;
             writelog(`${arguments1}${arguments2}`);
-
+            return 2;
         } else if (argummentlength == 3) {
-
             console.log(arguments[0], arguments[1], arguments[2]);
             let arguments1 = arguments[0];
             let arguments2 = arguments[1];
@@ -67,9 +69,20 @@ const loggerite = {
             if (typeof arguments1 === 'object') arguments1 = `\n${JSON.stringify(arguments1, null, 2)}`;
             if (typeof arguments2 === 'object') arguments2 = `\n${JSON.stringify(arguments2, null, 2)}`;
             if (typeof arguments3 === 'object') arguments3 = `\n${JSON.stringify(arguments3, null, 2)}`;
-            writelog(`${arguments1}${arguments2}${arguments2}`);
+            writelog(`${arguments1}${arguments2}${arguments3}`);
+            return 3;
         } else if (argummentlength == 4) {
-
+            console.log(arguments[0], arguments[1], arguments[2], arguments[3]);
+            let arguments1 = arguments[0];
+            let arguments2 = arguments[1];
+            let arguments3 = arguments[2];
+            let arguments4 = arguments[3];
+            if (typeof arguments1 === 'object') arguments1 = `\n${JSON.stringify(arguments1, null, 2)}`;
+            if (typeof arguments2 === 'object') arguments2 = `\n${JSON.stringify(arguments2, null, 2)}`;
+            if (typeof arguments3 === 'object') arguments3 = `\n${JSON.stringify(arguments3, null, 2)}`;
+            if (typeof arguments4 === 'object') arguments4 = `\n${JSON.stringify(arguments4, null, 2)}`;
+            writelog(`${arguments1}${arguments2}${arguments3}${arguments4}`);
+            return 3;
         } else {
             let stripped_arguments = ``;
             try {// to process passed arguments

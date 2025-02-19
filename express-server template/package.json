@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node express_server.js",
     "test-database": "node tests/database_test.js",
-    "test-logs":"node tests/logger.js"
+    "test-logs":"node tests/test_logger.js"
   },
   "keywords": [
     "express",

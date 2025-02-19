@@ -12,7 +12,7 @@ const database = {
 
         try { //Allow the use of alternate paths/multiple databases at the same time
             if (typeof (path_for_database_folder) == undefined || typeof (path_for_database_folder) == 'undefined' || typeof (path_for_database_folder) == null) {
-                logs.info('Initalize database with default path: ', { root_db_directory });
+                logs.info('Initalize database with default path: ', root_db_directory );
             } else {
                 root_db_directory = path.join(__dirname, String(path_for_database_folder));//root path
                 logs.info('Initalize database on: ', root_db_directory);
