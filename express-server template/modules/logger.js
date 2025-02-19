@@ -114,63 +114,70 @@ const loggerite = {
         }
     },
     //log bad happenings
-    error: async function (datum1, datum2, datum3, datum4, datum5, datum6) {
+    error: async function (...anyerror) {
         const log_properties = this.get_paths();
-        try {
-            if (typeof datum6 !== 'undefined') {
-                console.error(datum1, datum2, datum3, datum4, datum5, datum6);
-                //stringify objects to avaid '[Object object]'
-                if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
-                if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
-                if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
-                if (typeof datum4 === 'object') datum4 = `\n${JSON.stringify(datum4, null, 2)}`;
-                if (typeof datum5 === 'object') datum5 = `\n${JSON.stringify(datum5, null, 2)}`;
-                if (typeof datum6 === 'object') datum6 = `\n${JSON.stringify(datum6, null, 2)}`;
-                writelog(`${datum1} ${datum2} ${datum3} ${datum4} ${datum5} ${datum6}`);
-                return 6;
+        /*
+            Keep node consoles style for numbers objects and blobs
+        */
+        // Process arguments
+        const argummentlength = arguments.length;
+        if (argummentlength == 0) {
+            console.log("no arguments passed to logger")
+            return 0;
+        } else if (argummentlength == 1) {
+            console.error(arguments[0]);
+            let arguments1 = arguments[0];
+            if (typeof arguments1 === 'object') arguments1 = `\n${JSON.stringify(arguments1, null, 2)}`;
+            writelog(arguments1);
+            return 1;
+        } else if (argummentlength == 2) {
+            console.error(arguments[0], arguments[1]);
+            let arguments1 = arguments[0];
+            let arguments2 = arguments[1];
+            if (typeof arguments1 === 'object') arguments1 = `\n${JSON.stringify(arguments1, null, 2)}`;
+            if (typeof arguments2 === 'object') arguments2 = `\n${JSON.stringify(arguments2, null, 2)}`;
+            writelog(`${arguments1}${arguments2}`);
+            return 2;
+        } else if (argummentlength == 3) {
+            console.error(arguments[0], arguments[1], arguments[2]);
+            let arguments1 = arguments[0];
+            let arguments2 = arguments[1];
+            let arguments3 = arguments[2];
+            if (typeof arguments1 === 'object') arguments1 = `\n${JSON.stringify(arguments1, null, 2)}`;
+            if (typeof arguments2 === 'object') arguments2 = `\n${JSON.stringify(arguments2, null, 2)}`;
+            if (typeof arguments3 === 'object') arguments3 = `\n${JSON.stringify(arguments3, null, 2)}`;
+            writelog(`${arguments1}${arguments2}${arguments3}`);
+            return 3;
+        } else if (argummentlength == 4) {
+            console.error(arguments[0], arguments[1], arguments[2], arguments[3]);
+            let arguments1 = arguments[0];
+            let arguments2 = arguments[1];
+            let arguments3 = arguments[2];
+            let arguments4 = arguments[3];
+            if (typeof arguments1 === 'object') arguments1 = `\n${JSON.stringify(arguments1, null, 2)}`;
+            if (typeof arguments2 === 'object') arguments2 = `\n${JSON.stringify(arguments2, null, 2)}`;
+            if (typeof arguments3 === 'object') arguments3 = `\n${JSON.stringify(arguments3, null, 2)}`;
+            if (typeof arguments4 === 'object') arguments4 = `\n${JSON.stringify(arguments4, null, 2)}`;
+            writelog(`${arguments1}${arguments2}${arguments3}${arguments4}`);
+            return 3;
+        } else {
+            let stripped_arguments = ``;
+            try {// to process passed arguments
+                for (let arg in arguments) {
+                    //console.log(arg)
+                    if (typeof arguments[arg] === 'object') {
+                        stripped_arguments = stripped_arguments + ` \n${JSON.stringify(arguments[arg], null, 2)}`;
+                        //process.stdout.write(arguments[arg]);
+                    } else {
+                        stripped_arguments = stripped_arguments + `${arguments[arg]} `;
+                    }
+                }
+                console.error(stripped_arguments);
+                writelog(stripped_arguments);
+                return arguments.length;
+            } catch (err) {
+                console.error(err)
             }
-            if (typeof datum5 !== 'undefined') {
-                console.error(datum1, datum2, datum3, datum4, datum5);
-                if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
-                if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
-                if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
-                if (typeof datum4 === 'object') datum4 = `\n${JSON.stringify(datum4, null, 2)}`;
-                if (typeof datum5 === 'object') datum5 = `\n${JSON.stringify(datum5, null, 2)}`;
-                writelog(`${datum1} ${datum2} ${datum3} ${datum4} ${datum5}`);
-                return 5;
-            }
-            if (typeof datum4 !== 'undefined') {
-                console.error(datum1, datum2, datum3, datum4);
-                if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
-                if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
-                if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
-                if (typeof datum4 === 'object') datum4 = `\n${JSON.stringify(datum4, null, 2)}`;
-                writelog(`${datum1} ${datum2} ${datum3} ${datum4}`);
-                return 4;
-            }
-            if (typeof datum3 !== 'undefined') {
-                console.error(datum1, datum2, datum3);
-                if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
-                if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
-                if (typeof datum3 === 'object') datum3 = `\n${JSON.stringify(datum3, null, 2)}`;
-                writelog(`${datum1} ${datum2} ${datum3}`);
-                return 3;
-            }
-            if (typeof datum2 !== 'undefined') {
-                console.error(datum1, datum2);
-                if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
-                if (typeof datum2 === 'object') datum2 = `\n${JSON.stringify(datum2, null, 2)}`;
-                writelog(`${datum1} ${datum2}`);
-                return 2;
-            }
-            if (typeof datum1 !== 'undefined') {
-                console.error(datum1);
-                if (typeof datum1 === 'object') datum1 = `\n${JSON.stringify(datum1, null, 2)}`;
-                writelog(datum1);
-                return 1;
-            }
-        } catch (error) {
-            console.error("Logger Error", error);
         }
 
         function writelog(datum) {//write to log file
