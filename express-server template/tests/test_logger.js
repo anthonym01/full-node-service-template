@@ -1,5 +1,5 @@
 const logs = require('../modules/logger');
-
+logs.initalize();
 logs.info("Logger module test",6969,8086);
 logs.info(7,3)
 logs.info(7,3,4,5,67,5,43,2)

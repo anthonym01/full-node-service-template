@@ -1,24 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
+let initalized = false;
+
 const loggerite = {
     // startup point
     initalize: function () {
-        this.checkfs()
-    },
-    //Paths for logs are generated based on time
-    get_paths: function () {
-        try {
-            const timex = new Date();
-            const file_path = path.join(process.cwd(), `/logs/${timex.getMonth() + 1}-${timex.getFullYear()}/${timex.getMonth() + 1}-${timex.getDate()}.log`);//'./logs/mm-yyyy/mm-dd.log'
-            return { file_path, timex }
-        } catch (error) {
-            console.error(error);
-            return { file_path: path.join(__dirname, `/logs/default.log`), timex: 0 }
-        }
-    },
-    // Check folders structure
-    checkfs: function () {
         console.log('checking log path');
         const log_properties = this.get_paths();
         try {
@@ -30,15 +17,30 @@ const loggerite = {
                 console.log('Create: ', log_properties.file_path);
                 fs.writeFileSync(log_properties.file_path, `Start log - ${log_properties.timex}\n\n`, { encoding: 'utf8' });//create log file
             }
+            fs.writeFileSync('logs/latest.log', `Start log - ${log_properties.timex}\n\n`, { encoding: 'utf8' });//create latest log file
+            initalized = true;
         } catch (error) {
             console.error(error);
         }
+
         return -1;
+    },
+    //Paths for logs are generated based on time
+    get_paths: function () {
+        try {
+            const timex = new Date();
+            const file_path = path.join(process.cwd(), `/logs/${timex.getMonth() + 1}-${timex.getFullYear()}/${timex.getMonth() + 1}-${timex.getDate()}.log`);//'./logs/mm-yyyy/mm-dd.log'
+            return { file_path, timex }
+        } catch (error) {
+            console.error(error);
+            return { file_path: path.join(__dirname, `/logs/error.log`), timex: 0 }
+        }
     },
     //log happenings
     info: async function (...args) {
+        if (!initalized) { this.initalize() }
         const log_properties = this.get_paths();//get log paths
-        
+
         /*
             Keep node consoles style for numbers objects and blobs
         */
@@ -108,6 +110,7 @@ const loggerite = {
         function writelog(datum) {
             try {
                 fs.appendFileSync(log_properties.file_path, `${log_properties.timex} : \n${datum}\n------------------------------------------------------------\n`, { encoding: 'utf8' });
+                fs.appendFileSync('logs/latest.log', `${log_properties.timex} : \n${datum}\n------------------------------------------------------------\n`, { encoding: 'utf8' });//create latest log file
             } catch (error) {
                 throw error;
             }
@@ -115,6 +118,7 @@ const loggerite = {
     },
     //log bad happenings
     error: async function (...anyerror) {
+        if (!initalized) { this.initalize() }
         const log_properties = this.get_paths();
         /*
             Keep node consoles style for numbers objects and blobs
@@ -183,9 +187,9 @@ const loggerite = {
         function writelog(datum) {//write to log file
             try {
                 fs.appendFileSync(log_properties.file_path, `\n****************************************\nError:\n${log_properties.timex} :\n${datum}\n******************************************\n\n`, { encoding: 'utf8' });
+                fs.appendFileSync('logs/latest.log', `\n****************************************\nError:\n${log_properties.timex} :\n${datum}\n******************************************\n\n`, { encoding: 'utf8' });
             } catch (error) {
                 console.error("Logger Error", error);
-                loggerite.checkfs();
             }
         }
     },
